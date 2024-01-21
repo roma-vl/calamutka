@@ -21,7 +21,7 @@ const App = () => {
 
   return (
       <div>
-        <h3>{data.title}</h3>
+        <h1>{data ? data.title : <p>Loading...</p>}</h1>
         {data ? (
             <ul>
               {data.post.map(item => (
