@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const config = require('config');
+
 const app = express();
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -11,6 +13,7 @@ app.use((req, res, next) => {
 
 const port = process.env.PORT || 4000;
 app.get('/', (req, res) => {
+  console.log(config.get('database.mysql'));
   res.json({
     'title' : 'Home Route',
     'post' : [
