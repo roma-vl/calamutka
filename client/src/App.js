@@ -24,8 +24,8 @@ const App = () => {
         <h1>{data ? data.title : <p>Loading...</p>}</h1>
         {data ? (
             <ul>
-              {data.post.map(item => (
-                  <li key={item.id}> ID:{ item.id } --- {item.title}</li>
+              {data.map(item => (
+                  <li key={item.id}> ID:{ item.username } --- {item.password}</li>
               ))}
             </ul>
         ) : (

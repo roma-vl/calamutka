@@ -1,6 +1,8 @@
 const developmentDb = require('./developmentDb');
 module.exports = {
-    someKey: 'defaultValue',
+    passport: {
+        jwtSecretKey: 'your-secret-key',
+    },
     database: developmentDb
 };
 
