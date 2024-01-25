@@ -37,6 +37,21 @@ services:
       - ./app/node_modules
     stdin_open: true
     tty: true
+  mysql:
+    image: mysql:latest
+    container_name: mysql_database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: calamutka
+      MYSQL_DATABASE: calamutka
+      MYSQL_USER: calamutka
+      MYSQL_PASSWORD: calamutka
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./var/data/mysql:/var/lib/mysql
+    networks:
+      - calamutka
   nginx-proxy:
     image: nginx
     container_name: nginx_proxy
