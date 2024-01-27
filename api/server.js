@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const knex = require('./src/modules/app/src/connection/app');
 const initSwagger = require("./src/swagger");
+const userRoutes = require("./src/modules/users/routes/userRoutes");
 
 
 module.exports = async () => {
@@ -14,6 +15,7 @@ module.exports = async () => {
 
     await initAuth(app);
     await initSwagger(app);
+    app.use('/users', userRoutes(knex));
 
     app.use(cors({ origin: '*', maxAge: 300 }));
     /**

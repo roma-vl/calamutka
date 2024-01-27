@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const knex = require('./modules/app/src/connection/app');
 const {Strategy: JwtStrategy, ExtractJwt} = require("passport-jwt");
+const validateUserDataMiddleware = require("./modules/users/midleware/validation");
 
 async function initAuth(app) {
 
@@ -27,6 +28,8 @@ async function initAuth(app) {
             done(error, false);
         }
     }));
+
+    app.use(validateUserDataMiddleware.validateUserData);
 
     app.post('/login', async (req, res) => {
         const { username, password } = req.body;
