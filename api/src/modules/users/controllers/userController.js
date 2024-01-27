@@ -8,4 +8,4 @@ const getAllUsers = (knex) => async (req, res) => {
     }
 };
 
-module.exports = { getAllUsers };
+export { getAllUsers };

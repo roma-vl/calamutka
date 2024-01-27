@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     mysql: {
         client: 'mysql2',
         connection: {

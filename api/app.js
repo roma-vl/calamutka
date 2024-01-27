@@ -1,5 +1,7 @@
-const config = require('config');
-const initApp = require('./server');
+import config from './config/config.js';
+
+// console.log(config)
+import initApp from'./server.js'
 initApp()
     .then((server) => {
         // server.modules.callInitModules();

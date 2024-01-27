@@ -1,15 +1,16 @@
-const express = require('express');
-const userController = require('../controllers/userController');
-const validateUserDataMiddleware = require('../midleware/validation')
-const loggingMiddleware = require('../midleware/logger')
+import express from 'express';
+import {getAllUsers} from '../controllers/userController.js';
+import {validateUserData} from '../middleware/validation.js';
+import {logRequest} from '../middleware/logger.js';
+
 const userRoutes = (knex) => {
     const app = express.Router();
 
-    app.use(validateUserDataMiddleware.validateUserData);
-    app.use(loggingMiddleware.logRequest);
-    app.get('/', userController.getAllUsers(knex));
+    app.use(validateUserData);
+    app.use(logRequest);
+    app.get('/', getAllUsers(knex));
 
     return app;
 };
 
-module.exports = userRoutes;
+export default userRoutes;

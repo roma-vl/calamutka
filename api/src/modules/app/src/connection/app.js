@@ -1,12 +1,15 @@
-const config = require('config');
-const connection = require('knex')({
-    client: config.get('database.mysql.client'),
+import config from '../../../../../config/config.js';
+import knex from 'knex';
+
+const connection = knex({
+    client: config.database.mysql.client,
     connection: {
-        host : config.get('database.mysql.connection.host'),
-        port : config.get('database.mysql.connection.port'),
-        user : config.get('database.mysql.connection.user'),
-        password : config.get('database.mysql.connection.password'),
-        database : config.get('database.mysql.connection.database')
+        host: config.database.mysql.connection.host,
+        port: config.database.mysql.connection.port,
+        user: config.database.mysql.connection.user,
+        password: config.database.mysql.connection.password,
+        database: config.database.mysql.connection.database
     }
 });
-module.exports = connection;
+
+export default connection;
