@@ -4,7 +4,7 @@ import messageHandlers from '../handlers/message.handlers.js'
 export default function onConnection(io, socket) {
     // извлекаем идентификатор комнаты и имя пользователя
     const { roomId, userName } = socket.handshake.query
-
+    console.log(socket.handshake.query)
     // записываем их в объект сокета
     socket.roomId = roomId
     socket.userName = userName

@@ -33,6 +33,8 @@ export default function messageHandlers(io, socket) {
 
     // обрабатываем создание нового сообщения
     socket.on('message:add', (message) => {
+
+        console.log(message)
         // пользователи не должны ждать записи сообщения в БД
         Message.create(message).catch(onError)
 
