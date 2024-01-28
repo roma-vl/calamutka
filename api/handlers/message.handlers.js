@@ -1,72 +1,46 @@
-import Message from '../models/message.model.js'
-import { removeFile } from '../utils/file.js'
-import onError from '../utils/onError.js'
+// Змініть імпорт наступним чином
+import Message from '../models/message.model.js';
 
-// "хранилище" для сообщений
-const messages = {}
+const updateMessageList = async (io, roomId) => {
+    const _messages = await Message.getMessagesByRoomId(roomId);
+    io.to(roomId).emit('message_list:update', _messages);
+};
 
-export default function messageHandlers(io, socket) {
-    // извлекаем идентификатор комнаты
-    const { roomId } = socket
+export default async function messageHandlers(io, socket) {
+    const { roomId } = socket;
+    // console.log('roomId', roomId);
 
-    // утилита для обновления списка сообщений
-    const updateMessageList = () => {
-        io.to(roomId).emit('message_list:update', messages[roomId])
-    }
-
-    // обрабатываем получение сообщений
     socket.on('message:get', async () => {
         try {
-            // получаем сообщения по `id` комнаты
-            const _messages = await Message.find({
-                roomId
-            })
-            // инициализируем хранилище сообщений
-            messages[roomId] = _messages
-
-            // обновляем список сообщений
-            updateMessageList()
+            await updateMessageList(io, roomId);
         } catch (e) {
-            onError(e)
+            console.error(e);
         }
-    })
+    });
 
-    // обрабатываем создание нового сообщения
-    socket.on('message:add', (message) => {
+    socket.on('message:add', async (message) => {
+        try {
+            console.log(message);
+            await Message.insertMessage({ ...message, roomId });
+           await updateMessageList(io, roomId);
+        } catch (e) {
+            console.error(e);
+        }
+    });
 
-        console.log(message)
-        // пользователи не должны ждать записи сообщения в БД
-        Message.create(message).catch(onError)
+    socket.on('message:remove', async (message) => {
+        const { messageId, messageType, textOrPathToFile } = message;
 
-        // это нужно для клиента
-        message.createdAt = Date.now()
+        try {
+            await Message.deleteMessage(messageId);
 
-        // создаем сообщение оптимистически,
-        // т.е. предполагая, что запись сообщения в БД будет успешной
-        messages[roomId].push(message)
+            if (messageType !== 'text') {
+                // Реалізуйте вашу логіку видалення файлу
+            }
 
-        // обновляем список сообщений
-        updateMessageList()
-    })
-
-    // обрабатываем удаление сообщения
-    socket.on('message:remove', (message) => {
-        const { messageId, messageType, textOrPathToFile } = message
-
-        // пользователи не должны ждать удаления сообщения из БД
-        // и файла на сервере (если сообщение является файлом)
-        Message.deleteOne({ messageId })
-            .then(() => {
-                if (messageType !== 'text') {
-                    removeFile(textOrPathToFile)
-                }
-            })
-            .catch(onError)
-
-        // удаляем сообщение оптимистически
-        messages[roomId] = messages[roomId].filter((m) => m.messageId !== messageId)
-
-        // обновляем список сообщений
-        updateMessageList()
-    })
+           await updateMessageList(io, roomId);
+        } catch (e) {
+            console.error(e);
+        }
+    });
 }

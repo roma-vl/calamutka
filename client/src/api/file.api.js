@@ -5,13 +5,13 @@ const upload = async ({ file, roomId }) => {
         const body = new FormData()
         body.append('file', file)
 
-        const response = await fetch(`${SERVER_URI}/upload`, {
+        const response = await fetch(`http://api.calamutka.com/upload`, {
             method: 'POST',
             body,
             headers: {
                 'x-room-id': roomId
             }
-        })
+        });
 
         if (!response.ok) throw response
 

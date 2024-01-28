@@ -12,6 +12,9 @@ services:
       - ./api:/app
       - ./app/node_modules
   client:
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WDS_SOCKET_PORT=0
     build: ./client
     container_name: client_frontend
     restart: always

@@ -4,12 +4,10 @@ const users = {}
 export default function userHandlers(io, socket) {
     // извлекаем идентификатор комнаты и имя пользователя из объекта сокета
     const { roomId, userName } = socket
-
     // инициализируем хранилище пользователей
     if (!users[roomId]) {
         users[roomId] = []
     }
-
     // утилита для обновления списка пользователей
     const updateUserList = () => {
         // сообщение получают только пользователи, находящиеся в комнате
@@ -17,7 +15,9 @@ export default function userHandlers(io, socket) {
     }
 
     // обрабатываем подключение нового пользователя
-    socket.on('user:add', async (user) => {
+       socket.on('user:add',  (user) => {
+        console.log('usersadasdasd', user)
+        console.log('Received user:add event', user);
         // сообщаем другим пользователям об этом
         socket.to(roomId).emit('log', `User ${userName} connected`)
 

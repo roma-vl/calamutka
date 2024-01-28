@@ -1,20 +1,23 @@
 import userHandlers from '../handlers/user.handlers.js'
 import messageHandlers from '../handlers/message.handlers.js'
 
-export default function onConnection(io, socket) {
+export default async function onConnection(io, socket) {
+    try {
     // извлекаем идентификатор комнаты и имя пользователя
     const { roomId, userName } = socket.handshake.query
-    console.log(socket.handshake.query)
+    // console.log(socket.handshake.query)
     // записываем их в объект сокета
     socket.roomId = roomId
     socket.userName = userName
-
     // присоединяемся к комнате
-    socket.join(roomId)
+        await socket.join(roomId)
 
     // регистрируем обработчики для пользователей
-    userHandlers(io, socket)
+   // await userHandlers(io, socket)
 
     // регистрируем обработчики для сообщений
-    messageHandlers(io, socket)
+   await messageHandlers(io, socket)
+    } catch (error) {
+        console.error('Error in onConnection:', error);
+    }
 }

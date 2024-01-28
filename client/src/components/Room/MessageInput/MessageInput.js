@@ -61,7 +61,8 @@ export default function MessageInput({ sendMessage }) {
             // типом сообщения является файл
             try {
                 // загружаем файл на сервер и получаем относительный путь к нему
-                const path = await fileApi.upload({ file, roomId })
+                const  path = await fileApi.upload({ file, roomId })
+                console.log(path)
                 // получаем тип файла
                 const type = file.type.split('/')[0]
 

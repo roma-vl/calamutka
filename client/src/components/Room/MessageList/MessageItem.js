@@ -25,7 +25,7 @@ export default function MessageItem({ message, removeMessage }) {
 
     // формируем абсолютный путь к файлу
     const pathToFile = `${SERVER_URI}/files${textOrPathToFile}`
-
+    console.log(pathToFile)
     // определяем элемент для рендеринга на основе типа сообщения
     switch (messageType) {
         case 'text':

@@ -1,5 +1,6 @@
-import { Picker } from 'emoji-mart'
-import './emoji-mart.css'
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+// import 'emoji-mart/css/emoji-mart.css'
 import useStore from 'hooks/useStore'
 import { useCallback, useEffect } from 'react'
 import { BsEmojiSmile } from 'react-icons/bs'

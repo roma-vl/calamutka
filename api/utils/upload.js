@@ -5,8 +5,11 @@ import { fileURLToPath } from 'url'
 
 // путь к текущей директории
 const _dirname = dirname(fileURLToPath(import.meta.url))
-
+console.log(_dirname, '_dirname')
 const upload = multer({
+    limits: {
+        fileSize: 100 * 1024 * 1024, // обмеження розміру файлу до 10 МБ
+    },
     storage: multer.diskStorage({
         // директория для записи файлов
         destination: async (req, _, cb) => {
@@ -30,7 +33,7 @@ const upload = multer({
 
             cb(null, fileName)
         }
-    })
+    }),
 })
 
 export default upload

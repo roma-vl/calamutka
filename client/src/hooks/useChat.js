@@ -15,11 +15,13 @@ export default function useChat() {
     // иммутабельное состояние для сокета
     const { current: socket } = useRef(
         io('api.calamutka.com', {
-            path: '/',
+            // io('http://localhost:4000', {
+            path: '',
             query: {
                 roomId: user.roomId,
                 userName: user.userName
             },
+            transports: ['websocket'],
         })
     )
 
@@ -32,13 +34,14 @@ export default function useChat() {
 
 
         // сообщаем о подключении нового пользователя
-        socket.emit('user:add', user)
-
+        socket.emit('user_add', user)
+        console.log(user, 'dsfdsf dsf sdf sdf ')
         // запрашиваем сообщения из БД
         socket.emit('message:get')
 
         // обрабатываем получение системного сообщения
         socket.on('log', (log) => {
+            console.log('логер')
             setLog(log)
         })
 
@@ -51,14 +54,12 @@ export default function useChat() {
         socket.on('message_list:update', (messages) => {
             setMessages(messages)
         })
-        return () => {
-            console.log('Socket disconnecting...');
-            socket.disconnect();
-        };
+
     }, [])
 
     // метод для отправки сообщения
     const sendMessage = (message) => {
+        console.log(message)
         socket.emit('message:add', message)
     }
 
