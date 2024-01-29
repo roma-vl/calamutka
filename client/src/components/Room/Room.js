@@ -3,7 +3,7 @@ import MessageInput from './MessageInput/MessageInput'
 import MessageList from './MessageList/MessageList'
 import UserList from './UserList/UserList'
 
-export const Room = () => {
+export default function Room () {
     // получаем список пользователей, список сообщений, системную информацию и методы для отправки и удаления сообщения
     const { users, messages, log, sendMessage, removeMessage } = useChat()
 

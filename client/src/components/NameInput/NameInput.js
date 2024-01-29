@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { useEffect, useState } from 'react'
 import storage from 'utils/storage'
 
-export const NameInput = () => {
+export default function NameInput () {
     // начальные данные
     const [formData, setFormData] = useState({
         userName: '',

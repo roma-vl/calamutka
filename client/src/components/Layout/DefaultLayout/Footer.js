@@ -1,4 +1,4 @@
-import ChatComponent from "../../components/chat/ChatComponent";
+import ChatComponent from "../../chat/ChatComponent";
 
 
 const Footer = () => (

@@ -3,9 +3,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
-import GlobalStyles from "@mui/material/GlobalStyles";
-import CssBaseline from "@mui/material/CssBaseline";
-import {ThemeProvider} from "@mui/material/styles";
 
 
 const Header = () => (
@@ -24,30 +21,33 @@ const Header = () => (
                         <Link
                             variant="button"
                             color="text.primary"
-                            href="#"
+                            href="/"
                             sx={{ my: 1, mx: 1.5 }}
                         >
-                            Features
+                            Home
                         </Link>
                         <Link
                             variant="button"
                             color="text.primary"
-                            href="#"
+                            href="pricing"
                             sx={{ my: 1, mx: 1.5 }}
                         >
-                            Enterprise
+                            Pricing
                         </Link>
                         <Link
                             variant="button"
                             color="text.primary"
-                            href="#"
+                            href="album"
                             sx={{ my: 1, mx: 1.5 }}
                         >
                             Support
                         </Link>
                     </nav>
-                    <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-                        Login
+                    <Button href="sign-in" variant="outlined" sx={{ my: 1, mx: 0.5 }}>
+                        Sign-In
+                    </Button>
+                    <Button href="sign-up" variant="outlined" sx={{ my: 1, mx: 0.5 }}>
+                        Sign-Up
                     </Button>
                 </Toolbar>
             </AppBar>
