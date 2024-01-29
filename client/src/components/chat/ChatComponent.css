@@ -1,0 +1,27 @@
+.chat-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 10px; /* Якщо потрібен відступ від краю */
+}
+
+.chat-button {
+    /* Ваші стилі для кнопки */
+}
+
+.chat-container-open {
+    flex-direction: column;
+}
+
+.cancel-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    visibility: hidden;
+}
+
+.chat-container:hover .cancel-icon {
+    visibility: visible;
+}
