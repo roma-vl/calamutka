@@ -8,7 +8,6 @@ const updateMessageList = async (io, roomId) => {
 
 export default async function messageHandlers(io, socket) {
     const { roomId } = socket;
-    // console.log('roomId', roomId);
 
     socket.on('message:get', async () => {
         try {
@@ -20,9 +19,8 @@ export default async function messageHandlers(io, socket) {
 
     socket.on('message:add', async (message) => {
         try {
-            console.log(message);
             await Message.insertMessage({ ...message, roomId });
-           await updateMessageList(io, roomId);
+            await updateMessageList(io, roomId);
         } catch (e) {
             console.error(e);
         }
