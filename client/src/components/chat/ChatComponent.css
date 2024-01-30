@@ -4,11 +4,7 @@
     right: 0;
     display: flex;
     flex-direction: column-reverse;
-    margin: 10px; /* Якщо потрібен відступ від краю */
-}
-
-.chat-button {
-    /* Ваші стилі для кнопки */
+    margin: 10px;
 }
 
 .chat-container-open {

@@ -3,23 +3,19 @@ import MessageInput from './MessageInput/MessageInput'
 import MessageList from './MessageList/MessageList'
 import UserList from './UserList/UserList'
 
-export default function Room () {
-    // получаем список пользователей, список сообщений, системную информацию и методы для отправки и удаления сообщения
-    const { users, messages, log, sendMessage, removeMessage } = useChat()
-
-    console.log(users)
-    // и передаем их соответствующим компонентам
-    return (
-        <div className='container chat'>
-            <div className='container message'>
-                <MessageList
-                    log={log}
-                    messages={messages}
-                    removeMessage={removeMessage}
-                />
-                <MessageInput sendMessage={sendMessage} />
-            </div>
-            <UserList users={users} />
-        </div>
-    )
+export default function Room() {
+  const {users, messages, log, sendMessage, removeMessage} = useChat()
+  return (
+    <div className='container chat'>
+      <div className='container message'>
+        <MessageList
+          log={log}
+          messages={messages}
+          removeMessage={removeMessage}
+        />
+        <MessageInput sendMessage={sendMessage}/>
+      </div>
+      <UserList users={users}/>
+    </div>
+  )
 }

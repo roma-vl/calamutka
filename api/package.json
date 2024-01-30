@@ -7,7 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node inspect app.js",
-    "dev": "NODE_ENV=development nodemon --experimental-modules -L app.js"
+    "dev": "NODE_ENV=development nodemon --experimental-modules -L app.js",
+    "migrate:latest": "knex migrate:latest --knexfile=./knexfile.js",
+    "seed:run": "knex seed:run",
+    "migrate:seed": "knex migrate:latest --knexfile=./knexfile.js && knex seed:run"
+
   },
   "author": "",
   "license": "ISC",
@@ -37,6 +41,10 @@
     "util": "^0.12.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/node": "^7.23.9",
+    "@babel/plugin-transform-runtime": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
     "@faker-js/faker": "^8.4.0",
     "faker": "^5.5.3",
     "knex-seeder": "^0.1.1"
