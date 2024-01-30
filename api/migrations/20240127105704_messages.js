@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns {Knex.SchemaBuilder}
  */
-exports.up = function(knex) {
+export const up= function(knex) {
     return knex.schema.createTable('messages', function (table) {
         table.increments('id').primary();
         table.string('messageId').notNullable().unique();
@@ -19,6 +19,6 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns {Knex.SchemaBuilder}
  */
-exports.down = function(knex) {
+export const down = function(knex) {
     return knex.schema.dropTableIfExists('messages');
 };
