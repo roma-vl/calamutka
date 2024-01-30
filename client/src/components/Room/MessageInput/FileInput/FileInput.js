@@ -1,41 +1,39 @@
-import useStore from 'hooks/useStore'
-import { useEffect, useRef } from 'react'
-import { MdAttachFile } from 'react-icons/md'
-import FilePreview from './FilePreview'
+import useStore from 'hooks/useStore';
+import { useEffect, useRef } from 'react';
+import FilePreview from './FilePreview';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import IconButton from "@mui/material/IconButton";
 
 export default function FileInput() {
-    // извлекаем файл и метод для его обновления из хранилища
-    const { file, setFile } = useStore(({ file, setFile }) => ({ file, setFile }))
-    // иммутабельная ссылка на инпут для добавления файла
-    // мы скрываем инпут за кнопкой
-    const inputRef = useRef()
+  const { file, setFile } = useStore(({ file, setFile }) => ({ file, setFile }));
+  const inputRef = useRef();
 
-    // сбрасываем значение инпута при отсутствии файла
-    useEffect(() => {
-        if (!file) {
-            inputRef.current.value = ''
-        }
-    }, [file])
+  useEffect(() => {
+    if (!file) {
+      inputRef.current.value = '';
+    }
+  }, [file]);
 
-    return (
-        <div className='container file'>
-            <input
-                type='file'
-                accept='image/*, audio/*, video/*'
-                onChange={(e) => setFile(e.target.files[0])}
-                className='visually-hidden'
-                ref={inputRef}
-            />
-            <button
-                type='button'
-                className='btn'
-                // передаем клик инпуту
-                onClick={() => inputRef.current.click()}
-            >
-                <MdAttachFile className='icon' />
-            </button>
-
-            {file && <FilePreview />}
-        </div>
-    )
+  return (
+    <div className=''>
+      <input
+        type='file'
+        accept='image/*, audio/*, video/*'
+        onChange={(e) => setFile(e.target.files[0])}
+        style={{ display: 'none' }}
+        ref={inputRef}
+      />
+        <IconButton
+          variant='contained'
+          component='label'
+          htmlFor='fileInput'
+          className=''
+          onClick={() => inputRef.current.click()}
+          type="button" sx={{ p: '10px' }} aria-label="file">
+          <AttachFileIcon />
+        </IconButton>
+      {file && <FilePreview />}
+    </div>
+  );
 }
+

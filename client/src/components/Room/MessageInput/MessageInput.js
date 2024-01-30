@@ -1,109 +1,116 @@
 import fileApi from 'api/file.api'
-import { USER_KEY } from 'constants'
+import {USER_KEY} from 'constants.js'
 import useStore from 'hooks/useStore'
-import { nanoid } from 'nanoid'
-import { useEffect, useRef, useState } from 'react'
-import { FiSend } from 'react-icons/fi'
+import {nanoid} from 'nanoid'
+import {useEffect, useRef, useState} from 'react'
 import storage from 'utils/storage'
 import EmojiMart from './EmojiMart/EmojiMart'
 import FileInput from './FileInput/FileInput'
 import Recorder from './Recorder/Recorder'
+import SendIcon from "@mui/icons-material/Send";
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
 
-export default function MessageInput({ sendMessage }) {
-    // извлекаем данные пользователя из локального хранилища
-    const user = storage.get(USER_KEY)
-    // извлекаем состояние из хранилища
-    const state = useStore((state) => state)
-    const {
-        file,
-        setFile,
-        showPreview,
-        setShowPreview,
-        showEmoji,
-        setShowEmoji
-    } = state
-    // локальное состояние для текста сообщения
-    const [text, setText] = useState('')
-    // локальное состояние блокировки кнопки
-    const [submitDisabled, setSubmitDisabled] = useState(true)
-    // иммутабельная ссылка на инпут для ввода текста сообщения
-    const inputRef = useRef()
+export default function MessageInput({sendMessage}) {
+  const user = storage.get(USER_KEY)
+  const state = useStore((state) => state)
+  const {file, setFile, showPreview, setShowPreview, showEmoji, setShowEmoji } = state
+  const [text, setText] = useState('')
+  const [submitDisabled, setSubmitDisabled] = useState(true)
+  const inputRef = useRef()
 
-    // для отправки сообщения требуется либо текст сообщения, либо файл
-    useEffect(() => {
-        setSubmitDisabled(!text.trim() && !file)
-    }, [text, file])
+  useEffect(() => {
+    setSubmitDisabled(!text.trim() && !file)
+  }, [text, file])
 
-    // отображаем превью при наличии файла
-    useEffect(() => {
-        setShowPreview(file)
-    }, [file, setShowPreview])
+  useEffect(() => {
+    setShowPreview(file)
+  }, [file, setShowPreview])
 
-    // функция для отправки сообщения
-    const onSubmit = async (e) => {
-        e.preventDefault()
-        if (submitDisabled) return
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    if (submitDisabled) return
 
-        // извлекаем данные пользователя и формируем начальное сообщение
-        const { userId, userName, roomId } = user
-        let message = {
-            messageId: nanoid(),
-            userId,
-            userName,
-            roomId
-        }
-
-        if (!file) {
-            // типом сообщения является текст
-            message.messageType = 'text'
-            message.textOrPathToFile = text
-        } else {
-            // типом сообщения является файл
-            try {
-                // загружаем файл на сервер и получаем относительный путь к нему
-                const  path = await fileApi.upload({ file, roomId })
-                console.log(path)
-                // получаем тип файла
-                const type = file.type.split('/')[0]
-
-                message.messageType = type
-                message.textOrPathToFile = path
-            } catch (e) {
-                console.error(e)
-            }
-        }
-
-        // скрываем компонент с эмодзи, если он открыт
-        if (showEmoji) {
-            setShowEmoji(false)
-        }
-
-        // отправляем сообщение
-        sendMessage(message)
-
-        // сбрасываем состояние
-        setText('')
-        setFile(null)
+    const {userId, userName, roomId} = user
+    let message = {
+      messageId: nanoid(),
+      userId,
+      userName,
+      roomId
     }
 
-    return (
-        <form onSubmit={onSubmit} className='form message'>
-            <EmojiMart setText={setText} messageInput={inputRef.current} />
-            <FileInput />
-            <Recorder />
-            <input
-                type='text'
-                autoFocus
-                placeholder='Message...'
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                ref={inputRef}
-                // при наличии файла вводить текст нельзя
-                disabled={showPreview}
-            />
-            <button className='btn' type='submit' disabled={submitDisabled}>
-                <FiSend className='icon' />
-            </button>
-        </form>
-    )
+    if (!file) {
+      message.messageType = 'text'
+      message.textOrPathToFile = text
+    } else {
+
+      try {
+        const path = await fileApi.upload({file, roomId})
+
+        message.messageType = file.type.split('/')[0]
+        message.textOrPathToFile = path
+
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    if (showEmoji) {
+      setShowEmoji(false)
+    }
+
+    sendMessage(message)
+
+    setText('')
+    setFile(null)
+  }
+
+  return (
+    <Paper
+      component="form"
+      onSubmit={onSubmit}
+      sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: 320}}
+    >
+      <EmojiMart setText={setText} messageInput={text}/>
+      <FileInput/>
+      <Recorder/>
+      <InputBase
+        type='text'
+        autoFocus
+        placeholder='Message...'
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        ref={inputRef}
+        disabled={showPreview}
+        sx={{
+          flexGrow: 1,
+          marginRight: 1,
+          padding: 1,
+          backgroundColor: 'white',
+          border: '1px solid primary.main',
+          borderRadius: 1,
+          color: 'black',
+          width: '85%',
+        }}
+      />
+      <Divider sx={{height: 28, m: 0.5}} orientation="vertical"/>
+      <IconButton
+        variant="contained"
+        type='submit'
+        disabled={submitDisabled}
+        sx={{
+          backgroundColor: 'primary.main',
+          color: 'white',
+          minWidth: 'fit-content',
+          padding: '8px 12px',
+          borderRadius: 1,
+          width: '15%',
+        }}
+      >
+        <SendIcon sx={{marginLeft: 1}}/>
+      </IconButton>
+    </Paper>
+  )
 }

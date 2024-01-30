@@ -1,63 +1,60 @@
-import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-// import 'emoji-mart/css/emoji-mart.css'
 import useStore from 'hooks/useStore'
-import { useCallback, useEffect } from 'react'
-import { BsEmojiSmile } from 'react-icons/bs'
+import {useCallback, useEffect} from 'react'
+import IconButton from "@mui/material/IconButton";
+import AddReactionIcon from '@mui/icons-material/AddReaction';
 
-export default function EmojiMart({ setText, messageInput }) {
-    // извлекаем соответствующие методы из хранилища
-    const { showEmoji, setShowEmoji, showPreview } = useStore(
-        ({ showEmoji, setShowEmoji, showPreview }) => ({
-            showEmoji,
-            setShowEmoji,
-            showPreview
-        })
-    )
+export default function EmojiMart({setText, messageInput}) {
+  const {showEmoji, setShowEmoji, showPreview} = useStore(
+    ({showEmoji, setShowEmoji, showPreview}) => ({
+      showEmoji,
+      setShowEmoji,
+      showPreview
+    })
+  )
 
-    // обработчик нажатия клавиши `Esc`
-    const onKeydown = useCallback(
-        (e) => {
-            if (e.key === 'Escape') {
-                setShowEmoji(false)
-            }
-        },
-        [setShowEmoji]
-    )
+  const onKeydown = useCallback(
+    (e) => {
+      if (e.key === 'Escape') {
+        setShowEmoji(false)
+      }
+    },
+    [setShowEmoji]
+  )
 
-    // регистрируем данный обработчик на объекте `window`
-    useEffect(() => {
-        window.addEventListener('keydown', onKeydown)
-
-        return () => {
-            window.removeEventListener('keydown', onKeydown)
-        }
-    }, [onKeydown])
-
-    // метод для добавления эмодзи к тексту сообщения
-    const onSelect = ({ native }) => {
-        setText((text) => text + native)
-        messageInput.focus()
+  useEffect(() => {
+    window.addEventListener('keydown', onKeydown)
+    return () => {
+      window.removeEventListener('keydown', onKeydown)
     }
+  }, [onKeydown])
 
-    return (
-        <div className='container emoji'>
-            <button
-                className='btn'
-                type='button'
-                onClick={() => setShowEmoji(!showEmoji)}
-                disabled={showPreview}
-            >
-                <BsEmojiSmile className='icon' />
-            </button>
-            {showEmoji && (
-                <Picker
-                    onSelect={onSelect}
-                    emojiSize={20}
-                    showPreview={false}
-                    perLine={6}
-                />
-            )}
-        </div>
-    )
+  const onSelect = ({native}) => {
+    console.log(native)
+    console.log(messageInput)
+    setText((messageInput) => messageInput + native)
+    messageInput.focus()
+  }
+
+  return (
+    <div className='container emoji'>
+      <IconButton
+        className='btn'
+        type='button'
+        onClick={() => setShowEmoji(!showEmoji)}
+        disabled={showPreview}
+      >
+        <AddReactionIcon/>
+      </IconButton>
+
+      {showEmoji && (
+        <Picker
+          onSelect={onSelect}
+          emojiSize={20}
+          showPreview={false}
+          perLine={6}
+        />
+      )}
+    </div>
+  )
 }

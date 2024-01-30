@@ -1,55 +1,34 @@
-import { useEffect, useRef } from 'react'
-import MessageItem from './MessageItem'
+import {Fragment} from 'react';
+import MessageItem from './MessageItem';
+import {Paper} from '@mui/material';
 
-export default function MessageList({ log, messages, removeMessage }) {
-    // иммутабельная ссылка на элемент для отображения системных сообщений
-    const logRef = useRef()
-    // иммутабельная ссылка на конец списка сообщений
-    const bottomRef = useRef()
+export default function MessageList({messages, removeMessage}) {
 
-    // выполняем прокрутку к концу списка при добавлении нового сообщения
-    // это может стать проблемой при большом количестве пользователей,
-    // когда участники чата не будут успевать читать сообщения
-    useEffect(() => {
-        bottomRef.current.scrollIntoView({
-            behavior: 'smooth'
-        })
-    }, [messages])
+  return (
+    <Fragment>
+      {messages && messages.slice().reverse().map((message, index) => (
 
-    // отображаем и скрываем системные сообщения
-    useEffect(() => {
-        if (log) {
-            logRef.current.style.opacity = 0.8
-            logRef.current.style.zIndex = 1
+        <Paper key={index} elevation={1} sx={{
+          padding: 1,
+          borderRadius: 1,
+          minWidth: '90%',
+          maxWidth: '90px',
+          alignSelf: message.id % 2 === 1 ? 'flex-end' : 'flex-start',
+          backgroundColor: message.id % 2 === 1 ? 'primary.light' : 'background.paper',
+          color: message.id % 2 === 1 ? 'white' : 'text.primary',
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 1
+        }}>
+          <MessageItem
+            key={message.messageId}
+            message={message}
+            removeMessage={removeMessage}
+          />
 
-            const timerId = setTimeout(() => {
-                logRef.current.style.opacity = 0
-                logRef.current.style.zIndex = -1
+        </Paper>
 
-                clearTimeout(timerId)
-            }, 1500)
-        }
-    }, [log])
-
-    return (
-        <div className='container message'>
-            <h2>Messages</h2>
-            <ul className='list message'>
-                {/* перебираем список и рендерим сообщения */}
-                {messages.map((message) => (
-                    <MessageItem
-                        key={message.messageId}
-                        message={message}
-                        removeMessage={removeMessage}
-                    />
-                ))}
-
-                <p ref={bottomRef}></p>
-
-                <p ref={logRef} className='log'>
-                    {log}
-                </p>
-            </ul>
-        </div>
-    )
+      ))}
+    </Fragment>
+  );
 }
