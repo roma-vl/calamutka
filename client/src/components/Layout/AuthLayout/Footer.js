@@ -2,9 +2,7 @@ import {Fragment} from "react";
 
 
 const Footer = () => (
-    <Fragment>
-        TEST AUTH FOOTER
-    </Fragment>
+    <Fragment></Fragment>
 );
 
 export default Footer;

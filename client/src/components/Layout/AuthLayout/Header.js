@@ -2,9 +2,7 @@ import {Fragment} from "react";
 
 const Header = () => (
 
-    <Fragment>
-        TEST AUTH HEADER
-    </Fragment>
+    <Fragment></Fragment>
 );
 
 export default Header;

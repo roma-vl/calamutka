@@ -1,6 +1,8 @@
 import useStore from 'hooks/useStore'
 import {useEffect, useState} from 'react'
 import {AiOutlineClose} from 'react-icons/ai'
+import CustomAudioPlayer from "../../MessageList/Audio";
+import CustomVideoPlayer from "../../MessageList/Video";
 
 export default function FilePreview() {
   const {file, setFile} = useStore(({file, setFile}) => ({file, setFile}))
@@ -21,10 +23,10 @@ export default function FilePreview() {
       element = <img src={src} alt={file.name}/>
       break
     case 'audio':
-      element = <audio src={src} controls></audio>
+      element = <CustomAudioPlayer src={src}></CustomAudioPlayer>;
       break
     case 'video':
-      element = <video src={src} controls></video>
+      element = <CustomVideoPlayer src={src}></CustomVideoPlayer>;
       break
     default:
       element = null

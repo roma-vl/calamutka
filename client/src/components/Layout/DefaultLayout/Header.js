@@ -43,11 +43,11 @@ const Header = () => (
                             Support
                         </Link>
                     </nav>
-                    <Button href="sign-in" variant="outlined" sx={{ my: 1, mx: 0.5 }}>
-                        Sign-In
+                    <Button href="login" variant="outlined" sx={{ my: 1, mx: 0.5 }}>
+                        Login
                     </Button>
-                    <Button href="sign-up" variant="outlined" sx={{ my: 1, mx: 0.5 }}>
-                        Sign-Up
+                    <Button href="register" variant="outlined" sx={{ my: 1, mx: 0.5 }}>
+                        Register
                     </Button>
                 </Toolbar>
             </AppBar>

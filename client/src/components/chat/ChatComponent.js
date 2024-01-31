@@ -9,16 +9,16 @@ import {nanoid} from "nanoid";
 import './ChatComponent.css';
 
 const ChatComponent = () => {
-  const {users} = useChat()
+  // const {users} = useChat()
   const userMap = new Map();
 
-  const filteredUsers = users.filter((user) => {
-    const alreadyExists = userMap.has(user.userId);
-    if (!alreadyExists) {
-      userMap.set(user.userId, true);
-    }
-    return !alreadyExists;
-  });
+  // const filteredUsers = users.filter((user) => {
+  //   const alreadyExists = userMap.has(user.userId);
+  //   if (!alreadyExists) {
+  //     userMap.set(user.userId, true);
+  //   }
+  //   return !alreadyExists;
+  // });
 
   const [isChatOpen, setChatOpen] = useState(false);
   const [chats, setChats] = useState([
