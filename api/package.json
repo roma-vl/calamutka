@@ -11,7 +11,6 @@
     "migrate:latest": "knex migrate:latest --knexfile=./knexfile.js",
     "seed:run": "knex seed:run",
     "migrate:seed": "knex migrate:latest --knexfile=./knexfile.js && knex seed:run"
-
   },
   "author": "",
   "license": "ISC",
@@ -19,10 +18,12 @@
     "axios": "^1.6.5",
     "body-parser": "^1.20.2",
     "config": "^3.3.10",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "env-cmd": "^10.1.0",
     "express": "^4.18.2",
+    "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
     "lodash": "^4.17.21",
