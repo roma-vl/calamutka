@@ -1,13 +1,12 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import { Routes, Route } from 'react-router-dom';
 import Home from 'pages/Home/Home';
 import Pricing from 'pages/Pricing/Pricing';
-import SignIn from 'pages/Auth/SignIn';
-import SignUp from 'pages/Auth/SignUp';
+import Login from 'pages/Auth/Login';
+import Register from 'pages/Auth/Register';
 import Album from 'pages/Album/Album';
 import DefaultLayout from '../components/Layout/DefaultLayout/DefaultLayout';
 import AuthLayout from '../components/Layout/AuthLayout/AuthLayout';
+import Logout from "../pages/Auth/Logout";
 
 const AppRoutes = () => (
   <Routes>
@@ -15,8 +14,8 @@ const AppRoutes = () => (
         <Route path="pricing" element={<DefaultLayout><Pricing /></DefaultLayout>} />
         <Route path="album" element={<DefaultLayout><Album /></DefaultLayout>} />
 
-        <Route path="sign-in" element={<AuthLayout><SignIn /></AuthLayout>} />
-        <Route path="sign-up" element={<AuthLayout><SignUp /></AuthLayout>} />
+        <Route path="login" element={<AuthLayout><Login /></AuthLayout>} />
+        <Route path="register" element={<AuthLayout><Register /></AuthLayout>} />
   </Routes>
 );
 
