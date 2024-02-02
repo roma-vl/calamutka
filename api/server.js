@@ -15,21 +15,22 @@ const users = {}
 export default async () => {
     const app = express();
     app.get('/ping', (req, res) => res.end(`calamutka-api ${process.env.NODE_ENV}`));
-    // app.use(bodyParser.json());
+    app.use(bodyParser.json());
 
-    // await initAuth(app);
-    // await initSwagger(app);
-    // app.use('/users', userRoutes(knex));
+    await initAuth(app);
+    await initSwagger(app);
+    app.use('/users', userRoutes(knex));
 
     // Налаштування CORS
     const corsOptions = {
         origin: '*', // Вкажіть свій домен
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        // credentials: true,
-        // optionsSuccessStatus: 204,
+        credentials: true,
+        optionsSuccessStatus: 204,
     };
 
     app.use(cors(corsOptions));
+    app.options('*', cors(corsOptions));
     app.options('/upload', cors(corsOptions));
 
     app.get('/', (req, res) => {
