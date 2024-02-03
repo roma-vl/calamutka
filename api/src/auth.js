@@ -83,10 +83,17 @@ async function initAuth(app) {
       // Пошук користувача в базі даних за ім'ям користувача
       const [user] = await knex.select('*').from('users').where('email', email);
 
+      if (first_name === ''|| last_name === ''|| email === '' || password === '') {
+        return res.json({
+          code: 401,
+          message: 'Всі поля мають бути заповнені'
+        });
+      }
+
       if (user) {
         return res.json({
           code: 401,
-          message: 'Користувача з таким Email вже є'
+          message: 'Користувач з таким Email вже є'
         });
       }
 

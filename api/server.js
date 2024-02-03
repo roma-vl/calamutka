@@ -11,9 +11,25 @@ import onConnection from './socket_io/onConnection.js';
 import { getFilePath } from './utils/file.js'
 import onError from './utils/onError.js'
 import upload from './utils/upload.js'
-const users = {}
 export default async () => {
     const app = express();
+    // Налаштування CORS
+    const corsOptions = {
+        origin: '*', // Вкажіть свій домен
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        headers: 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-room-id',
+        // credentials: true,
+        // optionsSuccessStatus: 204,
+        // exposedHeaders: 'Location',
+    };
+    // app.use(cors({ origin: '*', maxAge: 300 }));
+    app.use(cors(corsOptions));
+    // app.options('*', cors(corsOptions));
+    app.options('*', cors(corsOptions));
+    app.use(cors({ ...corsOptions, preflightContinue: true }));
+
+
+
     app.get('/ping', (req, res) => res.end(`calamutka-api ${process.env.NODE_ENV}`));
     app.use(bodyParser.json());
 
@@ -21,22 +37,12 @@ export default async () => {
     await initSwagger(app);
     app.use('/users', userRoutes(knex));
 
-    // Налаштування CORS
-    const corsOptions = {
-        origin: '*', // Вкажіть свій домен
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        credentials: true,
-        optionsSuccessStatus: 204,
-    };
 
-    app.use(cors(corsOptions));
-    app.options('*', cors(corsOptions));
-    app.options('/upload', cors(corsOptions));
-
-    app.get('/', (req, res) => {
+    app.use('/s', (req, res) => {
+        // console.log(req)
         console.log('Main PAge')
+        res.status(200).json({ 'test' : 'test'});
     });
-
     const server = createServer(app);
     const io = new Server(server, {
         cors: {
@@ -65,6 +71,12 @@ export default async () => {
     //         res.status(500).json({ message: 'Internal server error' });
     //     });
     app.use('/upload', upload.single('file'), (req, res) => {
+        const fileBuffer = req.file.buffer;
+
+        // Ваша логіка обробки файлу тут
+        // Наприклад, виведення розміру файлу
+        console.log('File size:', fileBuffer.length);
+
         console.log(req.file, 'req.file')
         if (!req.file) return res.sendStatus(400);
 

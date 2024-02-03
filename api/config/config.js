@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import development from './development.js';
 import production from './production.js';
 

@@ -12,20 +12,32 @@ const upload = multer({
     },
     storage: multer.diskStorage({
         // директория для записи файлов
-        destination: async (req, _, cb) => {
-            // извлекаем идентификатор комнаты из HTTP-заголовка `X-Room-Id`
-            const roomId = req.headers['x-room-id']
-            // файлы хранятся по комнатам
-            // название директории - идентификатор комнаты
-            const dirPath = join(_dirname, '../files', roomId)
+        destination: (req, _, cb) => {
+            const { file } = req;
 
-            // создаем директорию при отсутствии
+            if (!file) return false;
+
+            // Доступ до файлу:
+            console.log('Файл:', file);
+
+            // Доступ до інших даних у формі:
+            console.log('x-room-id:', req.body['x-room-id']);
+
+            const roomId = req.body ? req.body['x-room-id'] : 'main_room';
+
+            const __filename = fileURLToPath(import.meta.url);
+            const __dirname = dirname(__filename);
+
+            const dirPath = join(__dirname, '../files', roomId);
+
+            // Створити директорію, якщо вона не існує
             if (!existsSync(dirPath)) {
-                mkdirSync(dirPath, { recursive: true })
+                mkdirSync(dirPath, { recursive: true });
             }
 
-            cb(null, dirPath)
+            cb(null, dirPath);
         },
+
         filename: (_, file, cb) => {
             // названия файлов могут быть одинаковыми
             // добавляем к названию время с начала эпохи и дефис

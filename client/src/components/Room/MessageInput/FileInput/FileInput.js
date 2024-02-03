@@ -18,6 +18,7 @@ export default function FileInput() {
     <div className=''>
       <input
         type='file'
+        id='file'
         accept='image/*, audio/*, video/*'
         onChange={(e) => setFile(e.target.files[0])}
         style={{ display: 'none' }}

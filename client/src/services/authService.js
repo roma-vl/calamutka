@@ -15,9 +15,8 @@ const authService = {
 
   loginUser: async (formData) => {
     try {
-      const response = await axios.post(SERVER_URI + '/login', formData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(SERVER_URI + '/login', formData);
+      console.log(response.data)
       if (response.data.code === 401) {
         console.log(response.data.message)
       } else {
@@ -33,7 +32,7 @@ const authService = {
   logoutUser: async () => {
     try {
       const response = await axios.post(SERVER_URI + '/logout', {
-        withCredentials: true,
+        // withCredentials: true,
       });
       console.log(response.data)
       // localStorage.setItem('userRole', response.data.user.role);
@@ -47,11 +46,11 @@ const authService = {
   registerUser: async (formData) => {
     try {
       const response = await axios.post(SERVER_URI + '/register', formData,{
-        withCredentials: true,
+        // withCredentials: true,
       });
       console.log(response.data)
       // localStorage.setItem('userRole', response.data.user.role);
-      // return response.data;
+      return response.data;
     } catch (error) {
       console.log(error)
       throw error;
