@@ -11,26 +11,29 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
 import authService from '../../services/authService'
-import {Alert, AlertTitle} from "@mui/material";
+import AlertComponent from '../../components/Alert/AlertComponent';
 
 const defaultTheme = createTheme();
 
 export default function Login() {
 
-    // const { login } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
     const [errors, setErrors] = useState(null);
-    const [showAlert, setShowAlert] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
+
+    const handleAlertClose = () => {
+        setAlertOpen(false);
+        setErrors(null); // Спробуйте очистити помилки тут
+    };
 
     const handleInputChange = (e) => {
-        setShowAlert(false);
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -46,29 +49,14 @@ export default function Login() {
             if (data.code && data.code === 401) {
                 const errorMessages = data.message;
                 setErrors(errorMessages);
-                setShowAlert(true);
-
-                // Затримка показу Alert приблизно 5 секунд
-                setTimeout(() => {
-                    setShowAlert(false);
-                }, 5000);
+                setAlertOpen(true);
             } else {
-                // Успішна автентикація, можливо, ви хочете здійснити перехід до іншої сторінки
                 navigate('/');
             }
         } catch (error) {
             console.error(error);
         }
     };
-
-    useEffect(() => {
-        // Сховати Alert при зміні стану
-        if (showAlert) {
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 5000);
-        }
-    }, [showAlert]);
 
     if (authService.isUserLoggedIn()) {
         return <Navigate to="/" />;
@@ -86,16 +74,12 @@ export default function Login() {
                     alignItems: 'center',
                 }}
               >
-                  {showAlert && (
-                    <Alert severity="error" sx={{ width: 400 }}>
-                        <AlertTitle>{errors}</AlertTitle>
-                        {/*{errors.map((errorMessage, index) => (*/}
-                        {/*  <div*/}
-                        {/*    // key={index}*/}
-                        {/*  >{errors}</div>*/}
-                        {/*))}*/}
-                    </Alert>
-                  )}
+                  <AlertComponent
+                    errors={errors}
+                    onClose={handleAlertClose}
+                    width={200}
+                    open={alertOpen}
+                  />
                   <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                       <LockOutlinedIcon />
                   </Avatar>

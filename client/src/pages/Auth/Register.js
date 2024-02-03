@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import authService from "../../services/authService";
 import {useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
+import AlertComponent from "../../components/Alert/AlertComponent";
 
 const defaultTheme = createTheme();
 
@@ -26,7 +27,13 @@ export default function Register() {
         email: '',
         password: '',
     });
+    const [errors, setErrors] = useState(null);
+    const [alertOpen, setAlertOpen] = useState(false);
 
+    const handleAlertClose = () => {
+        setAlertOpen(false);
+        setErrors(null); // Спробуйте очистити помилки тут
+    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -37,7 +44,14 @@ export default function Register() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = await authService.registerUser(formData)
-        navigate('/');
+        console.log(data)
+        if (data.code && data.code === 401) {
+            const errorMessages = data.message;
+            setErrors(errorMessages);
+            setAlertOpen(true);
+        } else {
+            navigate('/');
+        }
     };
 
     if (authService.isUserLoggedIn()) {
@@ -56,6 +70,12 @@ export default function Register() {
                         alignItems: 'center',
                     }}
                 >
+                    <AlertComponent
+                      errors={errors}
+                      onClose={handleAlertClose}
+                      width={200}
+                      open={alertOpen}
+                    />
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
