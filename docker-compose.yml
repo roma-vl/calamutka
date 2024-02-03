@@ -58,6 +58,7 @@ services:
   nginx-proxy:
     image: nginx
     container_name: nginx_proxy
+    build: ./nginx
     ports:
       - "80:80"
     volumes:
