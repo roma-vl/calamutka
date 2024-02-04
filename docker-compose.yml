@@ -1,16 +1,22 @@
-version: '3.3'
+version: '3'
+
 services:
   api:
     build: ./api
     container_name: api_backend
     restart: always
-    ports:
-      - '4000:4000'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.calamutka.com`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.services.api.loadbalancer.server.port=4000"
     networks:
       - calamutka
     volumes:
       - ./api:/app
       - ./app/node_modules
+
   client:
     environment:
       - CHOKIDAR_USEPOLLING=true
@@ -18,8 +24,12 @@ services:
     build: ./client
     container_name: client_frontend
     restart: always
-    ports:
-      - '3000:3000'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.client.rule=Host(`calamutka.com`)"
+      - "traefik.http.routers.client.entrypoints=websecure"
+      - "traefik.http.routers.client.tls=true"
+      - "traefik.http.services.client.loadbalancer.server.port=3000"
     networks:
       - calamutka
     volumes:
@@ -27,12 +37,17 @@ services:
       - ./app/node_modules
     stdin_open: true
     tty: true
+
   client-admin:
     build: ./client-admin
     container_name: client_frontend_admin
     restart: always
-    ports:
-      - '3001:3001'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.client-admin.rule=Host(`admin.calamutka.com`)"
+      - "traefik.http.routers.client-admin.entrypoints=websecure"
+      - "traefik.http.routers.client-admin.tls=true"
+      - "traefik.http.services.client-admin.loadbalancer.server.port=3001"
     networks:
       - calamutka
     volumes:
@@ -40,6 +55,7 @@ services:
       - ./app/node_modules
     stdin_open: true
     tty: true
+
   mysql:
     image: mysql:latest
     container_name: mysql_database
@@ -53,19 +69,44 @@ services:
       - '3306:3306'
     volumes:
       - ./var/data/mysql:/var/lib/mysql
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"  # Дозволяє підключатися з будь-якого домену
+      - "traefik.tcp.routers.mysql.tls=true"  # Включає TLS для захисту підключень
+      - "traefik.tcp.routers.mysql.tls.certresolver=myresolver"  # Вказує, який CertResolver використовувати
+
     networks:
       - calamutka
-  nginx-proxy:
-    image: nginx
-    container_name: nginx_proxy
-    build: ./nginx
+
+  traefik:
+    image: "traefik:v2.5"
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.address=:80"
+      - "--certificatesresolvers.default.acme.httpchallenge=true"
+      - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.default.acme.email=Drakyla60@gmail.com"  # Замініть на свій електронний адрес
+      - "--certificatesresolvers.default.acme.storage=/acme.json"
+      - "--log.level=DEBUG"
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./acme.json:/acme.json
+    restart: always
     networks:
       - calamutka
-    restart: always
+    depends_on:
+      - api
+      - client
+      - client-admin
+      - mysql
+
 networks:
   calamutka:
     driver: bridge
