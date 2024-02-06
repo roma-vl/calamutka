@@ -1,5 +1,5 @@
-import React, {Fragment, useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React, { Fragment, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
@@ -21,7 +21,6 @@ const drawerWidth = 400;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // flexGrow: 1,
     padding: theme.spacing(4),
   },
   paper: {
@@ -83,6 +82,8 @@ const HomeForm = () => {
 
   return (
     <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item xs={3}>
           <List className={classes.menuList}>
             <ListItem button onClick={() => handleTabClick('profile')}>
               <ListItemIcon>
@@ -109,33 +110,77 @@ const HomeForm = () => {
               <ListItemText primary="Збереженні"/>
             </ListItem>
           </List>
-
-        {activeTab === 'edit' ? (
-          <Grid container>
-            <Grid item xs={8} className={classes.formEdit}>
+        </Grid>
+        <Grid item xs={8}>
+          {activeTab === 'edit' ? (
+            <Paper className={classes.paper}>
+              <form>
+                {/* Edit profile fields */}
+                <TextField
+                  label="Ім'я"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <TextField
+                  label="Прізвище"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <TextField
+                  label="Емейл"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <TextField
+                  label="Телефон"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<EditIcon/>}
+                  className={classes.editIcon}
+                  onClick={handleEditClick}
+                >
+                  Зберегти зміни
+                </Button>
+              </form>
+            </Paper>
+          ) : activeTab === 'history' ? (
+            <Paper className={classes.paper}>
+              <Typography variant="h5">Історія дій</Typography>
+              {/* Add content for history tab */}
+            </Paper>
+          ) : activeTab === 'bookmarks' ? (
+            <Paper className={classes.paper}>
+              <Typography variant="h5">Збереженні</Typography>
+              {/* Add content for bookmarks tab */}
+            </Paper>
+          ) : (
+            <Fragment>
+              <Grid container spacing={3}>
+              <Grid item xs={4}>
               <Paper className={classes.paper}>
-                <form>
-                  {/* Edit profile fields */}
-                  <TextField
-                    label="Ім'я"
-                    variant="outlined"
-                    className={classes.input}
-                  />
-                  <TextField
-                    label="Прізвище"
-                    variant="outlined"
-                    className={classes.input}
-                  />
-                  <TextField
-                    label="Емейл"
-                    variant="outlined"
-                    className={classes.input}
-                  />
-                  <TextField
-                    label="Телефон"
-                    variant="outlined"
-                    className={classes.input}
-                  />
+                <Avatar alt="Profile Photo" src="https://picsum.photos/300" className={classes.avatar}/>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<EditIcon/>}
+                  className={classes.editIcon}
+                  onClick={handleEditClick}
+                >
+                  Додати фото
+                </Button>
+              </Paper>
+              </Grid>
+              <Grid item xs={8}>
+              <Paper className={classes.paper}>
+                <div className={classes.userInfo}>
+                  {/* Display user information */}
+                  <Typography variant="h4">Ім'я Користувача</Typography>
+                  <Typography variant="subtitle1">Емейл: user@example.com</Typography>
+                  <Typography variant="subtitle1">Дата реєстрації: 01/01/2022</Typography>
                   <Button
                     variant="outlined"
                     color="primary"
@@ -143,72 +188,16 @@ const HomeForm = () => {
                     className={classes.editIcon}
                     onClick={handleEditClick}
                   >
-                    Зберегти зміни
+                    Редагувати профіль
                   </Button>
-                </form>
+                </div>
               </Paper>
-            </Grid>
-          </Grid>
-        ) : activeTab === 'history' ? (
-          <Grid container spacing={0}>
-            {/* Content for history tab */}
-            <Grid item xs={8} className={classes.formEdit}>
-              <Paper className={classes.paper}>
-                <Typography variant="h5">Історія дій</Typography>
-                {/* Add content for history tab */}
-              </Paper>
-            </Grid>
-          </Grid>
-        ) : activeTab === 'bookmarks' ? (
-          <Grid container spacing={0}>
-            {/* Content for settings tab */}
-            <Grid item xs={8} className={classes.formEdit}>
-              <Paper className={classes.paper}>
-                <Typography variant="h5">Збереженні</Typography>
-                {/* Add content for settings tab */}
-              </Paper>
-            </Grid>
-          </Grid>
-        ) : (
-          <Fragment>
-            <Grid container spacing={0}>
-              <Grid item xs={3} className={classes.avatarForm}>
-                <Paper className={classes.paper}>
-                  <Avatar alt="Profile Photo" src="https://picsum.photos/300" className={classes.avatar}/>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<EditIcon/>}
-                    className={classes.editIcon}
-                    onClick={handleEditClick}
-                  >
-                    Додати фото
-                  </Button>
-                </Paper>
-
               </Grid>
-              <Grid item xs={5} className={classes.contentForm}>
-                <Paper className={classes.paper}>
-                  <div className={classes.userInfo}>
-                    {/* Display user information */}
-                    <Typography variant="h4">Ім'я Користувача</Typography>
-                    <Typography variant="subtitle1">Емейл: user@example.com</Typography>
-                    <Typography variant="subtitle1">Дата реєстрації: 01/01/2022</Typography>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      startIcon={<EditIcon/>}
-                      className={classes.editIcon}
-                      onClick={handleEditClick}
-                    >
-                      Редагувати профіль
-                    </Button>
-                  </div>
-                </Paper>
               </Grid>
-            </Grid>
-          </Fragment>
-        )}
+            </Fragment>
+          )}
+        </Grid>
+      </Grid>
     </div>
   );
 };
