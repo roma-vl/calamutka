@@ -1,5 +1,5 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {Fragment, useState} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,7 +12,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import TextField from '@material-ui/core/TextField';
 
+const drawerWidth = 400;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   avatar: {
-    width: theme.spacing(15),
-    height: theme.spacing(15),
+    width: theme.spacing(20),
+    height: theme.spacing(20),
     margin: 'auto',
   },
   userInfo: {
@@ -39,58 +41,124 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     color: theme.palette.primary.main,
   },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  contentForm: {
+    marginLeft: 20,
+  },
+  avatarForm: {
+    marginLeft: drawerWidth,
+  },
+  formEdit: {
+    marginLeft: drawerWidth,
+  },
+  input: {
+    width: '100%',
+    marginBottom: theme.spacing(2)
+  },
+  menuList: {
+    width: 360,
+    paddingLeft: 60
+  }
 }));
 
 const HomeForm = () => {
   const classes = useStyles();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {/* Photo Column */}
-        <Grid item xs={3}>
-          <List>
-            <ListItem button>
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Профіль" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <EditIcon />
-              </ListItemIcon>
-              <ListItemText primary="Редагувати профіль" />
-            </ListItem>
-            {/* Додайте інші посилання за необхідності */}
-          </List>
-        </Grid>   {/* Photo Column */}
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>
-            {/* Add your profile photo component here */}
-            <Avatar alt="Profile Photo" src="/path/to/photo.jpg" className={classes.avatar} />
-          </Paper>
-        </Grid>
+        <List className={classes.menuList}>
+          <ListItem button onClick={() => setIsEditing(false)}>
+            <ListItemIcon>
+              <AccountCircleIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Профіль"/>
+          </ListItem>
+          <ListItem button onClick={() => setIsEditing(true)}>
+            <ListItemIcon>
+              <EditIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Редагувати профіль"/>
+          </ListItem>
+        </List>
+        {isEditing ? (
+          <Grid container spacing={0}>
+          <Grid item xs={9} className={classes.formEdit}>
+            <Paper className={classes.paper}>
+              <form>
+                {/* Edit profile fields */}
+                <TextField
+                  label="Ім'я"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <TextField
+                  label="Прізвище"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <TextField
+                  label="Емейл"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <TextField
+                  label="Телефон"
+                  variant="outlined"
+                  className={classes.input}
+                />
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<EditIcon/>}
+                  className={classes.editIcon}
+                  onClick={handleEditClick}
+                >
+                  Зберегти зміни
+                </Button>
+              </form>
 
-        {/* Information Columns */}
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>
-            {/* Add your profile information components here */}
-            <div className={classes.userInfo}>
-              <Typography variant="h4">User's Name</Typography>
-              <Typography variant="subtitle1">Email: user@example.com</Typography>
-              <Typography variant="subtitle1">Registration Date: 01/01/2022</Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<EditIcon />}
-                className={classes.editIcon}
-              >
-                Edit Profile
-              </Button>
-            </div>
-          </Paper>
-        </Grid>
+            </Paper>
+          </Grid>
+          </Grid>
+        ) : (
+          <Fragment>
+            <Grid container spacing={0}>
+              <Grid item xs={3} className={classes.avatarForm}>
+              <Paper className={classes.paper}>
+                <Avatar alt="Profile Photo" src="/path/to/photo.jpg" className={classes.avatar}/>
+              </Paper>
+              </Grid>
+              <Grid item xs={5} className={classes.contentForm}>
+                <Paper className={classes.paper}>
+                    <div className={classes.userInfo}>
+                      <Typography variant="h4">Ім'я Користувача</Typography>
+                      <Typography variant="subtitle1">Емейл: user@example.com</Typography>
+                      <Typography variant="subtitle1">Дата реєстрації: 01/01/2022</Typography>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<EditIcon/>}
+                        className={classes.editIcon}
+                        onClick={handleEditClick}
+                      >
+                        Редагувати профіль
+                      </Button>
+                    </div>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Fragment>
+        )}
+
+
       </Grid>
     </div>
   );
