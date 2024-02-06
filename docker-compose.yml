@@ -11,6 +11,11 @@ services:
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
       - "traefik.http.services.api.loadbalancer.server.port=4000"
+      - "traefik.http.middlewares.cors.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.cors.headers.accessControlAllowMethods=\
+                GET,POST,PUT,DELETE,OPTIONS"
+      - "traefik.http.middlewares.cors.headers.accessControlAllowHeaders=\
+                Origin,Content-Type,Accept,Authorization"
     networks:
       - calamutka
     volumes:
@@ -83,6 +88,7 @@ services:
     container_name: traefik
     command:
       - "--api.insecure=true"
+#      - "--configFile=/traefik.yml"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.websecure.address=:443"
@@ -91,12 +97,14 @@ services:
       - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.default.acme.email=Drakyla60@gmail.com"  # Замініть на свій електронний адрес
       - "--certificatesresolvers.default.acme.storage=/acme.json"
+#      - "traefik.http.middlewares.debug.headers.customRequestHeaders=X-Debug-Mode: true"
       - "--log.level=DEBUG"
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+#      - ./traefik.yml:/traefik.yml
       - ./acme.json:/acme.json
     restart: always
     networks:
