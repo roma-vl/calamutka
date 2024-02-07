@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -6,23 +6,20 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
-import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HistoryIcon from '@material-ui/icons/History';
-import SettingsIcon from '@material-ui/icons/Settings';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import TextField from '@material-ui/core/TextField';
-import GlobalStyles from "@mui/material/GlobalStyles";
-import CssBaseline from "@mui/material/CssBaseline";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
-
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const drawerWidth =100;
+import { Link } from "react-router-dom";
+
+const drawerWidth = 100;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,53 +65,96 @@ const useStyles = makeStyles((theme) => ({
   menuLists: {
     width: 328,
     padding: 12
+  },
+  listItems: {
+    height: 64,
+    width: 328
   }
 }));
 
+const getHashFromUrl = () => {
+  const hash = window.location.hash;
+  return hash ? hash.slice(1) : ''; // видаляємо символ '#'
+};
 
 const Cabinet = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const notify = () => toast("Wow so easy!");
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    setIsEditing(false); // Reset isEditing when switching tabs
+    setIsEditing(false);
+    window.location.href = `/cabinet#${tab}`;
   };
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
-  const defaultTheme = createTheme();
+
+  useEffect(() => {
+    const hash = getHashFromUrl();
+    setActiveTab(hash || 'profile'); // встановлюємо активну вкладку на основі хеша, якщо він є
+  }, []);
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={3}>
           <List className={classes.menuLists}>
-            <ListItem button onClick={() => handleTabClick('profile')} style={{ height: 64 , width: 328,}} >
+            <ListItem
+              button
+              component={Link}
+              to="/cabinet#profile"
+              selected={activeTab === 'profile'}
+              onClick={() => handleTabClick('profile')}
+              className={classes.listItems}
+            >
               <ListItemIcon>
-                <AccountCircleIcon/>
+                <AccountCircleIcon />
               </ListItemIcon>
-              <ListItemText primary="Профіль"/>
+              <ListItemText primary="Профіль" />
             </ListItem>
-            <ListItem button onClick={() => handleTabClick('edit')}  style={{ height: 64 , width: 328}} >
+            <ListItem
+              button
+              component={Link}
+              to="/cabinet#edit"
+              selected={activeTab === 'edit'}
+              onClick={() => handleTabClick('edit')}
+              className={classes.listItems}
+            >
               <ListItemIcon>
-                <EditIcon/>
+                <EditIcon />
               </ListItemIcon>
-              <ListItemText primary="Редагувати профіль"/>
+              <ListItemText primary="Редагувати профіль" />
             </ListItem>
-            <ListItem button onClick={() => handleTabClick('history')}  style={{ height: 64 , width: 328}}>
+            <ListItem
+              button
+              component={Link}
+              to="/cabinet#history"
+              selected={activeTab === 'history'}
+              onClick={() => handleTabClick('history')}
+              className={classes.listItems}
+            >
               <ListItemIcon>
-                <HistoryIcon/>
+                <HistoryIcon />
               </ListItemIcon>
-              <ListItemText primary="Історія"/>
+              <ListItemText primary="Історія" />
             </ListItem>
-            <ListItem button onClick={() => handleTabClick('bookmarks')}  style={{ height: 64 , width: 328}} >
+            <ListItem
+              button
+              component={Link}
+              to="/cabinet#bookmarks"
+              selected={activeTab === 'bookmarks'}
+              onClick={() => handleTabClick('bookmarks')}
+              className={classes.listItems}
+            >
               <ListItemIcon>
-                <BookmarksIcon/>
+                <BookmarksIcon />
               </ListItemIcon>
-              <ListItemText primary="Збереженні"/>
+              <ListItemText primary="Збереженні" />
             </ListItem>
           </List>
         </Grid>
@@ -122,7 +162,6 @@ const Cabinet = () => {
           {activeTab === 'edit' ? (
             <Paper className={classes.paper}>
               <form>
-                {/* Edit profile fields */}
                 <TextField
                   label="Ім'я"
                   variant="outlined"
@@ -146,7 +185,7 @@ const Cabinet = () => {
                 <Button
                   variant="outlined"
                   color="primary"
-                  startIcon={<EditIcon/>}
+                  startIcon={<EditIcon />}
                   className={classes.editIcon}
                   onClick={handleEditClick}
                 >
@@ -167,44 +206,44 @@ const Cabinet = () => {
           ) : (
             <Fragment>
               <Grid container spacing={3}>
-              <Grid item xs={4}>
-              <Paper className={classes.paper}>
-                <Avatar alt="Profile Photo" src="https://picsum.photos/300" className={classes.avatar}/>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  startIcon={<EditIcon/>}
-                  className={classes.editIcon}
-                  onClick={handleEditClick}
-                >
-                  Додати фото
-                </Button>
-              </Paper>
-              </Grid>
-              <Grid item xs={8}>
-              <Paper className={classes.paper}>
-                <div className={classes.userInfo}>
-                  {/* Display user information */}
-                  <Typography variant="h4">Ім'я Користувача</Typography>
-                  <Typography variant="subtitle1">Емейл: user@example.com</Typography>
-                  <Typography variant="subtitle1">Дата реєстрації: 01/01/2022</Typography>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<EditIcon/>}
-                    className={classes.editIcon}
-                    onClick={handleEditClick}
-                    onClick={notify}
-                  >
-                    Редагувати профіль
-                  </Button>
-                  <div>
-                    <Button onClick={notify}>Notify!</Button>
-                    <ToastContainer/>
-                  </div>
-                </div>
-              </Paper>
-              </Grid>
+                <Grid item xs={4}>
+                  <Paper className={classes.paper}>
+                    <Avatar alt="Profile Photo" src="https://picsum.photos/300" className={classes.avatar} />
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<EditIcon />}
+                      className={classes.editIcon}
+                      onClick={handleEditClick}
+                    >
+                      Додати фото
+                    </Button>
+                  </Paper>
+                </Grid>
+                <Grid item xs={8}>
+                  <Paper className={classes.paper}>
+                    <div className={classes.userInfo}>
+                      {/* Display user information */}
+                      <Typography variant="h4">Ім'я Користувача</Typography>
+                      <Typography variant="subtitle1">Емейл: user@example.com</Typography>
+                      <Typography variant="subtitle1">Дата реєстрації: 01/01/2022</Typography>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<EditIcon />}
+                        className={classes.editIcon}
+                        onClick={handleEditClick}
+                        onClick={notify}
+                      >
+                        Редагувати профіль
+                      </Button>
+                      <div>
+                        <Button onClick={notify}>Notify!</Button>
+                        <ToastContainer />
+                      </div>
+                    </div>
+                  </Paper>
+                </Grid>
               </Grid>
             </Fragment>
           )}

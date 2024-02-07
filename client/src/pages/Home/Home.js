@@ -2,12 +2,10 @@ import {USER_KEY} from 'constants'
 import storage from 'utils/storage'
 import Room from "../../components/Room/Room";
 import NameInput from "../../components/NameInput/NameInput";
-import {createTheme} from "@mui/material/styles";
 import {Fragment} from "react";
 import {get} from "../../api/axios.api";
 import authService from "../../services/authService";
 
-const defaultTheme = createTheme();
 export default function Home() {
   const user = storage.get(USER_KEY)
 
