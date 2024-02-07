@@ -1,6 +1,8 @@
-const getAllUsers = (knex) => async (req, res) => {
+import { User } from '../models/User.js';
+
+export const getAllUsers = async (req, res) => {
     try {
-        const users = await knex.select('*').from('users');
+        const users = await User.getUsers();
         res.json(users);
     } catch (error) {
         console.error(error);
@@ -8,4 +10,18 @@ const getAllUsers = (knex) => async (req, res) => {
     }
 };
 
-export { getAllUsers };
+export const createUser = async (req, res) => {
+    // Логіка для створення нового користувача
+};
+
+export const getUserById = async (req, res) => {
+    // Логіка для отримання користувача за ID
+};
+
+export const updateUserById = async (req, res) => {
+    // Логіка для оновлення користувача за ID
+};
+
+export const deleteUserById = async (req, res) => {
+    // Логіка для видалення користувача за ID
+};
