@@ -17,7 +17,7 @@ async function initAuth(app) {
 
   app.use(passport.initialize());
   // app.use(passport.session());
-  app.use(cookieParser());
+  // app.use(cookieParser());
 
   const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -62,10 +62,12 @@ async function initAuth(app) {
       console.log(token)
 
       res.cookie('accessToken', token, {
-        maxAge: 60 * 60 * 1000,
-        domain: 'calamutka.com',
-        // httpOnly: false,
-        // sameSite: 'None'
+        maxAge: 12 * 60 * 60 * 1000,
+        path: '/',
+        domain: '.calamutka.com',
+        // httpOnly: true,
+        secure: true,
+        sameSite: 'None'
       }); // TODO коли буде https додати -> secure: true  sameSite: 'None' httpOnly: true,
 
       res.status(200).json({message: 'Authentication successful', user});
