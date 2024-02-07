@@ -16,8 +16,13 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import TextField from '@material-ui/core/TextField';
+import GlobalStyles from "@mui/material/GlobalStyles";
+import CssBaseline from "@mui/material/CssBaseline";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 
-const drawerWidth = 400;
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const drawerWidth =100;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,17 +65,18 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     marginBottom: theme.spacing(2)
   },
-  menuList: {
-    width: 360,
-    paddingLeft: 60
+  menuLists: {
+    width: 328,
+    padding: 12
   }
 }));
 
-const HomeForm = () => {
+
+const Cabinet = () => {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
-
+  const notify = () => toast("Wow so easy!");
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     setIsEditing(false); // Reset isEditing when switching tabs
@@ -79,31 +85,32 @@ const HomeForm = () => {
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
+  const defaultTheme = createTheme();
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={3}>
-          <List className={classes.menuList}>
-            <ListItem button onClick={() => handleTabClick('profile')}>
+          <List className={classes.menuLists}>
+            <ListItem button onClick={() => handleTabClick('profile')} style={{ height: 64 , width: 328,}} >
               <ListItemIcon>
                 <AccountCircleIcon/>
               </ListItemIcon>
               <ListItemText primary="Профіль"/>
             </ListItem>
-            <ListItem button onClick={() => handleTabClick('edit')}>
+            <ListItem button onClick={() => handleTabClick('edit')}  style={{ height: 64 , width: 328}} >
               <ListItemIcon>
                 <EditIcon/>
               </ListItemIcon>
               <ListItemText primary="Редагувати профіль"/>
             </ListItem>
-            <ListItem button onClick={() => handleTabClick('history')}>
+            <ListItem button onClick={() => handleTabClick('history')}  style={{ height: 64 , width: 328}}>
               <ListItemIcon>
                 <HistoryIcon/>
               </ListItemIcon>
               <ListItemText primary="Історія"/>
             </ListItem>
-            <ListItem button onClick={() => handleTabClick('bookmarks')}>
+            <ListItem button onClick={() => handleTabClick('bookmarks')}  style={{ height: 64 , width: 328}} >
               <ListItemIcon>
                 <BookmarksIcon/>
               </ListItemIcon>
@@ -187,9 +194,14 @@ const HomeForm = () => {
                     startIcon={<EditIcon/>}
                     className={classes.editIcon}
                     onClick={handleEditClick}
+                    onClick={notify}
                   >
                     Редагувати профіль
                   </Button>
+                  <div>
+                    <Button onClick={notify}>Notify!</Button>
+                    <ToastContainer/>
+                  </div>
                 </div>
               </Paper>
               </Grid>
@@ -202,4 +214,4 @@ const HomeForm = () => {
   );
 };
 
-export default HomeForm;
+export default Cabinet;

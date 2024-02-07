@@ -46,6 +46,7 @@ export default function Login() {
 
         try {
             const data = await authService.loginUser(formData);
+            console.log(data)
             if (data.code && data.code === 401) {
                 const errorMessages = data.message;
                 setErrors(errorMessages);
