@@ -17,6 +17,9 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Avatar from "@material-ui/core/Avatar";
 import {makeStyles} from "@material-ui/core/styles";
+import EditIcon from "@material-ui/icons/Edit";
+import HistoryIcon from "@material-ui/icons/History";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -80,7 +83,7 @@ const Header = () => {
                      aria-label="account of current user"
                    >
                        { authService.isUserLoggedIn() ? (
-                         <Avatar alt="Profile Photo" src="https://picsum.photos/300" className={useStyles.avatar}/>
+                         <Avatar alt="Profile Photo" src="https://picsum.photos/30" className={useStyles.avatar}/>
                        ) : (
                          <AccountCircleIcon
                            sx={{ fontSize: '32px' }}
@@ -112,17 +115,30 @@ const Header = () => {
                    >
                        {authService.isUserLoggedIn() ? (
                          [
+                             <MenuItem>Привіт, (Імя)</MenuItem>,
                              <MenuItem key="cabinet" component={Link} to="/cabinet" onClick={handleMenuClose}>
                                  <ListItemIcon>
-                                     <SettingsIcon fontSize="small" />
+                                     <AccountCircleIcon fontSize="small" />
                                  </ListItemIcon>
-                                 Account Settings
+                                 Профіль
                              </MenuItem>,
-                             <MenuItem key="cabinet2" component={Link} to="/cabinet" onClick={handleMenuClose}>
+                             <MenuItem key="cabinet-edit" component={Link} to="/cabinet#edit" onClick={handleMenuClose}>
                                  <ListItemIcon>
-                                     <SettingsIcon fontSize="small" />
+                                     <EditIcon fontSize="small" />
                                  </ListItemIcon>
-                                 Кабінет
+                                 Редагувати профіль
+                             </MenuItem>,
+                             <MenuItem key="cabinet-history" component={Link} to="/cabinet#history" onClick={handleMenuClose}>
+                                 <ListItemIcon>
+                                     <HistoryIcon fontSize="small" />
+                                 </ListItemIcon>
+                                 Історія переглядів
+                             </MenuItem>,
+                             <MenuItem key="cabinet-bookmarks" component={Link} to="/cabinet#bookmarks" onClick={handleMenuClose}>
+                                 <ListItemIcon>
+                                     <BookmarksIcon fontSize="small" />
+                                 </ListItemIcon>
+                                 Закладки
                              </MenuItem>,
                              <MenuItem key="logout" onClick={handleLogout}>
                                  <ListItemIcon>

@@ -18,6 +18,10 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
 
 const drawerWidth = 100;
 
@@ -43,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
   },
   editIcon: {
     cursor: 'pointer',
-    marginLeft: theme.spacing(1),
     color: theme.palette.primary.main,
   },
   drawerPaper: {
@@ -63,12 +66,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   menuLists: {
-    width: 328,
+    width: 350,
     padding: 12
   },
   listItems: {
     height: 64,
-    width: 328
+    width: 350
   }
 }));
 
@@ -196,16 +199,102 @@ const Cabinet = () => {
           ) : activeTab === 'history' ? (
             <Paper className={classes.paper}>
               <Typography variant="h5">Історія дій</Typography>
-              {/* Add content for history tab */}
+              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 300 }}
+                  image="https://picsum.photos/300"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Історія дій
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles, with over 6,000
+                    species, ranging across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
+                  <Button size="small" color="primary">
+                    Share
+                  </Button>
+                </CardActions>
+              </Card>
+              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 300 }}
+                  image="https://picsum.photos/300"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    LІсторія дій
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles, with over 6,000
+                    species, ranging across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
+                  <Button size="small" color="primary">
+                    Share
+                  </Button>
+                </CardActions>
+              </Card>
             </Paper>
           ) : activeTab === 'bookmarks' ? (
             <Paper className={classes.paper}>
-              <Typography variant="h5">Збереженні</Typography>
-              {/* Add content for bookmarks tab */}
+              <Typography variant="h5" sx={{ display: 'flex', marginBottom: '20px' }}>Збереженні</Typography>
+              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 300 }}
+                  image="https://picsum.photos/300"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Збереженні
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles, with over 6,000
+                    species, ranging across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
+                  <Button size="small" color="primary">
+                    Share
+                  </Button>
+                </CardActions>
+              </Card>
+              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 300 }}
+                  image="https://picsum.photos/300"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Збереженні
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles, with over 6,000
+                    species, ranging across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
+                  <Button size="small" color="primary">
+                    Share
+                  </Button>
+                </CardActions>
+              </Card>
             </Paper>
           ) : (
             <Fragment>
-              <Grid container spacing={3}>
+              <Grid container >
                 <Grid item xs={4}>
                   <Paper className={classes.paper}>
                     <Avatar alt="Profile Photo" src="https://picsum.photos/300" className={classes.avatar} />
