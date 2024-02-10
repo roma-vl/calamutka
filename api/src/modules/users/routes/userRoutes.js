@@ -1,5 +1,5 @@
 import express from 'express';
-import * as UserController from '../controllers/userController.js';
+import  UserController from '../controllers/UserController.js';
 import { validateUserData } from '../middleware/validation.js';
 import { logRequest } from '../middleware/logger.js';
 

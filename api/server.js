@@ -10,14 +10,16 @@ import { Server } from 'socket.io';
 import onConnection from './socket_io/onConnection.js';
 import { getFilePath } from './utils/file.js'
 import onError from './utils/onError.js'
-import fileupload from 'express-fileupload'
-import multer from 'multer'
 import { writeFile } from 'node:fs/promises';
+// import pinoHttp from 'pino-http';
 export default async () => {
     const app = express();
+
+    // const pino = pinoHttp();
+    // app.use(pino)
     app.use(bodyParser.json());
     app.use(express.urlencoded({ extended: true }))
-    app.use(fileupload());
+    // app.use(fileupload());
 
     // app.use(express.json())
     // Налаштування CORS
