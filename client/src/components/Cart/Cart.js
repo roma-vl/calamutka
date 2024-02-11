@@ -5,8 +5,10 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import Close from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
+import { useNavigate } from 'react-router-dom';
 
 const Cart = ({ isOpen, handleCloseCart }) => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([
     { id: 1, name: "Перший товар", quantity: 1 , image: 'https://picsum.photos/100'},
     { id: 2, name: "Другий товар", quantity: 1 , image: 'https://picsum.photos/100'}
@@ -89,7 +91,8 @@ const Cart = ({ isOpen, handleCloseCart }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button color="primary">Оформити</Button>
+        <Button color="primary" onClick={() => { handleCloseCart(); navigate('/checkout'); }}>Оформити</Button>
+
       </DialogActions>
     </Dialog>
   );
