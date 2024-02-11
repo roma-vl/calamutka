@@ -20,6 +20,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import HistoryIcon from "@material-ui/icons/History";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import ChatIcon from '@mui/icons-material/Chat';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -82,13 +83,11 @@ const Header = () => {
                      edge="end"
                      aria-label="account of current user"
                    >
-                       { authService.isUserLoggedIn() ? (
-                         <Avatar alt="Profile Photo" src="https://picsum.photos/30" className={useStyles.avatar}/>
-                       ) : (
-                         <AccountCircleIcon
-                           sx={{ fontSize: '32px' }}
-                         />
-                       )}
+                       { authService.isUserLoggedIn() ?
+                         <Avatar key="avatar" alt="Profile Photo" src="https://picsum.photos/30" className={useStyles.avatar}/>
+                        :
+                         <AccountCircleIcon key="icon" sx={{ fontSize: '32px' }}/>
+                       }
 
                    </IconButton>
                    <Menu
@@ -115,12 +114,18 @@ const Header = () => {
                    >
                        {authService.isUserLoggedIn() ? (
                          [
-                             <MenuItem>Привіт, (Імя)</MenuItem>,
+                             <MenuItem key="name">Привіт, (Імя)</MenuItem>,
                              <MenuItem key="cabinet" component={Link} to="/cabinet" onClick={handleMenuClose}>
                                  <ListItemIcon>
                                      <AccountCircleIcon fontSize="small" />
                                  </ListItemIcon>
                                  Профіль
+                             </MenuItem>,
+                             <MenuItem key="cabinet-message" component={Link} to="/cabinet/message" onClick={handleMenuClose}>
+                                 <ListItemIcon>
+                                     <ChatIcon fontSize="small" />
+                                 </ListItemIcon>
+                                 Повідомлення
                              </MenuItem>,
                              <MenuItem key="cabinet-edit" component={Link} to="/cabinet#edit" onClick={handleMenuClose}>
                                  <ListItemIcon>
