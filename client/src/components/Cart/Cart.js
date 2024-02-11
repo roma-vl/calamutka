@@ -7,35 +7,25 @@ import Close from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
 
 const Cart = ({ isOpen, handleCloseCart }) => {
-  const [quantity1, setQuantity1] = useState(1);
-  const [quantity2, setQuantity2] = useState(1);
+  const [products, setProducts] = useState([
+    { id: 1, name: "Перший товар", quantity: 1 , image: 'https://picsum.photos/100'},
+    { id: 2, name: "Другий товар", quantity: 1 , image: 'https://picsum.photos/100'}
+  ]);
 
-  const handleIncreaseQuantity1 = () => {
-    setQuantity1(quantity1 + 1);
+  const handleIncreaseQuantity = (id) => {
+    setProducts(products.map(product =>
+      product.id === id ? { ...product, quantity: product.quantity + 1 } : product
+    ));
   };
 
-  const handleDecreaseQuantity1 = () => {
-    if (quantity1 > 1) {
-      setQuantity1(quantity1 - 1);
-    }
+  const handleDecreaseQuantity = (id) => {
+    setProducts(products.map(product =>
+      product.id === id && product.quantity > 1 ? { ...product, quantity: product.quantity - 1 } : product
+    ));
   };
 
-  const handleIncreaseQuantity2 = () => {
-    setQuantity2(quantity2 + 1);
-  };
-
-  const handleDecreaseQuantity2 = () => {
-    if (quantity2 > 1) {
-      setQuantity2(quantity2 - 1);
-    }
-  };
-
-  const handleDeleteCard1 = () => {
-    // Код для видалення першої карточки товару
-  };
-
-  const handleDeleteCard2 = () => {
-    // Код для видалення другої карточки товару
+  const handleDeleteCard = (id) => {
+    setProducts(products.filter(product => product.id !== id));
   };
 
   return (
@@ -60,72 +50,41 @@ const Cart = ({ isOpen, handleCloseCart }) => {
           <Close />
         </IconButton>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Card>
-              <CardContent style={{ display: 'flex', alignItems: 'center' }}>
-                <img
-                  src="https://picsum.photos/100"
-                  alt="Товар"
-                  style={{ width: 100, height: 100 }}
-                />
-                <Grid container alignItems="center" justifyContent="space-between">
-                  <Grid item>
-                    <Typography variant="h6" sx={{marginLeft: '20px'}}>Назва першого товару</Typography>
-                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: '15px'}}>
-                      <IconButton onClick={handleDecreaseQuantity1}><RemoveIcon/></IconButton>
-                      <TextField
-                        type="number"
-                        value={quantity1}
-                        onChange={(e) => setQuantity1(e.target.value)}
-                        variant="outlined"
-                        inputProps={{min: 1}}
-                        sx={{width: '90px', padding: '5.5px 10px'}}
-                      />
-                      <IconButton onClick={handleIncreaseQuantity1}><AddIcon/></IconButton>
-                    </div>
+          {products.map(product => (
+            <Grid item xs={12} key={product.id}>
+              <Card>
+                <CardContent style={{ display: 'flex', alignItems: 'center' }}>
+                  <img
+                    src={product.image}
+                    alt="Товар"
+                    style={{ width: 100, height: 100 }}
+                  />
+                  <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid item>
+                      <Typography variant="h6" sx={{ marginLeft: '30px' }}>{product.name}</Typography>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: '15px' , marginLeft: '20px' }}>
+                        <IconButton onClick={() => handleDecreaseQuantity(product.id)}><RemoveIcon /></IconButton>
+                        <TextField
+                          type="number"
+                          value={product.quantity}
+                          variant="outlined"
+                          inputProps={{ min: 1 }}
+                          sx={{ width: '90px', padding: '5.5px 10px' }}
+                          disabled
+                        />
+                        <IconButton onClick={() => handleIncreaseQuantity(product.id)}><AddIcon /></IconButton>
+                      </div>
+                    </Grid>
+                    <Grid item>
+                      <IconButton onClick={() => handleDeleteCard(product.id)} sx={{ position: 'relative', top: '-20px', right: '-10px' }}>
+                        <Close />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <IconButton onClick={handleDeleteCard1} sx={{position: 'relative', top: '-20px', right: '-10px'}}>
-                      <Close/>
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Card>
-              <CardContent style={{display: 'flex', alignItems: 'center'}}>
-                <img
-                  src="https://picsum.photos/100"
-                  alt="Товар"
-                  style={{width: 100, height: 100}}
-                />
-                <Grid container alignItems="center" justifyContent="space-between">
-                  <Grid item>
-                    <Typography variant="h6" sx={{ marginLeft: '20px' }} >Назва першого товару</Typography>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' , marginTop: '15px' }}>
-                      <IconButton onClick={handleDecreaseQuantity2}><RemoveIcon /></IconButton>
-                      <TextField
-                        type="number"
-                        value={quantity2}
-                        onChange={(e) => setQuantity1(e.target.value)}
-                        variant="outlined"
-                        inputProps={{ min: 1 }}
-                        sx={{ width: '90px', padding: '5.5px 10px'}}
-                      />
-                      <IconButton onClick={handleIncreaseQuantity2}><AddIcon /></IconButton>
-                    </div>
-                  </Grid>
-                  <Grid item>
-                    <IconButton onClick={handleDeleteCard2} sx={{ position: 'relative', top: '-20px', right: '-10px' }}>
-                      <Close />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
       </DialogContent>
 
