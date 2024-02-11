@@ -11,15 +11,17 @@ import onConnection from './socket_io/onConnection.js';
 import { getFilePath } from './utils/file.js'
 import onError from './utils/onError.js'
 import { writeFile } from 'node:fs/promises';
-// import pinoHttp from 'pino-http';
+import pinoHttp from 'pino-http';
+import fileupload from 'express-fileupload'
+
 export default async () => {
     const app = express();
 
-    // const pino = pinoHttp();
-    // app.use(pino)
+    const pino = pinoHttp();
+    app.use(pino)
     app.use(bodyParser.json());
     app.use(express.urlencoded({ extended: true }))
-    // app.use(fileupload());
+    app.use(fileupload());
 
     // app.use(express.json())
     // Налаштування CORS
@@ -62,6 +64,8 @@ export default async () => {
 
     app.use('/upload', async (req, res) => {
         try {
+            console.log(req.files)
+            console.log(req.body)
             const file = req.files.file;
             const roomId = req.body.roomId;
             console.log(req, 'ddd')
