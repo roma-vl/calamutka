@@ -7,14 +7,13 @@ const useStyles = makeStyles({
     position: 'relative',
     maxWidth: '100%',
     height: 260,
-    transition: 'transform 0.5s, height 0.5s', // Додано анімацію зміни висоти і перетворення
+    transition: 'transform 0.5s',
     '&:hover': {
-      zIndex: 1,
+      zIndex: 2,
       width: 270,
       position: 'absolute',
-      transform: 'translateY(-100px)', // Зсув вверх при наведенні
+      transform: 'translateY(-100px)',
       height: 450,
-
     },
   },
   media: {
@@ -22,6 +21,11 @@ const useStyles = makeStyles({
   },
   content: {
     flex: '1 0 auto',
+    height: '120px',
+    transition: 'height 0.5s',
+    '&$root:hover &': {
+      height: '290px',
+    },
   },
   actions: {
     position: 'relative',
@@ -35,7 +39,6 @@ const useStyles = makeStyles({
     padding: '8px',
     boxSizing: 'border-box',
     transition: 'transform 0.3s',
-    // transform: 'translateY(100%)',
     '& $root:hover &': {
       transform: 'translateY(0)',
     },
