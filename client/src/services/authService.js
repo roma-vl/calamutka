@@ -8,7 +8,6 @@ const authService = {
     return !!accessToken;
   },
   isAdmin: () => {
-    // Ваша логіка перевірки ролі адміністратора
     const userRole = localStorage.getItem('userRole');
     return userRole.toLowerCase() === 'admin';
   },
@@ -16,8 +15,12 @@ const authService = {
   loginUser: async (formData) => {
     try {
       const response = await axios.post(SERVER_URI + '/login', formData, {
+        headers: {
+          "Content-type": "application/json",
+        },
         withCredentials: true,
       });
+      console.log(response.data)
       if (response.data.code === 401) {
         console.log(response.data.message)
       } else {
@@ -32,12 +35,8 @@ const authService = {
   },
   logoutUser: async () => {
     try {
-      const response = await axios.post(SERVER_URI + '/logout', {
-        withCredentials: true,
-      });
+      const response = await axios.post(SERVER_URI + '/logout');
       console.log(response.data)
-      // localStorage.setItem('userRole', response.data.user.role);
-      // return response.data;
     } catch (error) {
       console.log(error)
       throw error;
@@ -46,12 +45,9 @@ const authService = {
 
   registerUser: async (formData) => {
     try {
-      const response = await axios.post(SERVER_URI + '/register', formData,{
-        withCredentials: true,
-      });
+      const response = await axios.post(SERVER_URI + '/register', formData);
       console.log(response.data)
-      // localStorage.setItem('userRole', response.data.user.role);
-      // return response.data;
+      return response.data;
     } catch (error) {
       console.log(error)
       throw error;

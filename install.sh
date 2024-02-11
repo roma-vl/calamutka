@@ -1,26 +1,26 @@
-#!/usr/bin/env bash
+# Встановіть npm залежності
+sudo rm -rf ./api/node_modules && npm i
+sudo rm -rf ./client/node_modules && npm i
+sudo rm -rf ./client-admin/node_modules && npm i
 
-# Install npm dependencies
-#sudo rm -rf ./node_modules && npm i
-#
-#docker-compose down
-#docker-compose up -d
-#sleep 20s
+# Вимкніть контейнери та підніміть їх
+docker-compose down
+docker-compose up -d
+sleep 20s
 
-mkdir -p  ./nginx/ssl
-sudo chmod 777  ./nginx/ssl
+# Зайти в контейнер api_backend і виконати команди knex
+docker-compose exec api_backend sh -c "npx knex migrate:up && npx knex seed:run"
 
+# Створіть директорію для SSL-сертифікатів
+mkdir -p ./nginx/ssl
+sudo chmod 777 ./nginx/ssl
 
-openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout ./nginx/ssl/nginx.key -out ./nginx/ssl/nginx.crt
-#openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout ./build/development/conf/nginx/ssl/localhost.key -out ./build/development/conf/nginx/ssl/localhost.crt
+# Очистіть старі записи, якщо вони існують
+sudo sed -i '/calamutka.com\|api.calamutka.com\|admin.calamutka.com\|client_frontend\|api_backend\|client_frontend_admin/d' /etc/hosts
 
+# Додайте нові записи
+echo '127.0.0.1       calamutka.com api.calamutka.com admin.calamutka.com client_frontend api_backend client_frontend_admin' | sudo tee -a /etc/hosts
 
-# Add containers to /etc/hosts
-#if ! [[ $(cat /etc/hosts | grep api_backend) ]]; then
-#    sudo -- sh -c -e "echo '127.0.0.1       calamutka.com' >> /etc/hosts";
-#    sudo -- sh -c -e "echo '127.0.0.1       api.calamutka.com' >> /etc/hosts";
-#    sudo -- sh -c -e "echo '127.0.0.1       admin.calamutka.com' >> /etc/hosts";
-#    sudo -- sh -c -e "echo '127.0.0.1       client_frontend' >> /etc/hosts";
-#    sudo -- sh -c -e "echo '127.0.0.1       api_backend' >> /etc/hosts";
-#    sudo -- sh -c -e "echo '127.0.0.1       client_frontend_admin' >> /etc/hosts";
-#fi
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout ./nginx/ssl/nginx.key -out ./nginx/ssl/nginx.crt -subj "/CN=calamutka.com" -addext "subjectAltName = DNS:api.calamutka.com, DNS:admin.calamutka.com"
+chmod 600 ./nginx/ssl/nginx.crt
+chmod 600 ./nginx/ssl/nginx.key

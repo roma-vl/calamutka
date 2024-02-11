@@ -10,33 +10,43 @@ import { Server } from 'socket.io';
 import onConnection from './socket_io/onConnection.js';
 import { getFilePath } from './utils/file.js'
 import onError from './utils/onError.js'
-import upload from './utils/upload.js'
-const users = {}
+import { writeFile } from 'node:fs/promises';
+import pinoHttp from 'pino-http';
+import fileupload from 'express-fileupload'
+
 export default async () => {
     const app = express();
-    app.get('/ping', (req, res) => res.end(`calamutka-api ${process.env.NODE_ENV}`));
+
+    const pino = pinoHttp();
+    app.use(pino)
     app.use(bodyParser.json());
+    app.use(express.urlencoded({ extended: true }))
+    app.use(fileupload());
+
+    // app.use(express.json())
+    // Налаштування CORS
+    const corsOptions = {
+        origin: 'https://calamutka.com', // Вкажіть свій домен
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        credentials: true,
+    };
+    app.use(cors(corsOptions));
+    app.options('*', cors(corsOptions));
+
+
+    app.get('/ping', (req, res) => res.end(`calamutka-api ${process.env.NODE_ENV}`));
+
 
     await initAuth(app);
     await initSwagger(app);
     app.use('/users', userRoutes(knex));
 
-    // Налаштування CORS
-    const corsOptions = {
-        origin: '*', // Вкажіть свій домен
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        credentials: true,
-        optionsSuccessStatus: 204,
-    };
 
-    app.use(cors(corsOptions));
-    app.options('*', cors(corsOptions));
-    app.options('/upload', cors(corsOptions));
-
-    app.get('/', (req, res) => {
+    app.use('/s', (req, res) => {
+        // console.log(req)
         console.log('Main PAge')
+        res.status(200).json({ 'test' : 'test'});
     });
-
     const server = createServer(app);
     const io = new Server(server, {
         cors: {
@@ -52,27 +62,31 @@ export default async () => {
         onConnection(io, socket);
     });
 
+    app.use('/upload', async (req, res) => {
+        try {
+            console.log(req.files)
+            console.log(req.body)
+            const file = req.files.file;
+            const roomId = req.body.roomId;
+            console.log(req, 'ddd')
 
-    // knex
-    //     .select('*')
-    //     .from('users')
-    //     .then(rows => {
-    //         console.log(rows);
-    //         res.json(rows);
-    //     })
-    //     .catch(error => {
-    //         console.error(error);
-    //         res.status(500).json({ message: 'Internal server error' });
-    //     });
-    app.use('/upload', upload.single('file'), (req, res) => {
-        console.log(req.file, 'req.file')
-        if (!req.file) return res.sendStatus(400);
+            if (!file) {
+                return res.status(400).json({ error: 'No file uploaded' });
+            }
 
-        const relativeFilePath = req.file.path
-            .replace(/\\/g, '/')
-            .split('app/files')[1];
-        res.status(201).json(relativeFilePath);
-    });
+            const destinationPath = './files/'+ roomId +'/';
+            const filePath = `${destinationPath}${file.name}`;
+
+            await writeFile(filePath, file.data, {});
+            const relativeFilePath = filePath.replace(/^\.\/files/, '');
+            console.log(relativeFilePath, 'relativeFilePath')
+
+            res.status(201).json({relativeFilePath});
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    })
 
     app.use('/files', (req, res) => {
         const filePath = getFilePath(req.url);

@@ -1,27 +1,29 @@
-import { SERVER_URI } from 'constants'
 
 const upload = async ({ file, roomId }) => {
     try {
-        const body = new FormData()
-        body.append('file', file)
+        const body = new FormData();
+        body.append('file', file);
+        body.append('roomId', roomId);
 
-        const response = await fetch(`http://api.calamutka.com/upload`, {
+        const response = await fetch(`https://api.calamutka.com/upload`, {
             method: 'POST',
             body,
-            headers: {
-                'x-room-id': roomId
-            }
         });
 
-        if (!response.ok) throw response
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Дані про помилку:', errorData);
+            throw new Error(`Не вдалося завантажити файл. Статус: ${response.status}`);
+        }
 
-        const pathToFile = await response.json()
-        return pathToFile
+        const pathToFile = await response.json();
+        return pathToFile.relativeFilePath;
     } catch (e) {
-        throw e
+        console.error('Помилка під час завантаження файлу:', e);
+        throw e;
     }
-}
+};
 
-const fileApi = { upload }
+const fileApi = { upload };
 
-export default fileApi
+export default fileApi;

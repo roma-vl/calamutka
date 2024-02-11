@@ -44,6 +44,7 @@ export default function MessageInput({sendMessage}) {
     if (!file) {
       message.messageType = 'text'
       message.textOrPathToFile = text
+      sendMessage(message)
     } else {
 
       try {
@@ -51,7 +52,7 @@ export default function MessageInput({sendMessage}) {
 
         message.messageType = file.type.split('/')[0]
         message.textOrPathToFile = path
-
+        sendMessage(message)
       } catch (e) {
         console.error(e)
       }
@@ -60,8 +61,6 @@ export default function MessageInput({sendMessage}) {
     if (showEmoji) {
       setShowEmoji(false)
     }
-
-    sendMessage(message)
 
     setText('')
     setFile(null)
