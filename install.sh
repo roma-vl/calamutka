@@ -1,7 +1,7 @@
 # Встановіть npm залежності
-sudo rm -rf ./api/node_modules && npm i
-sudo rm -rf ./client/node_modules && npm i
-sudo rm -rf ./client-admin/node_modules && npm i
+sudo rm -rf ./api/node_modules
+sudo rm -rf ./client/node_modules
+sudo rm -rf ./client-admin/node_modules
 
 # Вимкніть контейнери та підніміть їх
 docker-compose down
