@@ -1,18 +1,20 @@
 import { Card, CardContent, CardMedia, Typography, makeStyles, IconButton } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import React, { useState } from 'react';
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
 const useStyles = makeStyles({
   root: {
     position: 'relative',
     maxWidth: '100%',
-    height: 260,
+    height: 270,
     transition: 'transform 0.5s',
     '&:hover': {
       zIndex: 2,
       width: 270,
       position: 'absolute',
-      transform: 'translateY(-100px)',
+      transform: 'translateY(-20px)',
       height: 450,
     },
   },
@@ -23,6 +25,7 @@ const useStyles = makeStyles({
     flex: '1 0 auto',
     height: '120px',
     transition: 'height 0.5s',
+    margin: '10px', // Додали маржі для контенту
     '&$root:hover &': {
       height: '290px',
     },
@@ -38,7 +41,7 @@ const useStyles = makeStyles({
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     padding: '8px',
     boxSizing: 'border-box',
-    transition: 'transform 0.3s',
+    transition: 'transform 0.5s',
     '& $root:hover &': {
       transform: 'translateY(0)',
     },
@@ -62,7 +65,7 @@ const ProductCard = ({ product }) => {
 
         <div className={classes.actions}>
           <IconButton aria-label="save">
-            <SaveIcon/>
+            <BookmarksIcon/>
           </IconButton>
           <IconButton aria-label="add to cart">
             <AddShoppingCartIcon/>
@@ -78,7 +81,6 @@ const ProductCard = ({ product }) => {
           Тег
         </Typography>
       </CardContent>
-
     </Card>
   );
 };
