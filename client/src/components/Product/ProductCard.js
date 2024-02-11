@@ -6,10 +6,15 @@ const useStyles = makeStyles({
   root: {
     position: 'relative',
     maxWidth: '100%',
-    transition: 'transform 0.3s, height 0.3s', // Додано анімацію зміни висоти і перетворення
+    height: 260,
+    transition: 'transform 0.5s, height 0.5s', // Додано анімацію зміни висоти і перетворення
     '&:hover': {
+      zIndex: 1,
+      width: 270,
+      position: 'absolute',
       transform: 'translateY(-100px)', // Зсув вверх при наведенні
-      height: 'calc(100% + 120px)', // Збільшення висоти картки на 20 пікселів
+      height: 450,
+
     },
   },
   media: {
@@ -19,7 +24,7 @@ const useStyles = makeStyles({
     flex: '1 0 auto',
   },
   actions: {
-    position: 'absolute',
+    position: 'relative',
     bottom: 0,
     left: 0,
     display: 'flex',
@@ -30,9 +35,9 @@ const useStyles = makeStyles({
     padding: '8px',
     boxSizing: 'border-box',
     transition: 'transform 0.3s',
-    transform: 'translateY(100%)',
+    // transform: 'translateY(100%)',
     '& $root:hover &': {
-      transform: 'translateY(100)',
+      transform: 'translateY(0)',
     },
   },
 });
@@ -51,18 +56,26 @@ const ProductCard = ({ product }) => {
         <Typography gutterBottom variant="h5" component="h2">
           {product.name}
         </Typography>
+
+        <div className={classes.actions}>
+          <IconButton aria-label="save">
+            <SaveIcon/>
+          </IconButton>
+          <IconButton aria-label="add to cart">
+            <AddShoppingCartIcon/>
+          </IconButton>
+        </div>
         <Typography variant="body2" color="textSecondary" component="p">
           {product.description}
         </Typography>
+        <Typography variant="h5" color="textSecondary" component="p">
+          Категорія
+        </Typography>
+        <Typography variant="h5" color="textSecondary" component="p">
+          Тег
+        </Typography>
       </CardContent>
-      <div className={classes.actions}>
-        <IconButton aria-label="save">
-          <SaveIcon />
-        </IconButton>
-        <IconButton aria-label="add to cart">
-          <AddShoppingCartIcon />
-        </IconButton>
-      </div>
+
     </Card>
   );
 };
