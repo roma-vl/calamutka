@@ -1,3 +1,5 @@
+import {SERVER_URI} from "../constants";
+import {post} from "./axios.api";
 
 const upload = async ({ file, roomId }) => {
     try {
@@ -5,19 +7,15 @@ const upload = async ({ file, roomId }) => {
         body.append('file', file);
         body.append('roomId', roomId);
 
-        const response = await fetch(`https://api.calamutka.com/upload`, {
-            method: 'POST',
-            body,
-        });
+        const response = await post(SERVER_URI + '/upload', body);
 
-        if (!response.ok) {
+        if (!response.data) {
             const errorData = await response.json();
             console.error('Дані про помилку:', errorData);
             throw new Error(`Не вдалося завантажити файл. Статус: ${response.status}`);
         }
 
-        const pathToFile = await response.json();
-        return pathToFile.relativeFilePath;
+        return response.data.relativeFilePath;
     } catch (e) {
         console.error('Помилка під час завантаження файлу:', e);
         throw e;

@@ -64,7 +64,7 @@ async function initAuth(app) {
       res.cookie('accessToken', token, {
         maxAge: 12 * 60 * 60 * 1000,
         path: '/',
-        domain: '.calamutka.com',
+        domain: '.' + config.app.domain,
         // httpOnly: true,
         secure: true,
         sameSite: 'None'
@@ -118,7 +118,7 @@ async function initAuth(app) {
 
       res.cookie('accessToken', token, {
         maxAge: 60 * 60 * 1000,
-        domain: '.calamutka.com',
+        domain: '.' + config.app.domain,
       });
       res.status(200).json({ message: 'Нового користувача зареєстровано', user: registeredUser });
 
@@ -132,7 +132,7 @@ async function initAuth(app) {
     res.cookie('accessToken', null, {
       maxAge: 0,
       expires: new Date(0),
-      domain: '.calamutka.com',
+      domain: '.' + config.app.domain,
       httpOnly: false,
       sameSite: 'Lax',
       path: '/'
