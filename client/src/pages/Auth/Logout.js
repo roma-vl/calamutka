@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
 import axios from 'axios';
-import { SERVER_URI } from "../../constants";
+import {APP_URL, SERVER_URI} from "../../constants";
 
 const Logout = async () => {
   try {
     await axios.get(SERVER_URI + '/logout');
-    Cookies.remove('accessToken', { domain: '.calamutka.com' });
+    Cookies.remove('accessToken', { domain: '.' + APP_URL });
   } catch (error) {
     console.error(error);
   }

@@ -1,4 +1,4 @@
-import { USER_KEY } from 'constants.js'
+import {SERVER_URL, USER_KEY} from 'constants.js'
 import {useEffect, useMemo, useRef, useState} from 'react'
 import {io} from 'socket.io-client'
 import storage from 'utils/storage'
@@ -11,7 +11,7 @@ export default function useChat() {
   const [log, setLog] = useState(null)
 
   const {current: socket} = useRef(
-    io('api.calamutka.com', {
+    io(SERVER_URL, {
       path: '',
       query: {
         roomId: user.roomId,

@@ -13,6 +13,7 @@ import onError from './utils/onError.js'
 import { writeFile } from 'node:fs/promises';
 import pinoHttp from 'pino-http';
 import fileupload from 'express-fileupload'
+import config from './config/config.js';
 
 export default async () => {
     const app = express();
@@ -26,7 +27,7 @@ export default async () => {
     // app.use(express.json())
     // Налаштування CORS
     const corsOptions = {
-        origin: 'https://calamutka.com', // Вкажіть свій домен
+        origin: config.app.protocol + config.app.domain + config.app.port,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         credentials: true,
     };
@@ -68,7 +69,6 @@ export default async () => {
             console.log(req.body)
             const file = req.files.file;
             const roomId = req.body.roomId;
-            console.log(req, 'ddd')
 
             if (!file) {
                 return res.status(400).json({ error: 'No file uploaded' });
@@ -79,7 +79,6 @@ export default async () => {
 
             await writeFile(filePath, file.data, {});
             const relativeFilePath = filePath.replace(/^\.\/files/, '');
-            console.log(relativeFilePath, 'relativeFilePath')
 
             res.status(201).json({relativeFilePath});
         } catch (error) {
@@ -90,7 +89,7 @@ export default async () => {
 
     app.use('/files', (req, res) => {
         const filePath = getFilePath(req.url);
-        console.log( filePath, 'шлях')
+
         res.status(200).sendFile( filePath);
     });
 

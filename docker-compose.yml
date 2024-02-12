@@ -71,7 +71,7 @@ services:
       MYSQL_USER: calamutka
       MYSQL_PASSWORD: calamutka
     ports:
-      - '3306:3306'
+      - '3300:3306'
     volumes:
       - ./var/data/mysql:/var/lib/mysql
     labels:
@@ -100,8 +100,8 @@ services:
 #      - "traefik.http.middlewares.debug.headers.customRequestHeaders=X-Debug-Mode: true"
       - "--log.level=DEBUG"
     ports:
-      - "80:80"
-      - "443:443"
+      - "81:80"
+      - "444:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 #      - ./traefik.yml:/traefik.yml
