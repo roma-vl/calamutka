@@ -71,14 +71,14 @@ services:
       MYSQL_USER: calamutka
       MYSQL_PASSWORD: calamutka
     ports:
-      - '3300:3306'
+      - '3306:3306'
     volumes:
       - ./var/data/mysql:/var/lib/mysql
-    labels:
-      - "traefik.enable=true"
-      - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"  # Дозволяє підключатися з будь-якого домену
-      - "traefik.tcp.routers.mysql.tls=true"  # Включає TLS для захисту підключень
-      - "traefik.tcp.routers.mysql.tls.certresolver=myresolver"  # Вказує, який CertResolver використовувати
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"  # Дозволяє підключатися з будь-якого домену
+#      - "traefik.tcp.routers.mysql.tls=true"  # Включає TLS для захисту підключень
+#      - "traefik.tcp.routers.mysql.tls.certresolver=myresolver"  # Вказує, який CertResolver використовувати
 
     networks:
       - calamutka
@@ -100,8 +100,8 @@ services:
 #      - "traefik.http.middlewares.debug.headers.customRequestHeaders=X-Debug-Mode: true"
       - "--log.level=DEBUG"
     ports:
-      - "81:80"
-      - "444:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 #      - ./traefik.yml:/traefik.yml

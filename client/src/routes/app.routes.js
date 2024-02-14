@@ -10,6 +10,10 @@ import Cabinet from "../pages/Cabinet/Cabinet";
 import Сheckout from "../pages/Checkout/Checkout";
 import CabinetMessage from "../pages/Cabinet/CabinetMessage";
 import Product from "../pages/Product/Product";
+import PaymentAndDelivery from "../pages/static-page/PaymentAndDelivery";
+import Contacts from "../pages/static-page/Contacts";
+import Promotions from "../pages/static-page/Promotions";
+import Reviews from "../pages/static-page/Reviews";
 
 const AppRoutes = () => (
   <Routes>
@@ -20,6 +24,11 @@ const AppRoutes = () => (
     <Route path="/pricing"         element={<DefaultLayout><Pricing/></DefaultLayout>}/>
     <Route path="/album"           element={<DefaultLayout><Album/></DefaultLayout>}/>
     <Route path="/checkout"        element={<DefaultLayout><Сheckout/></DefaultLayout>}/>
+
+    <Route path="/payment"        element={<DefaultLayout><PaymentAndDelivery/></DefaultLayout>}/>
+    <Route path="/contacts"        element={<DefaultLayout><Contacts/></DefaultLayout>}/>
+    <Route path="/promotions"        element={<DefaultLayout><Promotions/></DefaultLayout>}/>
+    <Route path="/reviews"        element={<DefaultLayout><Reviews/></DefaultLayout>}/>
 
     <Route path="/login"           element={<AuthLayout><Login/></AuthLayout>}/>
     <Route path="/register"        element={<AuthLayout><Register/></AuthLayout>}/>

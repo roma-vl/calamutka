@@ -4,7 +4,7 @@ export default {
     app: {
         protocol: 'https://',
         domain: 'calamutka.com',
-        port: ':444'
+        port: ''
     },
     passport: {
         jwtSecretKey: 'your-secret-key',
