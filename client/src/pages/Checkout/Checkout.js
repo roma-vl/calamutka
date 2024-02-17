@@ -9,30 +9,25 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Close from "@mui/icons-material/Close";
+import {connect, useDispatch} from "react-redux";
+import {decreaseQuantity, increaseQuantity, removeFromCart} from "../../cartActions";
 
 
-const Checkout = () => {
-  const [products, setProducts] = useState([
-    { id: 1, name: "Перший товар", quantity: 1 , image: 'https://picsum.photos/100'},
-    { id: 2, name: "Другий товар", quantity: 1 , image: 'https://picsum.photos/100'},
-    { id: 3, name: "Другий товар", quantity: 1 , image: 'https://picsum.photos/100'}
-  ]);
+const Checkout = ({ products }) => {
 
+  const dispatch = useDispatch();
   const handleIncreaseQuantity = (id) => {
-    setProducts(products.map(product =>
-      product.id === id ? { ...product, quantity: product.quantity + 1 } : product
-    ));
+    dispatch(increaseQuantity(id));
   };
 
   const handleDecreaseQuantity = (id) => {
-    setProducts(products.map(product =>
-      product.id === id && product.quantity > 1 ? { ...product, quantity: product.quantity - 1 } : product
-    ));
+    dispatch(decreaseQuantity(id));
   };
 
   const handleDeleteCard = (id) => {
-    setProducts(products.filter(product => product.id !== id));
+    dispatch(removeFromCart(id));
   };
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -184,4 +179,10 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+const mapStateToProps = (state) => {
+  return {
+    products: state.cart.products
+  };
+};
+
+export default connect(mapStateToProps)(Checkout);

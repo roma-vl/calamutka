@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import {connect, useDispatch} from 'react-redux';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { Card, CardContent, IconButton, Grid, Typography, TextField } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -6,30 +6,31 @@ import AddIcon from '@mui/icons-material/Add';
 import Close from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
 import { useNavigate } from 'react-router-dom';
+import {addToCart, decreaseQuantity, increaseQuantity, removeFromCart} from '../../cartActions';
+import store from "../../store";
 
-const Cart = ({ isOpen, handleCloseCart }) => {
+const Cart = ({ isOpen, handleCloseCart, products }) => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([
-    { id: 1, name: "Перший товар", quantity: 1 , image: 'https://picsum.photos/100'},
-    { id: 2, name: "Другий товар", quantity: 1 , image: 'https://picsum.photos/100'}
-  ]);
 
+  const dispatch = useDispatch();
+
+  const productToAdd = { id: 2, name: "Другий товар", quantity: 1 , image: 'https://picsum.photos/100' };
   const handleIncreaseQuantity = (id) => {
-    setProducts(products.map(product =>
-      product.id === id ? { ...product, quantity: product.quantity + 1 } : product
-    ));
+    dispatch(increaseQuantity(id));
   };
 
   const handleDecreaseQuantity = (id) => {
-    setProducts(products.map(product =>
-      product.id === id && product.quantity > 1 ? { ...product, quantity: product.quantity - 1 } : product
-    ));
+    dispatch(decreaseQuantity(id));
   };
+
+  const addProduct = () => {
+      dispatch(addToCart(productToAdd));
+    console.log(store.getState());
+  }
 
   const handleDeleteCard = (id) => {
-    setProducts(products.filter(product => product.id !== id));
+    dispatch(removeFromCart(id));
   };
-
   return (
     <Dialog
       open={isOpen}
@@ -91,11 +92,17 @@ const Cart = ({ isOpen, handleCloseCart }) => {
       </DialogContent>
 
       <DialogActions>
+        <Button color="primary" onClick={() => { addProduct() }}>Додати продукт</Button>
         <Button color="primary" onClick={() => { handleCloseCart(); navigate('/checkout'); }}>Оформити</Button>
-
       </DialogActions>
     </Dialog>
   );
 };
 
-export default Cart;
+const mapStateToProps = (state) => {
+  return {
+    products: state.cart.products
+  };
+};
+
+export default connect(mapStateToProps)(Cart);
