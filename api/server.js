@@ -14,6 +14,7 @@ import { writeFile } from 'node:fs/promises';
 import pinoHttp from 'pino-http';
 import fileupload from 'express-fileupload'
 import config from './config/config.js';
+import productRoutes from "./src/modules/products/routes/productRoutes.js";
 
 export default async () => {
     const app = express();
@@ -41,6 +42,7 @@ export default async () => {
     await initAuth(app);
     await initSwagger(app);
     app.use('/users', userRoutes(knex));
+    app.use('/products', productRoutes(knex));
 
 
     app.use('/s', (req, res) => {
