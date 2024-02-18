@@ -1,4 +1,4 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, {useState, useRef, Fragment, useEffect} from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -24,6 +24,9 @@ import ChatIcon from '@mui/icons-material/Chat';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Close from '@mui/icons-material/Close';
 import Cart from "../../Cart/Cart";
+import {Badge} from "@mui/material";
+import store from "../../../store";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -40,6 +43,11 @@ const Header = () => {
     const menuRef = useRef(null);
 
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const productsInCart = useSelector(state => state.cart.products);
+    useEffect(() => {
+
+        console.log(store.getState().cart.products);
+    }, []);
 
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -87,7 +95,10 @@ const Header = () => {
                           aria-label="account of current user"
                           onClick={() => setIsCartOpen(true)}
                         >
-                            <ShoppingCartIcon key="icon" sx={{ fontSize: '32px' }} />
+
+                            <Badge color="secondary" badgeContent={productsInCart.length}>
+                                <ShoppingCartIcon key="icon" sx={{ fontSize: '32px' }} />
+                            </Badge>
                         </IconButton>
                         : ''}
                       <IconButton

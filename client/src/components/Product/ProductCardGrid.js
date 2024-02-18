@@ -1,6 +1,7 @@
 import React from 'react';
 import ProductCard from './ProductCard';
 import { Grid } from '@material-ui/core';
+import {Skeleton} from "@mui/material";
 
 const ProductCardGrid = ({ products }) => {
   return (

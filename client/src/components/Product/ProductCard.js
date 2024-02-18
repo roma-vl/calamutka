@@ -3,12 +3,17 @@ import SaveIcon from '@material-ui/icons/Save';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import React, { useState } from 'react';
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {addToCart, removeFromCart} from "../../cartActions";
+import store from "../../store";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   root: {
     position: 'relative',
     maxWidth: '100%',
-    height: 270,
+    height: 300,
     transition: 'transform 0.5s',
     '&:hover': {
       zIndex: 2,
@@ -50,25 +55,41 @@ const useStyles = makeStyles({
 
 const ProductCard = ({ product }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+
+  const addProductItem = (productItem) => {
+    dispatch(addToCart(productItem));
+    console.log(store.getState());
+  }
+
+  const handleDeleteCard = (id) => {
+    dispatch(removeFromCart(id));
+  };
   return (
     <Card className={classes.root}>
-      <CardMedia
-        className={classes.media}
-        image={product.image}
-        title={product.name}
-      />
+      <Link to={`/product/${product.id}`} style={{ textDecoration: 'none' }}>
+        <CardMedia
+          className={classes.media}
+          image={product.main_image}
+          title={product.name}
+        />
+      </Link>
       <CardContent className={classes.content}>
         <Typography gutterBottom variant="h5" component="h2">
-          {product.name}
+          <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            {product.name}
+          </Link>
         </Typography>
 
         <div className={classes.actions}>
           <IconButton aria-label="save">
             <BookmarksIcon/>
           </IconButton>
-          <IconButton aria-label="add to cart">
-            <AddShoppingCartIcon/>
+          <IconButton aria-label="add to cart" onClick={() => { addProductItem(product) }}>
+            <AddShoppingCartIcon />
           </IconButton>
         </div>
         <Typography variant="body2" color="textSecondary" component="p">

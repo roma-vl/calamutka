@@ -1,10 +1,18 @@
 // HomePage.jsx
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Typography } from '@material-ui/core';
 import RecommendedProductsSlider from "../../components/Product/RecommendedProductsSlider";
 import PopularProductsGrid from "../../components/Product/PopularProductsGrid";
 import Container from "@mui/material/Container";
 import ProductCardGrid from "../../components/Product/ProductCardGrid";
+// import {get} from "./axios.api";
+import {SERVER_URI} from "../../constants";
+import {get} from "../../api/axios.api";
+import {addToCart} from "../../cartActions";
+import store from "../../store";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProductsFailure, fetchProductsRequest, fetchProductsSuccess} from "../../productActions";
+import {CircularProgress} from "@mui/material";
 
 
 const HomePage = () => {
@@ -69,21 +77,24 @@ const HomePage = () => {
     // Додавайте інші продукти за потребою
   ];
 
-  const products = [
-    { id: 1, name: 'Product 1', description: 'Description 1 повар олав ілопа івпар івлопр івлоапа  dsfg dfg fdg dg dsg sdfg dsg dsg dsg fdsg dsf gdsfg dsfg dsfg fdsg dsfg sdfg dsgівлопр ілва рпліво ', image: 'https://picsum.photos/300' },
-    { id: 2, name: 'Product 2', description: 'Description 2', image: 'https://picsum.photos/300' },
-    { id: 3, name: 'Product 3', description: 'Description 3', image: 'https://picsum.photos/300' },
-    { id: 4, name: 'Product 4', description: 'Description 4', image: 'https://picsum.photos/300' },
-    { id: 5, name: 'Product 5', description: 'Description 5', image: 'https://picsum.photos/300' },
-    { id: 6, name: 'Product 6', description: 'Description 6', image: 'https://picsum.photos/300' },
-    { id: 7, name: 'Product 7', description: 'Description 7', image: 'https://picsum.photos/300' },
-    { id: 8, name: 'Product 8', description: 'Description 8', image: 'https://picsum.photos/300' },
-    { id: 9, name: 'Product 9', description: 'Description 9', image: 'https://picsum.photos/300' },
-    { id: 10, name: 'Product 10', description: 'Description 10', image: 'https://picsum.photos/300' },
-    { id: 11, name: 'Product 11', description: 'Description 11', image: 'https://picsum.photos/300' },
-    { id: 12, name: 'Product 12', description: 'Description 12', image: 'https://picsum.photos/300' },
-  ];
+  const dispatch = useDispatch();
+  const products = useSelector(state => state.product.products);
+  const loading = useSelector(state => state.product.loading);
+  const error = useSelector(state => state.product.error);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      dispatch(fetchProductsRequest());
+      try {
+        const response = await get('/products'); // Припустимо, що маршрут /products є у вашому сервері
+        dispatch(fetchProductsSuccess(response.data));
+      } catch (error) {
+        dispatch(fetchProductsFailure(error.message));
+      }
+    };
+    console.log(products)
+      fetchProducts();
+  }, [dispatch]);
 
   return (
     <Container>
@@ -95,7 +106,11 @@ const HomePage = () => {
       <Typography variant="h4" gutterBottom>
         Товари
       </Typography>
-      <ProductCardGrid products={products} />
+
+      {loading && <CircularProgress />}
+      {error && <p>Error: {error}</p>}
+
+      {products && < ProductCardGrid products={products} />}
 
       <Typography variant="h4" gutterBottom>
         Рекомендовані товари

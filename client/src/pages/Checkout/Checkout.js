@@ -141,7 +141,7 @@ const Checkout = ({ products }) => {
                   <Card>
                     <CardContent style={{ display: 'flex', alignItems: 'center' }}>
                       <img
-                        src={product.image}
+                        src={product.main_image}
                         alt="Товар"
                         style={{ width: 200, height: 200 }}
                       />

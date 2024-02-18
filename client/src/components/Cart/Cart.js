@@ -13,8 +13,6 @@ const Cart = ({ isOpen, handleCloseCart, products }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-
-  const productToAdd = { id: 2, name: "Другий товар", quantity: 1 , image: 'https://picsum.photos/100' };
   const handleIncreaseQuantity = (id) => {
     dispatch(increaseQuantity(id));
   };
@@ -22,11 +20,6 @@ const Cart = ({ isOpen, handleCloseCart, products }) => {
   const handleDecreaseQuantity = (id) => {
     dispatch(decreaseQuantity(id));
   };
-
-  const addProduct = () => {
-      dispatch(addToCart(productToAdd));
-    console.log(store.getState());
-  }
 
   const handleDeleteCard = (id) => {
     dispatch(removeFromCart(id));
@@ -58,9 +51,9 @@ const Cart = ({ isOpen, handleCloseCart, products }) => {
               <Card>
                 <CardContent style={{ display: 'flex', alignItems: 'center' }}>
                   <img
-                    src={product.image}
+                    src={product.main_image}
                     alt="Товар"
-                    style={{ width: 100, height: 100 }}
+                    style={{ width: 120, height: 100 }}
                   />
                   <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
@@ -92,7 +85,6 @@ const Cart = ({ isOpen, handleCloseCart, products }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button color="primary" onClick={() => { addProduct() }}>Додати продукт</Button>
         <Button color="primary" onClick={() => { handleCloseCart(); navigate('/checkout'); }}>Оформити</Button>
       </DialogActions>
     </Dialog>
