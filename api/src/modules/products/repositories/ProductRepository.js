@@ -1,5 +1,5 @@
-
 import Product from '../models/Product.js';
+import ProductImage from '../models/ProductImage.js';
 
 export default class ProductRepository {
   static async getAllProducts() {
@@ -7,7 +7,16 @@ export default class ProductRepository {
   }
 
   static async getProductById(id) {
-    return await Product.query().findById(id);
+    try {
+
+      const product = await Product.query().findById(id);
+      product.images = await ProductImage.query().where('product_id', id);
+
+      return product;
+    } catch (error) {
+      console.error('Error fetching product:', error);
+      throw new Error('Product not found');
+    }
   }
 
   static async createProduct(productData) {
