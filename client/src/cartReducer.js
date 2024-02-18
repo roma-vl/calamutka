@@ -1,5 +1,11 @@
 // cartReducer.js
-import {ADD_TO_CART, DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_FROM_CART} from './cartActions';
+import {
+  ADD_TO_CART,
+  DECREASE_QUANTITY,
+  INCREASE_QUANTITY,
+  LOAD_CART_FROM_LOCAL_STORAGE,
+  REMOVE_FROM_CART
+} from './cartActions';
 
 const initialState = {
   products: []
@@ -31,6 +37,14 @@ const cartReducer = (state = initialState, action) => {
           product.id === action.payload && product.quantity > 1 ? { ...product, quantity: product.quantity - 1 } : product
         )
       };
+    case LOAD_CART_FROM_LOCAL_STORAGE: {
+      const products = JSON.parse(localStorage.getItem('cart')) || [];
+      console.log(products)
+      return {
+        ...state,
+        products:  products
+      };
+    }
     default:
       return state;
   }

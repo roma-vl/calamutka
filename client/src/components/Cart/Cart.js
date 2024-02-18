@@ -6,8 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Close from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
 import { useNavigate } from 'react-router-dom';
-import {addToCart, decreaseQuantity, increaseQuantity, removeFromCart} from '../../cartActions';
-import store from "../../store";
+import {decreaseQuantity, increaseQuantity, removeFromCart, saveCartToLocalStorage} from '../../cartActions';
 
 const Cart = ({ isOpen, handleCloseCart, products }) => {
   const navigate = useNavigate();
@@ -15,14 +14,17 @@ const Cart = ({ isOpen, handleCloseCart, products }) => {
   const dispatch = useDispatch();
   const handleIncreaseQuantity = (id) => {
     dispatch(increaseQuantity(id));
+    dispatch(saveCartToLocalStorage());
   };
 
   const handleDecreaseQuantity = (id) => {
     dispatch(decreaseQuantity(id));
+    dispatch(saveCartToLocalStorage());
   };
 
   const handleDeleteCard = (id) => {
     dispatch(removeFromCart(id));
+    dispatch(saveCartToLocalStorage());
   };
   return (
     <Dialog
@@ -46,7 +48,7 @@ const Cart = ({ isOpen, handleCloseCart, products }) => {
           <Close />
         </IconButton>
         <Grid container spacing={2}>
-          {products.map(product => (
+          {products && products.map(product => (
             <Grid item xs={12} key={product.id}>
               <Card>
                 <CardContent style={{ display: 'flex', alignItems: 'center' }}>
@@ -66,7 +68,7 @@ const Cart = ({ isOpen, handleCloseCart, products }) => {
                           variant="outlined"
                           inputProps={{ min: 1 }}
                           sx={{ width: '90px', padding: '5.5px 10px' }}
-                          disabled
+                          // disabled
                         />
                         <IconButton onClick={() => handleIncreaseQuantity(product.id)}><AddIcon /></IconButton>
                       </div>
