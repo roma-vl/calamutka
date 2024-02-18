@@ -141,8 +141,8 @@ async function initAuth(app) {
     res.json({ message: 'Logout successful' });
   })
 
-  app.get('/protected', checkAuth, (req, res) => {
-    res.json({message: 'Protected Route', user: req.user});
+  app.get('/auth/user', checkAuth, (req, res) => {
+    res.json({user: req.user});
   });
 }
 

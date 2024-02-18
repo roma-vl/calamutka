@@ -45,11 +45,11 @@ const Header = () => {
 
     const [isCartOpen, setIsCartOpen] = useState(false);
     const productsInCart = useSelector(state => state.cart.products);
+    const user = useSelector(state => state.user.userData);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(loadCartFromLocalStorage());
-        console.log(store.getState())
     }, [dispatch]);
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -111,7 +111,7 @@ const Header = () => {
                         aria-label="account of current user"
                       >
                           {authService.isUserLoggedIn() ?
-                            <Avatar key="avatar" alt="Profile Photo" src="https://picsum.photos/30" className={useStyles.avatar} />
+                            <Avatar key="avatar" alt="Profile Photo" src={user && user.profile_picture} className={useStyles.avatar} />
                             :
                             <AccountCircleIcon key="icon" sx={{ fontSize: '32px' }} />
                           }
@@ -141,7 +141,7 @@ const Header = () => {
                       >
                           {authService.isUserLoggedIn() ? (
                             [
-                                <MenuItem key="name">Привіт, (Імя)</MenuItem>,
+                                <MenuItem key="name">Привіт, {user ? (user.first_name + ' ' + user.last_name) : ('Гість')}</MenuItem>,
                                 <MenuItem key="cabinet" component={Link} to="/cabinet" onClick={handleMenuClose}>
                                     <ListItemIcon>
                                         <AccountCircleIcon fontSize="small" />

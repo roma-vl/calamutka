@@ -39,7 +39,6 @@ const cartReducer = (state = initialState, action) => {
       };
     case LOAD_CART_FROM_LOCAL_STORAGE: {
       const products = JSON.parse(localStorage.getItem('cart')) || [];
-      console.log(products)
       return {
         ...state,
         products:  products
