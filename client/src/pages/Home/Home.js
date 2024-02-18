@@ -92,7 +92,6 @@ const HomePage = () => {
         dispatch(fetchProductsFailure(error.message));
       }
     };
-    console.log(products)
       fetchProducts();
   }, [dispatch]);
 

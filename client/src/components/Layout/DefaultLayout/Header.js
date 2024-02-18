@@ -26,7 +26,8 @@ import Close from '@mui/icons-material/Close';
 import Cart from "../../Cart/Cart";
 import {Badge} from "@mui/material";
 import store from "../../../store";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {loadCartFromLocalStorage} from "../../../cartActions";
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -44,11 +45,12 @@ const Header = () => {
 
     const [isCartOpen, setIsCartOpen] = useState(false);
     const productsInCart = useSelector(state => state.cart.products);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-
-        console.log(store.getState().cart.products);
-    }, []);
-
+        dispatch(loadCartFromLocalStorage());
+        console.log(store.getState())
+    }, [dispatch]);
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
         setMenuOpen(true);
