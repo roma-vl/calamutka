@@ -30,7 +30,7 @@ export default function Login() {
 
     const handleAlertClose = () => {
         setAlertOpen(false);
-        setErrors(null); // Спробуйте очистити помилки тут
+        setErrors(null);
     };
 
     const handleInputChange = (e) => {
@@ -52,7 +52,7 @@ export default function Login() {
                 setErrors(errorMessages);
                 setAlertOpen(true);
             } else {
-                navigate('/');
+                window.location.href = '/';
             }
         } catch (error) {
             console.error(error);

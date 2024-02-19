@@ -22,12 +22,13 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
+import Container from "@mui/material/Container";
 
-const drawerWidth = 100;
+const drawerWidth = 0;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(2),
   },
   paper: {
     padding: theme.spacing(4),
@@ -36,14 +37,14 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   avatar: {
-    width: theme.spacing(30),
-    height: theme.spacing(30),
+    width: theme.spacing(25),
+    height: theme.spacing(25),
     margin: 'auto',
     marginBottom: 40
   },
   userInfo: {
     textAlign: 'left',
-    paddingLeft: theme.spacing(3),
+    paddingLeft: theme.spacing(2),
   },
   editIcon: {
     cursor: 'pointer',
@@ -66,12 +67,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   menuLists: {
-    width: 350,
+    width: 270,
     padding: 12
   },
   listItems: {
-    height: 64,
-    width: 350
+    height: 44,
+    width: 270
   }
 }));
 
@@ -103,242 +104,243 @@ const Cabinet = () => {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={3}>
-          <List className={classes.menuLists}>
-            <ListItem
-              button
-              component={Link}
-              to="/cabinet#profile"
-              selected={activeTab === 'profile'}
-              onClick={() => handleTabClick('profile')}
-              className={classes.listItems}
-            >
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Профіль" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/cabinet#edit"
-              selected={activeTab === 'edit'}
-              onClick={() => handleTabClick('edit')}
-              className={classes.listItems}
-            >
-              <ListItemIcon>
-                <EditIcon />
-              </ListItemIcon>
-              <ListItemText primary="Редагувати профіль" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/cabinet#history"
-              selected={activeTab === 'history'}
-              onClick={() => handleTabClick('history')}
-              className={classes.listItems}
-            >
-              <ListItemIcon>
-                <HistoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="Історія" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/cabinet#bookmarks"
-              selected={activeTab === 'bookmarks'}
-              onClick={() => handleTabClick('bookmarks')}
-              className={classes.listItems}
-            >
-              <ListItemIcon>
-                <BookmarksIcon />
-              </ListItemIcon>
-              <ListItemText primary="Збереженні" />
-            </ListItem>
-          </List>
-        </Grid>
-        <Grid item xs={8}>
-          {activeTab === 'edit' ? (
-            <Paper className={classes.paper}>
-              <form>
-                <TextField
-                  label="Ім'я"
-                  variant="outlined"
-                  className={classes.input}
-                />
-                <TextField
-                  label="Прізвище"
-                  variant="outlined"
-                  className={classes.input}
-                />
-                <TextField
-                  label="Емейл"
-                  variant="outlined"
-                  className={classes.input}
-                />
-                <TextField
-                  label="Телефон"
-                  variant="outlined"
-                  className={classes.input}
-                />
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  startIcon={<EditIcon />}
-                  className={classes.editIcon}
-                  onClick={handleEditClick}
-                >
-                  Зберегти зміни
-                </Button>
-              </form>
-            </Paper>
-          ) : activeTab === 'history' ? (
-            <Paper className={classes.paper}>
-              <Typography variant="h5">Історія дій</Typography>
-              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300 }}
-                  image="https://picsum.photos/300"
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Історія дій
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
-                  <Button size="small" color="primary">
-                    Share
+    <Container>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={3}>
+            <List className={classes.menuLists}>
+              <ListItem
+                button
+                component={Link}
+                to="/cabinet#profile"
+                selected={activeTab === 'profile'}
+                onClick={() => handleTabClick('profile')}
+                className={classes.listItems}
+              >
+                <ListItemIcon>
+                  <AccountCircleIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Профіль"/>
+              </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to="/cabinet#edit"
+                selected={activeTab === 'edit'}
+                onClick={() => handleTabClick('edit')}
+                className={classes.listItems}
+              >
+                <ListItemIcon>
+                  <EditIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Редагувати профіль"/>
+              </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to="/cabinet#history"
+                selected={activeTab === 'history'}
+                onClick={() => handleTabClick('history')}
+                className={classes.listItems}
+              >
+                <ListItemIcon>
+                  <HistoryIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Історія"/>
+              </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to="/cabinet#bookmarks"
+                selected={activeTab === 'bookmarks'}
+                onClick={() => handleTabClick('bookmarks')}
+                className={classes.listItems}
+              >
+                <ListItemIcon>
+                  <BookmarksIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Збереженні"/>
+              </ListItem>
+            </List>
+          </Grid>
+          <Grid item xs={9}>
+            {activeTab === 'edit' ? (
+              <Paper className={classes.paper}>
+                <form>
+                  <TextField
+                    label="Ім'я"
+                    variant="outlined"
+                    className={classes.input}
+                  />
+                  <TextField
+                    label="Прізвище"
+                    variant="outlined"
+                    className={classes.input}
+                  />
+                  <TextField
+                    label="Емейл"
+                    variant="outlined"
+                    className={classes.input}
+                  />
+                  <TextField
+                    label="Телефон"
+                    variant="outlined"
+                    className={classes.input}
+                  />
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<EditIcon/>}
+                    className={classes.editIcon}
+                    onClick={handleEditClick}
+                  >
+                    Зберегти зміни
                   </Button>
-                </CardActions>
-              </Card>
-              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300 }}
-                  image="https://picsum.photos/300"
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    LІсторія дій
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
-                  <Button size="small" color="primary">
-                    Share
-                  </Button>
-                </CardActions>
-              </Card>
-            </Paper>
-          ) : activeTab === 'bookmarks' ? (
-            <Paper className={classes.paper}>
-              <Typography variant="h5" sx={{ display: 'flex', marginBottom: '20px' }}>Збереженні</Typography>
-              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300 }}
-                  image="https://picsum.photos/300"
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Збереженні
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
-                  <Button size="small" color="primary">
-                    Share
-                  </Button>
-                </CardActions>
-              </Card>
-              <Card sx={{ display: 'flex', marginBottom: '20px' }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300 }}
-                  image="https://picsum.photos/300"
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Збереженні
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ justifyContent: 'flex-end', marginTop: 'auto' }}>
-                  <Button size="small" color="primary">
-                    Share
-                  </Button>
-                </CardActions>
-              </Card>
-            </Paper>
-          ) : (
-            <Fragment>
-              <Grid container >
-                <Grid item xs={4}>
-                  <Paper className={classes.paper}>
-                    <Avatar alt="Profile Photo" src="https://picsum.photos/300" className={classes.avatar} />
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      startIcon={<EditIcon />}
-                      className={classes.editIcon}
-                      onClick={handleEditClick}
-                    >
-                      Додати фото
+                </form>
+              </Paper>
+            ) : activeTab === 'history' ? (
+              <Paper className={classes.papasrer}>
+                <Typography variant="h5">Історія дій</Typography>
+                <Card sx={{display: 'flex', marginBottom: '20px'}}>
+                  <CardMedia
+                    component="img"
+                    sx={{width: 200}}
+                    image="https://picsum.photos/200"
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      Історія дій
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Lizards are a widespread group of squamate reptiles, with over 6,000
+                      species, ranging across all continents except Antarctica
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{justifyContent: 'flex-end', marginTop: 'auto'}}>
+                    <Button size="small" color="primary">
+                      Share
                     </Button>
-                  </Paper>
-                </Grid>
-                <Grid item xs={8}>
-                  <Paper className={classes.paper}>
-                    <div className={classes.userInfo}>
-                      {/* Display user information */}
-                      <Typography variant="h4">Ім'я Користувача</Typography>
-                      <Typography variant="subtitle1">Емейл: user@example.com</Typography>
-                      <Typography variant="subtitle1">Дата реєстрації: 01/01/2022</Typography>
+                  </CardActions>
+                </Card>
+                <Card sx={{display: 'flex', marginBottom: '20px'}}>
+                  <CardMedia
+                    component="img"
+                    sx={{width: 200}}
+                    image="https://picsum.photos/200"
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      LІсторія дій
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Lizards are a widespread group of squamate reptiles, with over 6,000
+                      species, ranging across all continents except Antarctica
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{justifyContent: 'flex-end', marginTop: 'auto'}}>
+                    <Button size="small" color="primary">
+                      Share
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Paper>
+            ) : activeTab === 'bookmarks' ? (
+              <Paper className={classes.paper}>
+                <Typography variant="h5" sx={{display: 'flex', marginBottom: '20px'}}>Збереженні</Typography>
+                <Card sx={{display: 'flex', marginBottom: '20px'}}>
+                  <CardMedia
+                    component="img"
+                    sx={{width: 250}}
+                    image="https://picsum.photos/250"
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      Збереженні
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Lizards are a widespread group of squamate reptiles, with over 6,000
+                      species, ranging across all continents except Antarctica
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{justifyContent: 'flex-end', marginTop: 'auto'}}>
+                    <Button size="small" color="primary">
+                      Share
+                    </Button>
+                  </CardActions>
+                </Card>
+                <Card sx={{display: 'flex', marginBottom: '20px'}}>
+                  <CardMedia
+                    component="img"
+                    sx={{width: 250}}
+                    image="https://picsum.photos/250"
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      Збереженні
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Lizards are a widespread group of squamate reptiles, with over 6,000
+                      species, ranging across all continents except Antarctica
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{justifyContent: 'flex-end', marginTop: 'auto'}}>
+                    <Button size="small" color="primary">
+                      Share
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Paper>
+            ) : (
+              <Fragment>
+                <Grid container>
+                  <Grid item md={4} style={{paddingRight: 15}}>
+                    <Paper className={classes.paper}>
+                      <Avatar alt="Profile Photo" src="https://picsum.photos/150" className={classes.avatar}/>
                       <Button
                         variant="outlined"
                         color="primary"
-                        startIcon={<EditIcon />}
+                        startIcon={<EditIcon/>}
                         className={classes.editIcon}
                         onClick={handleEditClick}
-                        onClick={notify}
                       >
-                        Редагувати профіль
+                        Додати фото
                       </Button>
-                      <div>
-                        <Button onClick={notify}>Notify!</Button>
-                        <ToastContainer />
+                    </Paper>
+                  </Grid>
+                  <Grid item md={8} >
+                    <Paper className={classes.paper}>
+                      <div className={classes.userInfo}>
+                        <Typography variant="h4">Ім'я Користувача</Typography>
+                        <Typography variant="subtitle1">Емейл: user@example.com</Typography>
+                        <Typography variant="subtitle1">Дата реєстрації: 01/01/2022</Typography>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          startIcon={<EditIcon/>}
+                          className={classes.editIcon}
+                          onClick={handleEditClick}
+                          onClick={notify}
+                        >
+                          Редагувати профіль
+                        </Button>
+                        <div>
+                          <Button onClick={notify}>Notify!</Button>
+                          <ToastContainer/>
+                        </div>
                       </div>
-                    </div>
-                  </Paper>
+                    </Paper>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Fragment>
-          )}
+              </Fragment>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </Container>
   );
 };
 
