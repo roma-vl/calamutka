@@ -3,12 +3,9 @@ import {Typography, Grid, Card, CardContent, CardMedia, Button, IconButton, Circ
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ImageGallery from "react-image-gallery";
-// import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -16,7 +13,6 @@ import {get} from "../../api/axios.api";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {fetchOneProductFailure, fetchOneProductRequest, fetchOneProductSuccess} from "../../oneProductActions";
-import store from "../../store";
 import {addToCart, saveCartToLocalStorage} from "../../cartActions";
 
 const Product = () => {
@@ -36,7 +32,6 @@ const Product = () => {
   const addProductItem = (productItem) => {
     dispatch(addToCart(productItem));
     dispatch(saveCartToLocalStorage());
-    console.log(store.getState());
   }
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,9 +44,6 @@ const Product = () => {
       }
     };
     fetchProduct();
-    // console.log(store.getState().oneProduct.product);
-    console.log(product);
-
   }, [dispatch]);
 
   const images = [
@@ -68,7 +60,9 @@ const Product = () => {
       }))
       : [])
   ];
-  console.log(images);
+  if (!product) {
+    return null;
+  }
   return (
     <Container>
       <Grid container spacing={3}>

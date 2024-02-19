@@ -2,7 +2,6 @@
 import { BrowserRouter } from 'react-router-dom'
 import AppRoutes from 'routes/app.routes'
 import { useDispatch} from 'react-redux';
-import store from "./store";
 import {useEffect} from "react";
 import { fetchUserFailure, fetchUserRequest, fetchUserSuccess} from "./userActions";
 import {get} from "./api/axios.api";
