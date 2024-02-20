@@ -7,12 +7,15 @@ import config from "../../../config/config.js";
 
 class MailService {
 
-  header = 'header.html';
-  footer = 'footer.html';
-  template = '';
-  constructor(context = null) {
+  static header  = 'header.html';
+  static footer  = 'footer.html';
+  static template= 'default.html';
+  static templateFolder = 'layout';
+
+  constructor(context = null, template) {
     this.context = context;
   }
+
 
   async send() {
     try {
@@ -20,7 +23,7 @@ class MailService {
       let mailOptions = {
         from: config.mail.nodemailer.from ,
         to: this.context.email,
-        subject: 'Invitation',
+        subject: 'От такі листи треба робити)',
         html: await this.generateEmailContent()
       };
 
@@ -33,21 +36,21 @@ class MailService {
   }
 
   async generateEmailContent() {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname  = dirname(__filename);
-    const locale = this.getAccountLocale();
-    const headerPath = join(__dirname, 'templates/', locale, '/layout', this.header);
-    const footerPath = join(__dirname, 'templates/', locale, '/layout', this.footer);
+    const __filename   = fileURLToPath(import.meta.url);
+    const __dirname    = dirname(__filename);
+    const locale   = this.getAccountLocale();
+    const headerPath   = join(__dirname, 'templates/', locale, '/' + MailService.templateFolder +'/', MailService.header);
+    const footerPath   = join(__dirname, 'templates/', locale, '/' + MailService.templateFolder +'/', MailService.footer);
+    const templatePath = join(__dirname, 'templates/', locale, '/' + MailService.templateFolder +'/', MailService.template);
 
     try {
-      const [headerContent, footerContent] = [
+      const [headerContent,templateContent, footerContent] = [
         await fs.readFile(headerPath, 'utf8'),
+        await fs.readFile(templatePath, 'utf8'),
         await fs.readFile(footerPath, 'utf8')
       ];
 
-      // console.log(`${headerContent}${this.template}${footerContent}`)
-
-      return `${headerContent}${this.template}${footerContent}`;
+      return `${headerContent}${templateContent}${footerContent}`;
     } catch (error) {
       console.error('Error reading file:', error);
       return '';
@@ -58,7 +61,26 @@ class MailService {
     if (this.context.locale) {
       return this.context.locale
     }
-    return 'ua'
+    return 'en'
+  }
+
+
+  static setTemplate(templateName) {
+    MailService.template = templateName;
+  }
+
+  static setHeader(headerName) {
+    MailService.header = headerName;
+  }
+
+  static setFooter(footerName) {
+    MailService.footer = footerName;
+  }
+
+  static setTemplateFolder(templateFolderName) {
+    MailService.templateFolder = templateFolderName;
   }
 }
+
+
 export default MailService

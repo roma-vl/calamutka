@@ -1,14 +1,19 @@
 import MailService from "./MailService.js";
 
 class Welcome extends MailService {
-  static template = 'welcome.html';
-  constructor(context = null) {
-    super(context);
+  static setTemplate() {
+    super.setTemplate('welcome.html');
   }
 
-  // async generateEmailContent() {
-  //   return '<p>Invitation content goes here</p>';
-  // }
+  static setTemplateFolder() {
+    super.setTemplateFolder('welcome');
+  }
+  constructor(context = null) {
+    super(context);
+    Welcome.setTemplate();
+    Welcome.setTemplateFolder();
+  }
+
 }
 
 export default Welcome
