@@ -40,8 +40,8 @@ class MailService {
     const __filename   = fileURLToPath(import.meta.url);
     const __dirname    = dirname(__filename);
     const locale   = this.getAccountLocale();
-    const view = MailService.view;
-    view.siteUrl = 'https://calamutka.com';
+    // const view = MailService.view;
+    MailService.view.siteUrls = 'https://calamutka.com';
 
     const headerPath   = join(__dirname, 'templates/', locale, '/layout/', MailService.header);
     const footerPath   = join(__dirname, 'templates/', locale, '/layout/', MailService.footer);
@@ -57,6 +57,8 @@ class MailService {
       // Компілюємо шаблон за допомогою Handlebars
       const compiledTemplate = handlebars.compile(htmlTemplate);
 
+
+      const view = MailService.view;
       console.log(view)
       const renderedHtml = compiledTemplate(view);
       // console.log(renderedHtml)
@@ -77,7 +79,7 @@ class MailService {
 
 
   static setView(view) {
-    MailService.view = view;
+    MailService.view = {...MailService.view, ...view};
   }
 
   static setTemplate(templateName) {
