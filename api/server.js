@@ -100,7 +100,8 @@ export default async () => {
 
         const context = {
             name: 'Roma',
-            email: 'r.volkov@yaware.com'
+            email: 'r.volkov@yaware.com',
+            locale: 'ua'
         }
 
         const mail = new Welcome(context);

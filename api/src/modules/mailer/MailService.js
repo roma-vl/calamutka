@@ -1,7 +1,7 @@
 import {dirname, join} from "path";
 import {fileURLToPath} from "url";
 import { promises as fs } from 'fs';
-import transporter from "./transport.js";
+import handlebars from 'handlebars';
 import config from "../../../config/config.js";
 
 
@@ -11,6 +11,7 @@ class MailService {
   static footer  = 'footer.html';
   static template= 'default.html';
   static templateFolder = 'layout';
+  static view = {};
 
   constructor(context = null, template) {
     this.context = context;
@@ -28,7 +29,7 @@ class MailService {
       };
 
       console.log(mailOptions)
-      let info = await transporter.sendMail(mailOptions);
+      // let info = await transporter.sendMail(mailOptions);
 
     } catch (error) {
       console.error('Error occurred while sending email:', error);
@@ -39,8 +40,11 @@ class MailService {
     const __filename   = fileURLToPath(import.meta.url);
     const __dirname    = dirname(__filename);
     const locale   = this.getAccountLocale();
-    const headerPath   = join(__dirname, 'templates/', locale, '/' + MailService.templateFolder +'/', MailService.header);
-    const footerPath   = join(__dirname, 'templates/', locale, '/' + MailService.templateFolder +'/', MailService.footer);
+    const view = MailService.view;
+    view.siteUrl = 'https://calamutka.com';
+
+    const headerPath   = join(__dirname, 'templates/', locale, '/layout/', MailService.header);
+    const footerPath   = join(__dirname, 'templates/', locale, '/layout/', MailService.footer);
     const templatePath = join(__dirname, 'templates/', locale, '/' + MailService.templateFolder +'/', MailService.template);
 
     try {
@@ -49,8 +53,14 @@ class MailService {
         await fs.readFile(templatePath, 'utf8'),
         await fs.readFile(footerPath, 'utf8')
       ];
+      const htmlTemplate = `${headerContent}${templateContent}${footerContent}`;
+      // Компілюємо шаблон за допомогою Handlebars
+      const compiledTemplate = handlebars.compile(htmlTemplate);
 
-      return `${headerContent}${templateContent}${footerContent}`;
+      console.log(view)
+      const renderedHtml = compiledTemplate(view);
+      // console.log(renderedHtml)
+      return renderedHtml;
     } catch (error) {
       console.error('Error reading file:', error);
       return '';
@@ -64,6 +74,11 @@ class MailService {
     return 'en'
   }
 
+
+
+  static setView(view) {
+    MailService.view = view;
+  }
 
   static setTemplate(templateName) {
     MailService.template = templateName;
