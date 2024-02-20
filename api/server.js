@@ -15,6 +15,7 @@ import pinoHttp from 'pino-http';
 import fileupload from 'express-fileupload'
 import config from './config/config.js';
 import productRoutes from "./src/modules/products/routes/productRoutes.js";
+import Welcome from "./src/modules/mailer/Welcome.js";
 
 export default async () => {
     const app = express();
@@ -94,6 +95,20 @@ export default async () => {
 
         res.status(200).sendFile( filePath);
     });
+
+    app.use('/mail', (req, res) => {
+
+        const context = {
+            name: 'Roma',
+            email: 'r.volkov@yaware.com'
+        }
+
+        const mail = new Welcome(context);
+        mail.send();
+
+        res.status(200).json({ success: 'Надіслано' });
+    });
+
 
     app.use(onError);
 

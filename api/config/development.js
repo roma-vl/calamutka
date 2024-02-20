@@ -1,4 +1,5 @@
 import developmentDb from './developmentDb.js';
+import developmentMail from "./developmentMail.js";
 
 export default {
     app: {
@@ -9,6 +10,7 @@ export default {
     passport: {
         jwtSecretKey: 'your-secret-key',
     },
-    database: developmentDb
+    database: developmentDb,
+    mail: developmentMail
 };
 

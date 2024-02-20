@@ -13,7 +13,7 @@ import authService from "./services/authService";
         const fetchUser = async () => {
           dispatch(fetchUserRequest());
           try {
-            const response = await get('/auth/user'); // Припустимо, що ваш API ендпоінт для отримання даних про користувача - '/api/user'
+            const response = await get('/auth/user');
             dispatch(fetchUserSuccess(response.data.user));
           } catch (error) {
             dispatch(fetchUserFailure(error.message));
