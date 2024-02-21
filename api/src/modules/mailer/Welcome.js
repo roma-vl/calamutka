@@ -1,27 +1,24 @@
 import MailService from "./MailService.js";
 
 class Welcome extends MailService {
-  static setTemplate() {
-    super.setTemplate('welcome.html');
-  }
-
-  static setTemplateFolder() {
-    super.setTemplateFolder('welcome');
-  }
-
-  static updateView(data) {
-    MailService.setView(data);
+  template = 'welcome.html';
+  templateFolder = 'welcome';
+  views = {
+    product: {
+      companyName: 'Example Inc.',
+      test: {
+        rofTt: 23,
+        fisDs: 'hello'
+      }
+    }
   }
   constructor(context = null) {
     super(context);
-    Welcome.setTemplate();
-    Welcome.setTemplateFolder();
-    Welcome.updateView({
-      siteUrl: 'https://example.com',
-      companyName: 'Example Inc.'
-    });
+    this.setTemplate(this.template);
+    this.setTemplateFolder(this.templateFolder);
+    this.setView(this.views);
   }
 
 }
 
-export default Welcome
+export default Welcome;
