@@ -16,10 +16,12 @@ export default async (req, res, next) => {
         const [user] = await knex.select('*').from('users').where('id', userId);
 
         if (!user || user.length === 0) {
-            return res.status(401).json({ message: 'Unauthorized' });
+            return res.status(401).json({ message: 'Такого Юзера не знайдено.' });
+        } else {
+            req.user = user;
+            next();
         }
-        req.user = user;
-        next();
+
     } catch (error) {
         return res.status(401).json({ message: 'Unauthorized dd' });
     }

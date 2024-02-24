@@ -3,15 +3,7 @@ import MailService from "./MailService.js";
 class Welcome extends MailService {
   template = 'welcome.html';
   templateFolder = 'welcome';
-  views = {
-    product: {
-      companyName: 'Example Inc.',
-      test: {
-        rofTt: 23,
-        fisDs: 'hello'
-      }
-    }
-  }
+  views = {}
   constructor(context = null) {
     super(context);
     this.setTemplate(this.template);

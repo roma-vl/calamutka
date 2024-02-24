@@ -4,6 +4,7 @@ import {promises as fs} from 'fs';
 import handlebars from 'handlebars';
 import config from "../../../config/config.js";
 import productConfig from "../../../config/productConfig.js";
+import transporter from "./transport.js";
 
 class MailService {
 
@@ -31,7 +32,7 @@ class MailService {
       };
 
       // console.log(mailOptions);
-      // let info = await transporter.sendMail(mailOptions);
+      let info = await transporter.sendMail(mailOptions);
 
     } catch (error) {
       console.error('Error occurred while sending email:', error);
@@ -42,7 +43,6 @@ class MailService {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const locale = this.getAccountLocale();
-
 
 
     const headerPath = join(__dirname, 'templates/', locale, '/layout/', this.header);
@@ -71,7 +71,7 @@ class MailService {
     if (this.context.locale) {
       return this.context.locale;
     }
-    return 'en';
+    return 'ua';
   }
 
   setView(views) {

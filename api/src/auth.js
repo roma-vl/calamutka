@@ -5,8 +5,12 @@ import knex from './modules/app/src/connection/app.js';
 import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt';
 import {log} from "util";
 import cookieParser from "cookie-parser";
-import checkAuth from "./modules/app/src/auth/midleware/checkAuth.js";
+import isAuthenticated from "./modules/app/src/auth/midleware/isAuthenticated.js";
 import session from "express-session";
+import isModerator from "./modules/app/src/auth/midleware/isModerator.js";
+import isModeratorWithAuth from "./modules/app/src/auth/midleware/isModeratorWithAuth.js";
+import isAdminWithAuth from "./modules/app/src/auth/midleware/isAdminWithAuth.js";
+import isUserWithAuth from "./modules/app/src/auth/midleware/isUserWithAuth.js";
 
 async function initAuth(app) {
   // app.use(session({
@@ -141,7 +145,7 @@ async function initAuth(app) {
     res.json({ message: 'Logout successful' });
   })
 
-  app.get('/auth/user', checkAuth, (req, res) => {
+  app.get('/auth/user', isUserWithAuth, (req, res) => {
     res.json({user: req.user});
   });
 }

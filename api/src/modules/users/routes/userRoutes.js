@@ -2,6 +2,7 @@ import express from 'express';
 import  UserController from '../controllers/UserController.js';
 import { validateUserData } from '../middleware/validation.js';
 import { logRequest } from '../middleware/logger.js';
+import isAuthenticated from "../../app/src/auth/midleware/isAuthenticated.js";
 
 const userRoutes = (knex) => {
     const app = express.Router();
@@ -10,7 +11,7 @@ const userRoutes = (knex) => {
     app.use(logRequest);
 
     // Маршрути для кожного методу CRUD
-    app.get('/', UserController.getAllUsers);
+    app.get('/', isAuthenticated, UserController.getAllUsers);
     app.post('/', UserController.createUser);
     app.get('/:id', UserController.getUserById);
     app.put('/:id', UserController.updateUserById);

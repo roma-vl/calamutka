@@ -98,11 +98,13 @@ export default async () => {
 
     app.use('/mail', (req, res) => {
 
-        const context = {
-            name: 'Roma',
-            email: 'r.volkov@yaware.com',
-            locale: 'ua'
-        }
+        // const context = {
+        //     name: 'Roma',
+        //     email: 'r.volkov@yaware.com',
+        //     // name: 'Grisha',
+        //     // email: 'volkovgrisha80@gmail.com',
+        //     locale: 'ua'
+        // }
 
         const mail = new Welcome(context);
         mail.send();
