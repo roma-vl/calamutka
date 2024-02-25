@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 export const seed = function (knex) {
-    return knex('users').truncate()
+    return knex('users').del()
         .then(function () {
             const users = [];
             users.push({
@@ -16,6 +16,7 @@ export const seed = function (knex) {
                 profile_picture: faker.image.avatar(),
                 last_login: faker.date.past(),
                 role: faker.helpers.arrayElement(['Admin', 'User']),
+                role_id: faker.number.int({min: 1, max: 10}),
                 account_status: faker.helpers.arrayElement(['Active', 'Inactive']),
                 social_media_links: faker.internet.url(),
                 bio: faker.lorem.paragraph(),
