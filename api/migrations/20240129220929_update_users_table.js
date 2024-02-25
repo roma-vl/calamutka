@@ -14,6 +14,7 @@ export const up = function(knex) {
         table.string('profile_picture');
         table.dateTime('last_login');
         table.string('role');
+        table.integer('role_id');
         table.string('account_status');
         table.string('social_media_links');
         table.text('bio');

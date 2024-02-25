@@ -6,6 +6,7 @@ export const up = function(knex) {
 
 export const down = function(knex) {
   return knex.schema.table('products', function(table) {
+    table.dropForeign('category_id');
     table.dropColumn('category_id');
   });
 };
