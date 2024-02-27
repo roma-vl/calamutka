@@ -1,8 +1,6 @@
-
 import User from '../models/User.js';
-import UserRepositoryInterface from "./UserRepositoryInterface.js";
 
-export default class UserRepository extends UserRepositoryInterface {
+export default class UserRepository {
   static async getAllUsers() {
     return await User.query();
   }
@@ -21,6 +19,16 @@ export default class UserRepository extends UserRepositoryInterface {
 
   static async deleteUserById(id) {
     return await User.query().deleteById(id);
+  }
+
+  static async getUsersByIds(ids) {
+    // console.log(ids, 'qqqqqqqqqqqqqq')
+    try {
+      return await User.query().whereIn('id', ids);
+    } catch (error) {
+      console.error('Помилка при отриманні користувачів за ідентифікаторами:', error);
+      return [];
+    }
   }
 
   static async searchUsers(criteria) {
