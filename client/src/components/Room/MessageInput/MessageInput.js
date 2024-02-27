@@ -12,9 +12,10 @@ import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
+import {useSelector} from "react-redux";
 
 export default function MessageInput({sendMessage}) {
-  const user = storage.get(USER_KEY)
+  const user = useSelector(state => state.user.userData);
   const state = useStore((state) => state)
   const {file, setFile, showPreview, setShowPreview, showEmoji, setShowEmoji } = state
   const [text, setText] = useState('')
@@ -32,14 +33,18 @@ export default function MessageInput({sendMessage}) {
   const onSubmit = async (e) => {
     e.preventDefault()
     if (submitDisabled) return
+    if (!user) return false
 
-    const {userId, userName, roomId} = user
-    let message = {
-      messageId: nanoid(),
-      userId,
-      userName,
-      roomId
-    }
+
+      const {id, first_name, last_name} = user
+    const fullName = first_name + ' ' + last_name
+      let message = {
+        messageId: nanoid(),
+        userId: id,
+        userName: fullName,
+        roomId: '1'
+      }
+
 
     if (!file) {
       message.messageType = 'text'
@@ -48,7 +53,9 @@ export default function MessageInput({sendMessage}) {
     } else {
 
       try {
-        const path = await fileApi.upload({file, roomId})
+        const roomId = 'main_room'
+
+        const path = await fileApi.upload(file, 'main_room')
 
         message.messageType = file.type.split('/')[0]
         message.textOrPathToFile = path

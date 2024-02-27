@@ -2,8 +2,8 @@ import {Fragment} from 'react';
 import MessageItem from './MessageItem';
 import {Paper} from '@mui/material';
 
-export default function MessageList({messages, removeMessage}) {
-
+export default function MessageList({log, messages, removeMessage}) {
+  console.log(log)
   return (
     <Fragment>
       {messages && messages.slice().reverse().map((message, index) => (
