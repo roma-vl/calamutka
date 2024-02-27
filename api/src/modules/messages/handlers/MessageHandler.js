@@ -1,7 +1,6 @@
-// handlers/MessageHandlers.js
 import Message from '../repositories/MessagesRepository.js';
 
-class MessageHandlers {
+class MessageHandler {
   constructor(io, socket) {
     this.io = io;
     this.socket = socket;
@@ -12,29 +11,24 @@ class MessageHandlers {
     this.io.to(roomId).emit('message_list:update', _messages);
   }
 
-  handleMessageGet() {
-    this.socket.on('message:get', async () => {
+  async handleMessageGet() {
       try {
         await this.updateMessageList(this.socket.roomId);
       } catch (e) {
         console.error(e);
       }
-    });
   }
 
-  handleMessageAdd() {
-    this.socket.on('message:add', async (message) => {
+  async handleMessageAdd(message) {
       try {
         await Message.insertMessage({ ...message, roomId: this.socket.roomId });
         await this.updateMessageList(this.socket.roomId);
       } catch (e) {
         console.error(e);
       }
-    });
   }
 
-  handleMessageRemove() {
-    this.socket.on('message:remove', async (message) => {
+  async handleMessageRemove(message) {
       const { messageId, messageType } = message;
 
       try {
@@ -48,8 +42,6 @@ class MessageHandlers {
       } catch (e) {
         console.error(e);
       }
-    });
   }
 }
-
-export default MessageHandlers;
+export default MessageHandler;
