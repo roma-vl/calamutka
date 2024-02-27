@@ -3,14 +3,7 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import knex from './modules/app/src/connection/app.js';
 import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt';
-import {log} from "util";
-import cookieParser from "cookie-parser";
-import isAuthenticated from "./modules/app/src/auth/midleware/isAuthenticated.js";
-import session from "express-session";
-import isModerator from "./modules/app/src/auth/midleware/isModerator.js";
-import isModeratorWithAuth from "./modules/app/src/auth/midleware/isModeratorWithAuth.js";
-import isAdminWithAuth from "./modules/app/src/auth/midleware/isAdminWithAuth.js";
-import isUserWithAuth from "./modules/app/src/auth/midleware/isUserWithAuth.js";
+import checkPermissions from "./modules/app/src/auth/midleware/checkPermissions.js";
 
 async function initAuth(app) {
   // app.use(session({
@@ -62,7 +55,7 @@ async function initAuth(app) {
         });
       }
 
-      const token = jwt.sign({sub: user.id}, 'your_secret_key', {expiresIn: '1h'});
+      const token = jwt.sign({sub: user.id}, 'your_secret_key', {expiresIn: '24h'});
       console.log(token)
 
       res.cookie('accessToken', token, {
@@ -144,8 +137,8 @@ async function initAuth(app) {
 
     res.json({ message: 'Logout successful' });
   })
-
-  app.get('/auth/user', isUserWithAuth, (req, res) => {
+//checkPermissions('edit_product')
+  app.get('/auth/user', await checkPermissions('edit_product'), async (req, res) => {
     res.json({user: req.user});
   });
 }

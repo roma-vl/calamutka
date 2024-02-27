@@ -1,3 +1,4 @@
 /node_modules/
 /files/main_room/
 /var/
+/config/developmentMail.js

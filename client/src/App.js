@@ -14,6 +14,7 @@ import authService from "./services/authService";
           dispatch(fetchUserRequest());
           try {
             const response = await get('/auth/user');
+            console.log(response)
             dispatch(fetchUserSuccess(response.data.user));
           } catch (error) {
             dispatch(fetchUserFailure(error.message));

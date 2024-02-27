@@ -1,7 +1,7 @@
 import {SERVER_URI} from "../constants";
 import {post} from "./axios.api";
 
-const upload = async ({ file, roomId }) => {
+const upload = async ( file, roomId ) => {
     try {
         const body = new FormData();
         body.append('file', file);
