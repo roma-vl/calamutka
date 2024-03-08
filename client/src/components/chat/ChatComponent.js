@@ -2,29 +2,13 @@ import {useEffect, useState} from 'react';
 import ChatWindow from './ChatWindow';
 import {Avatar} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useChat from "../../hooks/useChat";
-import storage from "../../utils/storage";
-import {USER_KEY} from "constants.js";
-import {nanoid} from "nanoid";
 import './ChatComponent.css';
 import {useSelector} from "react-redux";
 
 const ChatComponent = () => {
-  // const {users} = useChat()
-  const userMap = new Map();
-
-  // const filteredUsers = users.filter((user) => {
-  //   const alreadyExists = userMap.has(user.userId);
-  //   if (!alreadyExists) {
-  //     userMap.set(user.userId, true);
-  //   }
-  //   return !alreadyExists;
-  // });
-
   const [isChatOpen, setChatOpen] = useState(false);
   const [chats, setChats] = useState([
     {id: 1, user: 'КМ'},
-    // {id: 2, user: 'РВ'},
   ]);
 
   const [cancelIconsVisible, setCancelIconsVisible] = useState([false, false]);
@@ -56,36 +40,6 @@ const ChatComponent = () => {
     });
   };
 
-  const [formData, setFormData] = useState({
-    userName: '',
-    roomId: 'main_room'
-  })
-
-  const [submitDisabled, setSubmitDisabled] = useState(true)
-
-  useEffect(() => {
-    const isSomeFieldEmpty = Object.values(formData).some((v) => !v.trim())
-    setSubmitDisabled(isSomeFieldEmpty)
-  }, [formData])
-
-  const onChange = ({target: {name, value}}) => {
-    setFormData({...formData, [name]: value})
-  }
-
-  const onSubmit = (e) => {
-    e.preventDefault()
-    if (submitDisabled) return
-
-    const userId = nanoid()
-
-    storage.set(USER_KEY, {
-      // userId,
-      // userName: formData.userName,
-      roomId: formData.roomId
-    })
-
-    window.location.reload()
-  }
   const user = useSelector(state => state.user.userData);
 
   return (
