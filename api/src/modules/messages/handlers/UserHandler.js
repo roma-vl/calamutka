@@ -1,5 +1,6 @@
-import RoomsRepository from "../repositories/UserRoomRepository.js";
+import UserRoomRepository from "../repositories/UserRoomRepository.js";
 import UserRepository from "../../users/repositories/UserRepository.js";
+import RoomsRepository from "../repositories/RoomsRepository.js";
 
 export default class UserHandler {
   constructor(io, socket) {
@@ -15,9 +16,8 @@ export default class UserHandler {
   }
 
   async updateUserListWithRoomId(roomId) {
-    const _messages = await RoomsRepository.getUsersByRoomId(roomId);
+    const _messages = await UserRoomRepository.getUsersByRoomId(roomId);
     const users = await UserRepository.getUsersByIds(_messages);
-    console.log(this.users, 'updateUserListWithRoomId')
     const userIdsAndUsernames = users.map(user => ({
       roomId: roomId,
       userId: user.id,
@@ -27,7 +27,7 @@ export default class UserHandler {
   }
 
   async updateUserListWithSocketId(socketId) {
-    const _messages = await RoomsRepository.getUsersBySocketId(socketId);
+    const _messages = await UserRoomRepository.getUsersBySocketId(socketId);
     const users = await UserRepository.getUsersByIds(_messages);
 
     const userIdsAndUsernames = users.map(user => ({
@@ -37,6 +37,7 @@ export default class UserHandler {
     }));
     this.io.to(this.roomId).emit('user_list:update', userIdsAndUsernames);
   }
+
   async handleUserAdd(user) {
     this.socket.to(this.roomId).emit('log', ` ${this.userName} connected`);
 
@@ -46,18 +47,56 @@ export default class UserHandler {
       user_id: user.userId,
       socket_id: user.socketId
     }
-    this.users[this.roomId] = await RoomsRepository.insertUserRoom(userData);
+    await UserRoomRepository.insertUserRoom(userData);
     await this.updateUserListWithRoomId(user.roomId);
   }
 
+  async handleRoomAdd(userFrom, userTo) {
+    const existingRoom = await RoomsRepository.findRoomByUsers(userFrom, userTo);
+
+    if (existingRoom) {
+      console.log('Room already exists:', existingRoom);
+      this.socket.join(existingRoom.id);
+      this.io.to(this.socket.id).emit('room_list:created', existingRoom.id);
+      return existingRoom;
+    }
+
+    const roomData = {
+      name: 'from_' + userFrom + '_to_' + userTo,
+      user_from: userFrom,
+      user_to: userTo
+    }
+    const room = await RoomsRepository.insertRoom(roomData);
+
+    this.socket.join(room.id);
+    this.io.to(this.socket.id).emit('room_list:created', room.id);
+  }
+
+  async handleRoomGet(userId) {
+    const existingRoom = await RoomsRepository.findRoomByUserId(userId);
+
+    const users = existingRoom.map(room => [room.user_from, room.user_to]);
+    // const uniqueUsers = new Set(users.flat());
+    let uniqueUsersArray = Array.from(new Set(users.flat()));
+    uniqueUsersArray = uniqueUsersArray.filter(id => id !== userId);
+    const usersq = await UserRepository.getUsersByIds(uniqueUsersArray);
+    const formattedRooms = existingRoom.map(room => {
+      const user = usersq.find(user => user.id === room.user_from || user.id === room.user_to);
+
+      const roomName = user ? user.first_name + ' ' + user.last_name : 'Збережене';
+      const userImage = user ? user.profile_picture : '';
+      const userId = user ? user.id : '';
+      return {...room, roomName, userImage, userId};
+    });
+    this.io.to(this.socket.id).emit('room_list:update', formattedRooms);
+  }
+
   async handleDisconnect() {
-      this.socket.to(this.roomId).emit('log', `${this.userName} disconnected`);
-    console.log(this.users, 'old')
-      this.users = Object.fromEntries(
-        Object.entries(this.users).filter(([key, value]) => value !== this.socket.id));
-    console.log(this.users, 'new')
-    await RoomsRepository.deleteUserRoom(this.socket.id);
-      await this.updateUserListWithSocketId(this.socket.id);
+    this.socket.to(this.roomId).emit('log', `${this.userName} disconnected`);
+    this.users = Object.fromEntries(
+      Object.entries(this.users).filter(([key, value]) => value !== this.socket.id));
+    await UserRoomRepository.deleteUserRoom(this.socket.id);
+    await this.updateUserListWithSocketId(this.socket.id);
 
   }
 }
