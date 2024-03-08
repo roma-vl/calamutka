@@ -1,10 +1,6 @@
 import Container from "@mui/material/Container";
 import {Fragment} from "react";
 import Room from "../../components/Room/Room";
-import authService from "../../services/authService";
-import NameInput from "../../components/NameInput/NameInput";
-import storage from "../../utils/storage";
-import {USER_KEY} from "constants";
 import {get} from "../../api/axios.api";
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -37,7 +33,7 @@ const CabinetMessage = () => {
           <Typography variant="h5">Повідомлення</Typography>
           {user &&
              ( <Fragment>
-                <Room/>
+                <Room user={user}/>
               </Fragment>)
           }
         </Paper>
