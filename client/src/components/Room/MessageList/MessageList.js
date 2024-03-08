@@ -3,7 +3,7 @@ import MessageItem from './MessageItem';
 import {Paper} from '@mui/material';
 
 export default function MessageList({log, messages, removeMessage}) {
-  console.log(log)
+  // console.log(log)
   return (
     <Fragment>
       <div>онлайн/офлайн {log}</div>

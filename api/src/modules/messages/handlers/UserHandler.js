@@ -73,22 +73,24 @@ export default class UserHandler {
   }
 
   async handleRoomGet(userId) {
-    const existingRoom = await RoomsRepository.findRoomByUserId(userId);
+    try {
+      const existingRooms = await RoomsRepository.findRoomByUserId(userId);
+      const userIds = Array.from(new Set(existingRooms.flatMap(room => [room.user_from, room.user_to])));
+      const otherUserIds = userIds.filter(id => id !== userId);
+      const otherUsers = await UserRepository.getUsersByIds(otherUserIds);
 
-    const users = existingRoom.map(room => [room.user_from, room.user_to]);
-    // const uniqueUsers = new Set(users.flat());
-    let uniqueUsersArray = Array.from(new Set(users.flat()));
-    uniqueUsersArray = uniqueUsersArray.filter(id => id !== userId);
-    const usersq = await UserRepository.getUsersByIds(uniqueUsersArray);
-    const formattedRooms = existingRoom.map(room => {
-      const user = usersq.find(user => user.id === room.user_from || user.id === room.user_to);
+      const formattedRooms = existingRooms.map(room => {
+        const otherUser = otherUsers.find(user => user.id === room.user_from || user.id === room.user_to);
+        const roomName = otherUser ? `${otherUser.first_name} ${otherUser.last_name}` : 'Збережене';
+        const userImage = otherUser ? otherUser.profile_picture : '';
+        const userId = otherUser ? otherUser.id : '';
+        return {...room, roomName, userImage, userId};
+      });
 
-      const roomName = user ? user.first_name + ' ' + user.last_name : 'Збережене';
-      const userImage = user ? user.profile_picture : '';
-      const userId = user ? user.id : '';
-      return {...room, roomName, userImage, userId};
-    });
-    this.io.to(this.socket.id).emit('room_list:update', formattedRooms);
+      this.io.to(this.socket.id).emit('room_list:update', formattedRooms);
+    } catch (error) {
+      console.error('Error in handleRoomGet:', error);
+    }
   }
 
   async handleDisconnect() {
