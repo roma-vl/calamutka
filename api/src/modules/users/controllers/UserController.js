@@ -59,6 +59,34 @@ class UserController {
             res.status(500).json({ message: 'Internal server error' });
         }
     }
+
+    static async findUserByUserName(req, res) {
+        try {
+            const { username } = req.query;
+            const user = await UserRepository.findUserByUserName(username);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.json(user);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    static async findUserByEmail(req, res) {
+        try {
+            const { email } = req.params;
+            const user = await UserRepository.findUserByEmail(email);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.json(user);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
 }
 
 export default UserController;

@@ -9,6 +9,7 @@ const userRoutes = (knex) => {
     app.use(validateUserData);
     app.use(logRequest);
 
+    app.get('/search', UserController.findUserByUserName);
     // Маршрути для кожного методу CRUD
     app.get('/', UserController.getAllUsers);
     app.post('/', UserController.createUser);
