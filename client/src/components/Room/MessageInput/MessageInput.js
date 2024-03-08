@@ -1,9 +1,6 @@
 import fileApi from 'api/file.api'
-import {USER_KEY} from 'constants.js'
 import useStore from 'hooks/useStore'
-import {nanoid} from 'nanoid'
 import {useEffect, useRef, useState} from 'react'
-import storage from 'utils/storage'
 import EmojiMart from './EmojiMart/EmojiMart'
 import FileInput from './FileInput/FileInput'
 import Recorder from './Recorder/Recorder'
@@ -14,10 +11,10 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import {useSelector} from "react-redux";
 
-export default function MessageInput({sendMessage}) {
+export default function MessageInput({sendMessage, roomId}) {
   const user = useSelector(state => state.user.userData);
   const state = useStore((state) => state)
-  const {file, setFile, showPreview, setShowPreview, showEmoji, setShowEmoji } = state
+  const {file, setFile, showPreview, setShowPreview, showEmoji, setShowEmoji} = state
   const [text, setText] = useState('')
   const [submitDisabled, setSubmitDisabled] = useState(true)
   const inputRef = useRef()
@@ -35,16 +32,10 @@ export default function MessageInput({sendMessage}) {
     if (submitDisabled) return
     if (!user) return false
 
-
-      const {id, first_name, last_name} = user
-    const fullName = first_name + ' ' + last_name
-      let message = {
-        messageId: nanoid(),
-        userId: id,
-        userName: fullName,
-        roomId: '1'
-      }
-
+    let message = {
+      userId: user.id,
+      roomId: roomId
+    }
 
     if (!file) {
       message.messageType = 'text'
@@ -53,8 +44,6 @@ export default function MessageInput({sendMessage}) {
     } else {
 
       try {
-        const roomId = 'main_room'
-
         const path = await fileApi.upload(file, 'main_room')
 
         message.messageType = file.type.split('/')[0]
@@ -77,7 +66,7 @@ export default function MessageInput({sendMessage}) {
     <Paper
       component="form"
       onSubmit={onSubmit}
-      sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: 320}}
+      sx={{p: '2px 4px', display: 'flex', alignItems: 'center'}}
     >
       <EmojiMart setText={setText} messageInput={text}/>
       <FileInput/>
@@ -98,7 +87,6 @@ export default function MessageInput({sendMessage}) {
           border: '1px solid primary.main',
           borderRadius: 1,
           color: 'black',
-          width: '85%',
         }}
       />
       <Divider sx={{height: 28, m: 0.5}} orientation="vertical"/>
