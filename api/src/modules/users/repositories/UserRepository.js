@@ -22,7 +22,6 @@ export default class UserRepository {
   }
 
   static async getUsersByIds(ids) {
-    // console.log(ids, 'qqqqqqqqqqqqqq')
     try {
       return await User.query().whereIn('id', ids);
     } catch (error) {
@@ -31,7 +30,11 @@ export default class UserRepository {
     }
   }
 
-  static async searchUsers(criteria) {
-    // Реалізуйте логіку пошуку користувачів на основі заданих критеріїв
+  static async findUserByUserName(username) {
+    return await User.query().where('username', 'LIKE', `%${username}%`);
+  }
+
+  static async findUserByEmail(email) {
+    return await User.query().where('email', 'LIKE', `%${email}%`);
   }
 }
