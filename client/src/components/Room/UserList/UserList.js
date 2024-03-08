@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { AiOutlineUser } from 'react-icons/ai';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { AiOutlineUser, AiOutlineMessage } from 'react-icons/ai';
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { get } from "../../../api/axios.api";
 
 const useStyles = makeStyles((theme) => ({
   listItem: {
@@ -19,14 +20,48 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.main,
     },
   },
+  messageIcon: {
+    marginLeft: 'auto',
+    fontSize: 24,
+    cursor: 'pointer',
+  },
 }));
 
-export default function UserList({ users }) {
+export default function UserList({ user, setRoomID, getMessages, roomID, createRoom, getRooms, rooms ,roomCreated}) {
   const classes = useStyles();
   const [activeUserId, setActiveUserId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
-  const handleListItemClick = (userId) => {
-    setActiveUserId(userId === activeUserId ? null : userId);
+  useEffect(() => {
+      getRooms(user.user.id);
+  }, [getRooms]);
+
+  const handleListItemClick = (roomId) => {
+    setActiveUserId(roomId === activeUserId ? null : roomId);
+    setRoomID(roomId);
+    getMessages({roomId: roomId});
+  };
+  const handleSendMessageClick = (userId, user, roomCreated) => {
+    createRoom(user.user.id, userId)
+    setSearchQuery('');
+    setSearchResults([]);
+  };
+
+  const handleSearchChange = async (event) => {
+    const { value } = event.target;
+    setSearchQuery(value);
+
+    if (value.length >= 1) {
+      try {
+        const response = await get(`/users/search?username=${value}`);
+        setSearchResults(response.data);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    } else {
+      setSearchResults([]);
+    }
   };
 
   return (
@@ -34,22 +69,48 @@ export default function UserList({ users }) {
       <Typography variant="h5" gutterBottom component="div">
         Users
       </Typography>
+
+      <TextField
+        label="Search users"
+        variant="outlined"
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
+
       <List>
-        {users.map(({ userId, userName }) => (
+        {searchResults.map(({ id, username, email, profile_picture }) => (
           <ListItem
-            key={userId}
-            className={`${classes.listItem} ${userId === activeUserId ? classes.activeListItem : ''}`}
-            onClick={() => handleListItemClick(userId)}
+            key={id}
+            className={`${classes.listItem} ${id === activeUserId ? classes.activeListItem : ''}`}
           >
             <ListItemAvatar>
               <Avatar>
-                <AiOutlineUser />
+                {profile_picture ? <img src={`${profile_picture}`} alt="" /> : <AiOutlineUser />}
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={userName} />
+            <ListItemText primary={username} secondary={email} />
+            <div className={classes.messageIcon} onClick={() => handleSendMessageClick(id, user, roomCreated)}>
+              <AiOutlineMessage />
+            </div>
+          </ListItem>
+        ))}
+      </List>
+      <List>
+        {rooms.map(({ id, roomName, userImage }) => (
+          <ListItem
+            key={id}
+            className={`${classes.listItem} ${id === activeUserId ? classes.activeListItem : ''}`}
+            onClick={() => handleListItemClick(id)}
+          >
+            <ListItemAvatar>
+              <Avatar>
+                {userImage ? <img src={`${userImage}`} alt="" /> : <AiOutlineUser />}
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={roomName} />
           </ListItem>
         ))}
       </List>
     </div>
-  )
+  );
 }
