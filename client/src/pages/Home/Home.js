@@ -8,10 +8,10 @@ import ProductCardGrid from "../../components/Product/ProductCardGrid";
 // import {get} from "./axios.api";
 import {SERVER_URI} from "../../constants";
 import {get} from "../../api/axios.api";
-import {addToCart} from "../../cartActions";
-import store from "../../store";
+import {addToCart} from "../../redux/actions/cartActions";
+import store from "../../redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchProductsFailure, fetchProductsRequest, fetchProductsSuccess} from "../../productActions";
+import {fetchProductsFailure, fetchProductsRequest, fetchProductsSuccess} from "../../redux/actions/productActions";
 import {CircularProgress} from "@mui/material";
 
 

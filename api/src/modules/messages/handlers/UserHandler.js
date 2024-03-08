@@ -48,7 +48,7 @@ export default class UserHandler {
       socket_id: user.socketId
     }
     await UserRoomRepository.insertUserRoom(userData);
-    await this.updateUserListWithRoomId(user.roomId);
+    // await this.updateUserListWithRoomId(user.roomId);
   }
 
   async handleRoomAdd(userFrom, userTo) {
@@ -97,8 +97,8 @@ export default class UserHandler {
     this.socket.to(this.roomId).emit('log', `${this.userName} disconnected`);
     this.users = Object.fromEntries(
       Object.entries(this.users).filter(([key, value]) => value !== this.socket.id));
-    await UserRoomRepository.deleteUserRoom(this.socket.id);
-    await this.updateUserListWithSocketId(this.socket.id);
+    // await UserRoomRepository.deleteUserRoom(this.socket.id);
+    // await this.updateUserListWithSocketId(this.socket.id);
 
   }
 }

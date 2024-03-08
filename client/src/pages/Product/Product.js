@@ -12,8 +12,8 @@ import Box from "@mui/material/Box";
 import {get} from "../../api/axios.api";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {fetchOneProductFailure, fetchOneProductRequest, fetchOneProductSuccess} from "../../oneProductActions";
-import {addToCart, saveCartToLocalStorage} from "../../cartActions";
+import {fetchOneProductFailure, fetchOneProductRequest, fetchOneProductSuccess} from "../../redux/actions/oneProductActions";
+import {addToCart, saveCartToLocalStorage} from "../../redux/actions/cartActions";
 
 const Product = () => {
   const settings = {

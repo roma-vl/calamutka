@@ -10,7 +10,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Close from "@mui/icons-material/Close";
 import {connect, useDispatch} from "react-redux";
-import {decreaseQuantity, increaseQuantity, removeFromCart} from "../../cartActions";
+import {decreaseQuantity, increaseQuantity, removeFromCart} from "../../redux/actions/cartActions";
 
 
 const Checkout = ({ products }) => {

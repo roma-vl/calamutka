@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import AppRoutes from 'routes/app.routes'
 import { useDispatch} from 'react-redux';
 import {useEffect} from "react";
-import { fetchUserFailure, fetchUserRequest, fetchUserSuccess} from "./userActions";
+import { fetchUserFailure, fetchUserRequest, fetchUserSuccess} from "./redux/actions/userActions";
 import {get} from "./api/axios.api";
 import authService from "./services/authService";
   const App = () =>  {

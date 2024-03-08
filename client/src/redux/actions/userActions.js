@@ -1,5 +1,5 @@
 import axios from "axios";
-import {get} from "./api/axios.api";
+import {get} from "../../api/axios.api";
 
 export const FETCH_USER_REQUEST = 'FETCH_USER_REQUEST';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';

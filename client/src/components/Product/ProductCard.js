@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {addToCart, removeFromCart} from "../../cartActions";
-import store from "../../store";
+import {addToCart, removeFromCart} from "../../redux/actions/cartActions";
+import store from "../../redux/store";
 import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({

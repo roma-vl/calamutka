@@ -25,9 +25,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Close from '@mui/icons-material/Close';
 import Cart from "../../Cart/Cart";
 import {Badge} from "@mui/material";
-import store from "../../../store";
+import store from "../../../redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import {loadCartFromLocalStorage} from "../../../cartActions";
+import {loadCartFromLocalStorage} from "../../../redux/actions/cartActions";
 
 const useStyles = makeStyles((theme) => ({
     avatar: {

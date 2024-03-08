@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Close from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
 import { useNavigate } from 'react-router-dom';
-import {decreaseQuantity, increaseQuantity, removeFromCart, saveCartToLocalStorage} from '../../cartActions';
+import {decreaseQuantity, increaseQuantity, removeFromCart, saveCartToLocalStorage} from '../../redux/actions/cartActions';
 
 const Cart = ({ isOpen, handleCloseCart, products }) => {
   const navigate = useNavigate();

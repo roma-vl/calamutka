@@ -1,27 +1,31 @@
-import {FETCH_ONE_PRODUCT_FAILURE, FETCH_ONE_PRODUCT_REQUEST, FETCH_ONE_PRODUCT_SUCCESS} from "./oneProductActions";
+import {
+  FETCH_PRODUCTS_REQUEST,
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_PRODUCTS_FAILURE
+} from '../actions/productActions';
 
 const initialState = {
-  product: [],
+  products: [],
   loading: false,
   error: null
 };
 
 const productReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_ONE_PRODUCT_REQUEST:
+    case FETCH_PRODUCTS_REQUEST:
       return {
         ...state,
         loading: true,
         error: null
       };
-    case FETCH_ONE_PRODUCT_SUCCESS:
+    case FETCH_PRODUCTS_SUCCESS:
       return {
         ...state,
         loading: false,
-        product: action.payload,
+        products: action.payload,
         error: null
       };
-    case FETCH_ONE_PRODUCT_FAILURE:
+    case FETCH_PRODUCTS_FAILURE:
       return {
         ...state,
         loading: false,

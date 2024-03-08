@@ -5,7 +5,7 @@ import {
   INCREASE_QUANTITY,
   LOAD_CART_FROM_LOCAL_STORAGE,
   REMOVE_FROM_CART
-} from './cartActions';
+} from '../actions/cartActions';
 
 const initialState = {
   products: []
