@@ -7,7 +7,6 @@ import initSwagger from './src/swagger.js';
 import userRoutes from './src/modules/users/routes/userRoutes.js';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
-import onConnection from './socket_io/onConnection.js';
 import { getFilePath } from './utils/file.js'
 import onError from './utils/onError.js'
 import { writeFile } from 'node:fs/promises';
@@ -16,15 +15,26 @@ import fileupload from 'express-fileupload'
 import config from './config/config.js';
 import productRoutes from "./src/modules/products/routes/productRoutes.js";
 import Welcome from "./src/modules/mailer/Welcome.js";
+import morgan from 'morgan';
+import onConnection from "./src/modules/messages/onConnection.js";
 
 export default async () => {
     const app = express();
 
-    const pino = pinoHttp();
-    app.use(pino)
+    // const pino = pinoHttp();
+    // app.use(pino)
     app.use(bodyParser.json());
     app.use(express.urlencoded({ extended: true }))
     app.use(fileupload());
+    // app.use(morgan(function (tokens, req, res) {
+    //     return [
+    //         tokens.method(req, res),
+    //         tokens.url(req, res),
+    //         tokens.status(req, res),
+    //         tokens.res(req, res, 'content-length'), '-',
+    //         tokens['response-time'](req, res), 'ms'
+    //     ].join(' ')
+    // }));
 
     // app.use(express.json())
     // Налаштування CORS
@@ -45,12 +55,6 @@ export default async () => {
     app.use('/users', userRoutes(knex));
     app.use('/products', productRoutes(knex));
 
-
-    app.use('/s', (req, res) => {
-        // console.log(req)
-        console.log('Main PAge')
-        res.status(200).json({ 'test' : 'test'});
-    });
     const server = createServer(app);
     const io = new Server(server, {
         cors: {
@@ -111,7 +115,9 @@ export default async () => {
 
         res.status(200).json({ success: 'Надіслано' });
     });
-
+    app.use('/', (req, res) => {
+        res.status(200).json({ 'test' : 'test'});
+    });
 
     app.use(onError);
 

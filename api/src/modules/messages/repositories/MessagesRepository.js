@@ -1,4 +1,3 @@
-// repositories/MessageRepository.js
 import Message from '../models/Message.js';
 
 class MessageRepository {
@@ -7,12 +6,11 @@ class MessageRepository {
   }
 
   static async getMessagesByRoomId(roomId) {
-    console.log(roomId);
     return await Message.query().where('roomId', roomId);
   }
 
-  static async deleteMessage(messageId) {
-    return await Message.query().where('messageId', messageId).delete();
+  static async deleteMessage(id) {
+    return await Message.query().where('id', id).delete();
   }
 }
 

@@ -5,9 +5,7 @@ class RoomsRepository {
   }
 
   static async deleteUserRoom( socket_id) {
-    console.log(socket_id, 'Записи')
-    await UserRoom.query().where('socket_id', '=', socket_id).delete();
-    // console.log('Записи видалено успішно.');
+    return await UserRoom.query().where('socket_id', '=', socket_id).delete();
   }
 
   static async getUsersByRoomId(room_id) {
@@ -27,7 +25,6 @@ class RoomsRepository {
       const users = await UserRoom.query()
         .distinct('user_id')
         .where('socket_id', '=', socket_id);
-      // console.log(users, 'ddddddddd')
       return users.map(user => user.user_id);
     } catch (error) {
       console.error('Помилка при отриманні user_id:', error);
