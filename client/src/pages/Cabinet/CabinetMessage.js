@@ -1,5 +1,4 @@
 import Container from "@mui/material/Container";
-import {Fragment} from "react";
 import Room from "../../components/Room/Room";
 import {get} from "../../api/axios.api";
 import {makeStyles} from "@material-ui/core/styles";
@@ -13,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    // textAlign: 'center',
     color: 'rgba(0, 0, 0, 0.54)',
     height: '100%',
   },
@@ -31,11 +29,7 @@ const CabinetMessage = () => {
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <Typography variant="h5">Повідомлення</Typography>
-          {user &&
-             ( <Fragment>
-                <Room user={user}/>
-              </Fragment>)
-          }
+          {user && <Room user={user}/>}
         </Paper>
       </div>
     </Container>

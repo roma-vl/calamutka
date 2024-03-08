@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AiOutlineUser, AiOutlineMessage } from 'react-icons/ai';
 import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { get } from "../../../api/axios.api";
+import {setRoomId} from "../../../redux/actions/chatActions";
+import {useDispatch} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   listItem: {
@@ -27,9 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserList({ user, setRoomID, getMessages, roomID, createRoom, getRooms, rooms ,roomCreated}) {
+export default function UserList({ user, getMessages, createRoom, getRooms, rooms ,roomId}) {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const [activeUserId, setActiveUserId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
@@ -38,12 +40,12 @@ export default function UserList({ user, setRoomID, getMessages, roomID, createR
   }, [getRooms]);
 
   const handleListItemClick = (roomId) => {
-    setActiveUserId(roomId === activeUserId ? null : roomId);
-    setRoomID(roomId);
+    dispatch(setRoomId(roomId))
     getMessages({roomId: roomId});
   };
-  const handleSendMessageClick = (userId, user, roomCreated) => {
+  const handleSendMessageClick = (userId, user, roomId) => {
     createRoom(user.user.id, userId)
+    dispatch(setRoomId(roomId))
     setSearchQuery('');
     setSearchResults([]);
   };
@@ -81,7 +83,7 @@ export default function UserList({ user, setRoomID, getMessages, roomID, createR
         {searchResults.map(({ id, username, email, profile_picture }) => (
           <ListItem
             key={id}
-            className={`${classes.listItem} ${id === activeUserId ? classes.activeListItem : ''}`}
+            className={`${classes.listItem} ${id == roomId ? classes.activeListItem : ''}`}
           >
             <ListItemAvatar>
               <Avatar>
@@ -89,7 +91,7 @@ export default function UserList({ user, setRoomID, getMessages, roomID, createR
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={username} secondary={email} />
-            <div className={classes.messageIcon} onClick={() => handleSendMessageClick(id, user, roomCreated)}>
+            <div className={classes.messageIcon} onClick={() => handleSendMessageClick(id, user, roomId)}>
               <AiOutlineMessage />
             </div>
           </ListItem>
@@ -99,7 +101,7 @@ export default function UserList({ user, setRoomID, getMessages, roomID, createR
         {rooms.map(({ id, roomName, userImage }) => (
           <ListItem
             key={id}
-            className={`${classes.listItem} ${id === activeUserId ? classes.activeListItem : ''}`}
+            className={`${classes.listItem} ${id == roomId ? classes.activeListItem : ''}`}
             onClick={() => handleListItemClick(id)}
           >
             <ListItemAvatar>

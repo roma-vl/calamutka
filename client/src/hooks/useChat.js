@@ -1,17 +1,12 @@
 import {SERVER_URL, USER_KEY} from 'constants.js'
 import {useEffect, useMemo, useRef, useState} from 'react'
 import {io} from 'socket.io-client'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setLog, setMessages, setRoomCreated, setRoomId, setRooms} from "../redux/actions/chatActions";
 
 export default function useChat() {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user.userData);
-
-  const [users, setUsers] = useState([])
-  const [roomID, setRoomID] = useState(null)
-  const [messages, setMessages] = useState(null)
-  const [rooms, setRooms] = useState([])
-  const [roomCreated, setRoomCreated] = useState([])
-  const [log, setLog] = useState(null)
 
   const {current: socket} = useRef(
     io(SERVER_URL, {
@@ -28,22 +23,13 @@ export default function useChat() {
   )
   useEffect(() => {
     if (!user) return;
-    socket.on('connect', () => {
-      console.log('Socket connected!');
-    });
+    socket.on('connect', () => console.log('Socket connected!'))
+    socket.on('log', (log) => dispatch(setLog(log)))
+    socket.on('message_list:update', (messages) => dispatch(setMessages(messages)))
+    socket.on('room_list:update', (rooms) =>  dispatch(setRooms(rooms)))
 
-    socket.on('log', (log) => {
-      setLog(log)
-    })
-
-    socket.on('message_list:update', (messages) => {
-      setMessages(messages)
-    })
-    socket.on('room_list:update', (rooms) => {
-      setRooms(rooms)
-    })
     socket.on('room_list:created', (roomCreated) => {
-      setRoomID(roomCreated.id)
+      dispatch(setRoomId(roomCreated))
       getRooms(user.id);
       getMessages({roomId: roomCreated.id});
     })
@@ -57,17 +43,10 @@ export default function useChat() {
   const removeMessage = useMemo(() => (message) => socket.emit('message:remove', message), [socket]);
 
   return {
-    users,
-    messages,
-    log,
     sendMessage,
     removeMessage,
-    roomID,
-    setRoomID,
     getMessages,
     createRoom,
     getRooms,
-    rooms,
-    roomCreated
   }
 }
