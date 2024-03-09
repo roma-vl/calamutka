@@ -7,6 +7,10 @@ import {setRoomId} from "../../../redux/actions/chatActions";
 import {useDispatch} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    height: '400px',
+    overflow: 'auto',
+  },
   listItem: {
     '&:hover': {
       backgroundColor: theme.palette.primary.light,
@@ -97,7 +101,7 @@ export default function UserList({ user, getMessages, createRoom, getRooms, room
           </ListItem>
         ))}
       </List>
-      <List>
+      <List className={classes.container}>
         {rooms.map(({ id, roomName, userImage }) => (
           <ListItem
             key={id}

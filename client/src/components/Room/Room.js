@@ -4,6 +4,8 @@ import MessageList from './MessageList/MessageList'
 import UserList from './UserList/UserList'
 import {Grid} from "@material-ui/core";
 import {useSelector} from "react-redux";
+import Box from "@mui/material/Box";
+import {Fragment} from "react";
 
 export default function Room(user) {
 
@@ -23,14 +25,14 @@ export default function Room(user) {
         </Grid>
         <Grid item xs={8}>
           {(chat.roomId && chat.messages) ? (
-            <div className='container message'>
-              <MessageList
-                log={chat.log}
-                messages={chat.messages}
-                removeMessage={removeMessage}
-              />
-              <MessageInput sendMessage={sendMessage} roomId={chat.roomId}/>
-            </div>
+     <Fragment>
+         <MessageList
+           log={chat.log}
+           messages={chat.messages}
+           removeMessage={removeMessage}
+         />
+       <MessageInput sendMessage={sendMessage} roomId={chat.roomId}/>
+     </Fragment>
           ) : (
             <div>Виберіть чат</div>
           )}
