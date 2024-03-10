@@ -24,7 +24,7 @@ export default function MessageInput({sendMessage, roomId}) {
   }, [text, file])
 
   useEffect(() => {
-    setShowPreview(file)
+    setShowPreview(!!file)
   }, [file, setShowPreview])
 
   const onSubmit = async (e) => {

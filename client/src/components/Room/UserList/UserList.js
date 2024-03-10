@@ -8,8 +8,10 @@ import {useDispatch} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: '400px',
+    height: '600px',
     overflow: 'auto',
+    scrollbarWidth: 'thin',
+    scrollbarColor: ' lightgrey',
   },
   listItem: {
     '&:hover': {

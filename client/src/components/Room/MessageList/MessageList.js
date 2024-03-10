@@ -8,7 +8,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     display: 'flex',
     flexDirection: 'column-reverse',
-    flexGrow: 1, overflowY: 'auto', gap: 1, marginBottom: 1
+    flexGrow: 1, overflowY: 'auto', gap: 1, marginBottom: 1,
+    scrollbarWidth: 'thin',
+    scrollbarColor: ' lightgrey',
   },
 }));
 export default function MessageList({log, messages, removeMessage}) {
