@@ -12,7 +12,6 @@ import authService from "../../../services/authService";
 import logout from "../../../pages/Auth/Logout";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import SettingsIcon from '@mui/icons-material/Settings';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Avatar from "@material-ui/core/Avatar";
@@ -22,12 +21,14 @@ import HistoryIcon from "@material-ui/icons/History";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import ChatIcon from '@mui/icons-material/Chat';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Close from '@mui/icons-material/Close';
 import Cart from "../../Cart/Cart";
 import {Badge} from "@mui/material";
-import store from "../../../redux/store";
 import {useDispatch, useSelector} from "react-redux";
 import {loadCartFromLocalStorage} from "../../../redux/actions/cartActions";
+import {toast, ToastContainer} from "react-toastify";
+import {SERVER_URI} from "../../../constants";
+import CustomVideoPlayer from "../../Room/MessageList/Video";
+import CustomAudioPlayer from "../../Room/MessageList/Audio";
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -37,7 +38,13 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 40
     },
 }));
-
+const CustomToast = ({ content }) => {
+    return (
+      <div>
+          <img src={content} alt="Image" style={{ maxWidth: "100%" }} />
+      </div>
+    );
+};
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -46,11 +53,34 @@ const Header = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const productsInCart = useSelector(state => state.cart.products);
     const user = useSelector(state => state.user.userData);
+    const chat = useSelector(state => state.chat.newMessages);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(loadCartFromLocalStorage());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (chat.length > 0) {
+            const latestMessage = chat[chat.length - 1];
+            if (latestMessage.messageType === 'image') {
+                const filePath = SERVER_URI + '/files' + latestMessage.textOrPathToFile
+                toast.info(<CustomToast content={filePath} />, {
+                    className: "custom-toast",
+                });
+            } else if (latestMessage.messageType === 'video') {
+                const filePath = SERVER_URI + '/files' + latestMessage.textOrPathToFile
+                toast.info(<CustomVideoPlayer src={filePath}></CustomVideoPlayer> );
+            }
+            else if (latestMessage.messageType === 'audio') {
+                const filePath = SERVER_URI + '/files' + latestMessage.textOrPathToFile
+                toast.info(<CustomAudioPlayer src={filePath}></CustomAudioPlayer> );
+            }else {
+                toast(latestMessage.textOrPathToFile);
+            }
+
+        }
+    }, [chat, dispatch]);
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
         setMenuOpen(true);
@@ -201,6 +231,7 @@ const Header = () => {
               </Toolbar>
           </AppBar>
           <Cart isOpen={isCartOpen} handleCloseCart={() => setIsCartOpen(false)} />
+          <ToastContainer/>
       </Fragment>
     );
 };
