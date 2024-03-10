@@ -3,8 +3,10 @@ import MessageHandlers from "./handlers/MessageHandler.js";
 
 export default function onConnection(io, socket) {
   try {
-    const userHandlers = new UserHandlers(io, socket);
-    const messageHandlers = new MessageHandlers(io, socket);
+    const userHandlers = new UserHandlers(io, socket)
+    const messageHandlers = new MessageHandlers(io, socket)
+
+    socket.on('connection', async (userId, session_id) => await userHandlers.handleConnect(userId, session_id))
 
     socket.on('user:add', async (user) => await userHandlers.handleUserAdd(user))
 
@@ -12,7 +14,7 @@ export default function onConnection(io, socket) {
     socket.on('room:get', async (userId) => await userHandlers.handleRoomGet(userId))
 
     socket.on('message:get', async (room) => await messageHandlers.handleMessageGet(room))
-    socket.on('message:add', async (message) =>  messageHandlers.handleMessageAdd(message));
+    socket.on('message:add', async (message) =>  messageHandlers.handleMessageAdd(message))
     socket.on('message:remove', async (message) => messageHandlers.handleMessageRemove(message))
 
     socket.on('disconnect', async () => await userHandlers.handleDisconnect())

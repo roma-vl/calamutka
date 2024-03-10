@@ -1,13 +1,13 @@
-import {SERVER_URL, USER_KEY} from 'constants.js'
-import {useEffect, useMemo, useRef, useState} from 'react'
+import {SERVER_URL} from 'constants.js'
+import {useEffect, useMemo, useRef} from 'react'
 import {io} from 'socket.io-client'
 import {useDispatch, useSelector} from "react-redux";
-import {setLog, setMessages, setRoomCreated, setRoomId, setRooms} from "../redux/actions/chatActions";
+import {setLog, setMessages, addNewMessage, setRoomId, setRooms} from "../redux/actions/chatActions";
 
 export default function useChat() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.userData);
-
+  const session_id = localStorage.getItem("session_id");
   const {current: socket} = useRef(
     io(SERVER_URL, {
       path: '',
@@ -15,7 +15,8 @@ export default function useChat() {
         userName: user.username
       },
       auth: {
-        user : user.id
+        user : user.id,
+        auth : session_id
       },
       autoConnect: true,
       transports: ['websocket'],
@@ -24,8 +25,15 @@ export default function useChat() {
   useEffect(() => {
     if (!user) return;
     socket.on('connect', () => console.log('Socket connected!'))
+    socket.emit('connection', user.id, session_id)
+    socket.on('connections', (connection) => {
+      if (connection.session_id) {
+        localStorage.setItem("session_id" ,connection.session_id)
+      }
+    })
     socket.on('log', (log) => dispatch(setLog(log)))
     socket.on('message_list:update', (messages) => dispatch(setMessages(messages)))
+    socket.on('message_list:new_message', (message) => dispatch(addNewMessage(message)))
     socket.on('room_list:update', (rooms) =>  dispatch(setRooms(rooms)))
 
     socket.on('room_list:created', (roomCreated) => {

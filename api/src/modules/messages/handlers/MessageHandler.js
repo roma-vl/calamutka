@@ -1,6 +1,7 @@
 import Message from '../repositories/MessagesRepository.js';
 import RoomsRepository from "../repositories/RoomsRepository.js";
 import UserRepository from "../../users/repositories/UserRepository.js";
+import MessagesSessionRepository from "../repositories/MessagesSessionRepository.js";
 
 class MessageHandler {
   constructor(io, socket) {
@@ -34,8 +35,17 @@ class MessageHandler {
 
   async handleMessageAdd(message) {
       try {
-        await Message.insertMessage({ ...message });
-        await this.updateMessageList(message.roomId);
+        const insertedMessage = await Message.insertMessage({ ...message });
+        await this.updateMessageList(insertedMessage.roomId);
+
+        const room = await RoomsRepository.getByRoomId(insertedMessage.roomId);
+        const users = [room[0].user_from, room[0].user_to];
+        const recipients = users.filter(user => user !== insertedMessage.userId);
+        const session = await MessagesSessionRepository.findByUserId(recipients[0])
+
+        if (session.length > 0 && insertedMessage) {
+          this.io.to(session[0].session_id).emit('message_list:new_message', insertedMessage);
+        }
       } catch (e) {
         console.error(e);
       }

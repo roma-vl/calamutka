@@ -1,18 +1,15 @@
+import { v4 as uuidv4 } from 'uuid';
 import UserRoomRepository from "../repositories/UserRoomRepository.js";
 import UserRepository from "../../users/repositories/UserRepository.js";
 import RoomsRepository from "../repositories/RoomsRepository.js";
+import MessagesSessionRepository from "../repositories/MessagesSessionRepository.js";
 
 export default class UserHandler {
   constructor(io, socket) {
     this.io = io;
     this.socket = socket;
-    this.users = {};
     this.roomId = socket.roomId;
     this.userName = socket.userName;
-
-    if (!this.users[this.roomId]) {
-      this.users[this.roomId] = [];
-    }
   }
 
   async updateUserListWithRoomId(roomId) {
@@ -48,7 +45,6 @@ export default class UserHandler {
       socket_id: user.socketId
     }
     await UserRoomRepository.insertUserRoom(userData);
-    // await this.updateUserListWithRoomId(user.roomId);
   }
 
   async handleRoomAdd(userFrom, userTo) {
@@ -93,12 +89,17 @@ export default class UserHandler {
     }
   }
 
+  async handleConnect(userId, session_id) {
+    const newSession = session_id ? session_id : uuidv4();
+    const data = {
+      userId: userId,
+      session_id: newSession
+    }
+    const session  = await MessagesSessionRepository.create(data)
+    this.socket.join(session.session_id);
+    this.io.to(this.socket.id).emit('connections', session );
+  }
   async handleDisconnect() {
     this.socket.to(this.roomId).emit('log', `${this.userName} disconnected`);
-    this.users = Object.fromEntries(
-      Object.entries(this.users).filter(([key, value]) => value !== this.socket.id));
-    // await UserRoomRepository.deleteUserRoom(this.socket.id);
-    // await this.updateUserListWithSocketId(this.socket.id);
-
   }
 }
