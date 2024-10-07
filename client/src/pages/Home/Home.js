@@ -1,15 +1,11 @@
-// HomePage.jsx
-import React, {useEffect, useState} from 'react';
+
+import {useEffect} from 'react';
 import { Typography } from '@material-ui/core';
 import RecommendedProductsSlider from "../../components/Product/RecommendedProductsSlider";
 import PopularProductsGrid from "../../components/Product/PopularProductsGrid";
 import Container from "@mui/material/Container";
 import ProductCardGrid from "../../components/Product/ProductCardGrid";
-// import {get} from "./axios.api";
-import {SERVER_URI} from "../../constants";
 import {get} from "../../api/axios.api";
-import {addToCart} from "../../redux/actions/cartActions";
-import store from "../../redux/store";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProductsFailure, fetchProductsRequest, fetchProductsSuccess} from "../../redux/actions/productActions";
 import {CircularProgress} from "@mui/material";

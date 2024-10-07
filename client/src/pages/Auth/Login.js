@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState} from "react";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import authService from '../../services/authService'
 import AlertComponent from '../../components/Alert/AlertComponent';
 
@@ -20,7 +20,7 @@ const defaultTheme = createTheme();
 
 export default function Login() {
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',

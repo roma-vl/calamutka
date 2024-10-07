@@ -1,6 +1,6 @@
 import Container from "@mui/material/Container";
 import Room from "../../components/Room/Room";
-import {get} from "../../api/axios.api";
+// import {get} from "../../api/axios.api";
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import {Paper} from "@mui/material";
@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
 const CabinetMessage = () => {
   const user = useSelector(state => state.user.userData);
   const classes = useStyles();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = await get('/protected');
-    console.log('Received data:', data);
-  };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const data = await get('/protected');
+  //   console.log('Received data:', data);
+  // };
   return (
     <Container component="main">
       <div className={classes.root}>

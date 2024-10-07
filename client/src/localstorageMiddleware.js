@@ -1,4 +1,4 @@
-import {LOAD_CART_FROM_LOCAL_STORAGE, SAVE_CART_TO_LOCAL_STORAGE} from "./redux/actions/cartActions";
+import { SAVE_CART_TO_LOCAL_STORAGE} from "./redux/actions/cartActions"; //LOAD_CART_FROM_LOCAL_STORAGE
 
 const localstorageMiddleware = store => next => action => {
   switch (action.type) {
