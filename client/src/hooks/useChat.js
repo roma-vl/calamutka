@@ -1,4 +1,4 @@
-import {SERVER_URL} from 'constants.js'
+import {SERVER_URI} from 'constants.js'
 import {useEffect, useMemo, useRef} from 'react'
 import {io} from 'socket.io-client'
 import {useDispatch, useSelector} from "react-redux";
@@ -9,7 +9,7 @@ export default function useChat() {
   const user = useSelector(state => state.user.userData);
   const session_id = localStorage.getItem("session_id");
   const {current: socket} = useRef(
-    io(SERVER_URL, {
+    io(SERVER_URI, {
       path: '',
       query: {
         userName: user.username

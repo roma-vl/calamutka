@@ -10,12 +10,12 @@ import { Server } from 'socket.io';
 import { getFilePath } from './utils/file.js'
 import onError from './utils/onError.js'
 import { writeFile } from 'node:fs/promises';
-import pinoHttp from 'pino-http';
-import fileupload from 'express-fileupload'
+// import pinoHttp from 'pino-http';
+// import fileupload from 'express-fileupload'
 import config from './config/config.js';
 import productRoutes from "./src/modules/products/routes/productRoutes.js";
 import Welcome from "./src/modules/mailer/Welcome.js";
-import morgan from 'morgan';
+// import morgan from 'morgan';
 import onConnection from "./src/modules/messages/onConnection.js";
 
 export default async () => {
@@ -25,7 +25,7 @@ export default async () => {
     // app.use(pino)
     app.use(bodyParser.json());
     app.use(express.urlencoded({ extended: true }))
-    app.use(fileupload());
+    // app.use(fileupload());
     // app.use(morgan(function (tokens, req, res) {
     //     return [
     //         tokens.method(req, res),
@@ -36,10 +36,15 @@ export default async () => {
     //     ].join(' ')
     // }));
 
-    // app.use(express.json())
+    app.use(express.json())
     // Налаштування CORS
+    const allowedOrigins = [
+        config.app.protocol + config.app.domain + config.app.port, // ваш основний домен
+        config.devApp.protocol + config.devApp.domain + config.devApp.port, // додатковий домен 1
+    ];
+
     const corsOptions = {
-        origin: config.app.protocol + config.app.domain + config.app.port,
+        origin: allowedOrigins,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         credentials: true,
     };

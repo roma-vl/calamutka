@@ -1,7 +1,7 @@
 
 import {useEffect} from 'react';
 import { Typography } from '@material-ui/core';
-import RecommendedProductsSlider from "../../components/Product/RecommendedProductsSlider";
+// import RecommendedProductsSlider from "../../components/Product/RecommendedProductsSlider";
 import PopularProductsGrid from "../../components/Product/PopularProductsGrid";
 import Container from "@mui/material/Container";
 import ProductCardGrid from "../../components/Product/ProductCardGrid";
@@ -110,7 +110,7 @@ const HomePage = () => {
       <Typography variant="h4" gutterBottom>
         Рекомендовані товари
       </Typography>
-      <RecommendedProductsSlider products={recommendedProducts}/>
+      {/*<RecommendedProductsSlider products={recommendedProducts}/>*/}
 
 
     </Container>

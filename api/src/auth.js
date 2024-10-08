@@ -56,15 +56,14 @@ async function initAuth(app) {
       }
 
       const token = jwt.sign({sub: user.id}, 'your_secret_key', {expiresIn: '24h'});
-      console.log(token)
 
       res.cookie('accessToken', token, {
         maxAge: 12 * 60 * 60 * 1000,
         path: '/',
         domain: '.' + config.app.domain,
         // httpOnly: true,
-        secure: true,
-        sameSite: 'None'
+        // secure: true,
+        // sameSite: 'None'
       }); // TODO коли буде https додати -> secure: true  sameSite: 'None' httpOnly: true,
 
       res.status(200).json({message: 'Authentication successful', user});
