@@ -5,7 +5,10 @@ export default function checkPermissions(permission) {
     try {
       await isAuthenticated(req, res, async () => {
         const userId = req.user.id;
+        console.log(userId, 'userId')
         const userPermissions = await getUserPermissions(userId);
+        console.log(userPermissions, 'userPermissions')
+        console.log(permission, 'permission')
 
         if (!userPermissions.includes(permission)) {
           return res.status(403).json({message: `У вас недостатньо прав для ${permission}`});

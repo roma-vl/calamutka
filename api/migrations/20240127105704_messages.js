@@ -5,12 +5,12 @@
 export const up= function(knex) {
     return knex.schema.createTable('messages', function (table) {
         table.increments('id').primary();
-        table.string('messageId').notNullable().unique();
+        // table.integer('messageId').notNullable().unique();
         table.string('messageType').notNullable();
         table.string('textOrPathToFile').notNullable();
-        table.string('roomId').notNullable();
-        table.string('userId').notNullable();
-        table.string('userName').notNullable();
+        table.integer('roomId').unsigned().notNullable();
+        table.integer('userId').unsigned().notNullable();
+        // table.string('userName').notNullable();
         table.timestamps(true, true);
     });
 };

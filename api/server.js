@@ -11,7 +11,7 @@ import { getFilePath } from './utils/file.js'
 import onError from './utils/onError.js'
 import { writeFile } from 'node:fs/promises';
 // import pinoHttp from 'pino-http';
-// import fileupload from 'express-fileupload'
+import fileupload from 'express-fileupload'
 import config from './config/config.js';
 import productRoutes from "./src/modules/products/routes/productRoutes.js";
 import Welcome from "./src/modules/mailer/Welcome.js";
@@ -25,7 +25,9 @@ export default async () => {
     // app.use(pino)
     app.use(bodyParser.json());
     app.use(express.urlencoded({ extended: true }))
-    // app.use(fileupload());
+    app.use(fileupload({
+        limits: { fileSize: 15 * 1024 * 1024 } // 50 MB
+    }));
     // app.use(morgan(function (tokens, req, res) {
     //     return [
     //         tokens.method(req, res),
@@ -43,6 +45,7 @@ export default async () => {
         config.devApp.protocol + config.devApp.domain + config.devApp.port, // додатковий домен 1
     ];
 
+    console.log(allowedOrigins, 'allowedOrigins')
     const corsOptions = {
         origin: allowedOrigins,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
