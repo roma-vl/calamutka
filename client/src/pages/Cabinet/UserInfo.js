@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UserInfo = ({ user }) => {
+const UserInfo = ({ user , handleTabClick}) => {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
   const [image, setImage] = useState(user.profile_picture);
@@ -55,12 +55,6 @@ const UserInfo = ({ user }) => {
     isTransparent: false,
     border: 0,
   });
-
-  // const handleOpenModal = () => setOpenModal(true);
-
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
-  }
   const handleCloseModal = () => setOpenModal(false);
   const handleDrop = (droppedFiles) => setImage(droppedFiles[0]);
 
@@ -75,7 +69,6 @@ const UserInfo = ({ user }) => {
     });
   };
 
-
   const handleOpenModal = async () => {
     if (typeof user.profile_picture === 'string') {
       const base64Image = await urlToBase64(user.profile_picture);
@@ -84,31 +77,21 @@ const UserInfo = ({ user }) => {
     setOpenModal(true);
   };
 
-
   const handleScaleChange = (e) => setState({ ...state, scale: parseFloat(e.target.value) });
   const handleRotateLeft = () => setState({ ...state, rotate: (state.rotate - 90) % 360 });
   const handleRotateRight = () => setState({ ...state, rotate: (state.rotate + 90) % 360 });
 
   const handleSave = () => {
     const img = editorRef.current.getImageScaledToCanvas().toDataURL("image/png");
-    console.log("Saved Image: ", img);
-
-    // Створюємо посилання для завантаження
     const link = document.createElement("a");
-    link.href = img; // Вставляємо Base64 зображення
-    link.download = "avatar.png"; // Ім'я файлу при завантаженні
+    link.href = img;
+    link.download = "avatar.png";
 
-    // link.click();
     toast.success("Success Notification !", {
       position: "top-right"
     });
     setOpenModal(false);
   };
-
-  // const handleTabClick = (tab) => {
-  //   setActiveTab(tab);
-  //   window.location.href = `/cabinet#${tab}`;
-  // };
 
   return (
     <Fragment>
@@ -172,7 +155,7 @@ const UserInfo = ({ user }) => {
                 className={classes.editIcon}
                 component={Link}
                 to="/cabinet#edit"
-                onClick={() => handleTabClick('edit')}
+                onClick={() => {handleTabClick('edit')}}
               >Редагувати профіль </Button>
 
             </div>

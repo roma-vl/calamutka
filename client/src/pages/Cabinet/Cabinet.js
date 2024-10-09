@@ -56,7 +56,7 @@ const Cabinet = () => {
               <Bookmarks />
             ) : (
               <Fragment>
-                <UserInfo user={user || null}/>
+                <UserInfo user={user || null} handleTabClick={handleTabClick} />
               </Fragment>
             )}
           </Grid>
