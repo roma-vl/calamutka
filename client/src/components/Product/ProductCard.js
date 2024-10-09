@@ -1,13 +1,11 @@
-import { Card, CardContent, CardMedia, Typography, makeStyles, IconButton } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import { Card, CardContent, CardMedia, Typography, makeStyles } from '@material-ui/core';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import React, { useState } from 'react';
+import IconButton from "@mui/material/IconButton";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {addToCart, removeFromCart} from "../../redux/actions/cartActions";
 import store from "../../redux/store";
-import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   root: {
@@ -55,19 +53,16 @@ const useStyles = makeStyles({
 
 const ProductCard = ({ product }) => {
   const classes = useStyles();
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
 
   const addProductItem = (productItem) => {
     dispatch(addToCart(productItem));
     console.log(store.getState());
   }
 
-  const handleDeleteCard = (id) => {
-    dispatch(removeFromCart(id));
-  };
+  // const handleDeleteCard = (id) => {
+  //   dispatch(removeFromCart(id));
+  // };
   return (
     <Card className={classes.root}>
       <Link to={`/product/${product.id}`} style={{ textDecoration: 'none' }}>

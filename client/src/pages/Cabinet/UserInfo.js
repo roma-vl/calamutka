@@ -1,13 +1,11 @@
 import { Fragment, useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
-import { Grid, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { Grid, Dialog, DialogActions, DialogContent,
+  DialogTitle, Button, Typography, Paper} from "@mui/material";
 import AvatarEditor from 'react-avatar-editor';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Dropzone from 'react-dropzone';
 import { Link } from "react-router-dom";
 
@@ -42,10 +40,8 @@ const useStyles = makeStyles((theme) => ({
 const UserInfo = ({ user , handleTabClick}) => {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
-  const [image, setImage] = useState(user.profile_picture);
+  const [image, setImage] = useState(null);
   const editorRef = useRef(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const notify = () => toast("Wow so easy!");
   const [state, setState] = useState({
     scale: 1,
     rotate: 0,
@@ -59,20 +55,34 @@ const UserInfo = ({ user , handleTabClick}) => {
   const handleDrop = (droppedFiles) => setImage(droppedFiles[0]);
 
   const urlToBase64 = async (url) => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  };
+    try {
+      const response = await fetch(url);
+      console.log(response, 'response');
 
+      // Check if the response is okay (status code 200)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = (error) => {
+          console.error('Error reading file:', error);
+          reject(error);
+        };
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Failed to fetch image:', error);
+      return null; // or handle it as needed
+    }
+  };
   const handleOpenModal = async () => {
-    if (typeof user.profile_picture === 'string') {
+    if (typeof user.profile_picture === 'string' && user.profile_picture !== '') {
       const base64Image = await urlToBase64(user.profile_picture);
-      setImage(base64Image); // Передаємо Base64 в AvatarEditor
+      setImage(base64Image);
     }
     setOpenModal(true);
   };

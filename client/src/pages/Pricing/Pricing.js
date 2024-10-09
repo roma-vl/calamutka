@@ -1,4 +1,3 @@
-import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -8,22 +7,8 @@ import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import StarIcon from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import {Fragment} from "react";
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const tiers = [
     {
@@ -65,40 +50,9 @@ const tiers = [
     },
 ];
 
-const footers = [
-    {
-        title: 'Company',
-        description: ['Team', 'History', 'Contact us', 'Locations'],
-    },
-    {
-        title: 'Features',
-        description: [
-            'Cool stuff',
-            'Random feature',
-            'Team feature',
-            'Developer stuff',
-            'Another one',
-        ],
-    },
-    {
-        title: 'Resources',
-        description: ['Resource', 'Resource name', 'Another resource', 'Final resource'],
-    },
-    {
-        title: 'Legal',
-        description: ['Privacy policy', 'Terms of use'],
-    },
-];
-
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
-
 export default function Pricing() {
     return (
-
-
            <Fragment>
-               {/* Hero unit */}
                <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
                    <Typography
                      component="h1"
@@ -115,11 +69,9 @@ export default function Pricing() {
                        customization.
                    </Typography>
                </Container>
-               {/* End hero unit */}
                <Container maxWidth="md" component="main">
                    <Grid container spacing={5} alignItems="flex-end">
                        {tiers.map((tier) => (
-                         // Enterprise card is full width at sm breakpoint
                          <Grid
                            item
                            key={tier.title}

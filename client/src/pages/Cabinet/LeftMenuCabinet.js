@@ -16,8 +16,15 @@ const useStyles = makeStyles((theme) => ({
   },
   listItems: {
     height: 44,
-    width: 270
-  }
+    width: 270,
+    color: '#000',
+  },
+  listItemsActive: {
+    height: 44,
+    width: 270,
+    color: '#000',
+    backgroundColor: '#d6cccc',
+  },
 }));
 
 const LeftMenuCabinet = ({ activeTab, handleTabClick }) => {
@@ -26,12 +33,12 @@ const LeftMenuCabinet = ({ activeTab, handleTabClick }) => {
   return (
     <List className={classes.menuLists}>
       <ListItem
-        button
+        button={'true'}
         component={Link}
         to="/cabinet#profile"
         selected={activeTab === 'profile'}
         onClick={() => handleTabClick('profile')}
-        className={classes.listItems}
+        className={activeTab === 'profile' ? classes.listItemsActive : classes.listItems}
       >
         <ListItemIcon>
           <AccountCircleIcon/>
@@ -39,12 +46,12 @@ const LeftMenuCabinet = ({ activeTab, handleTabClick }) => {
         <ListItemText primary="Профіль"/>
       </ListItem>
       <ListItem
-        button
+        button={'true'}
         component={Link}
         to="/cabinet#edit"
         selected={activeTab === 'edit'}
         onClick={() => handleTabClick('edit')}
-        className={classes.listItems}
+        className={activeTab === 'edit' ? classes.listItemsActive : classes.listItems}
       >
         <ListItemIcon>
           <EditIcon/>
@@ -52,12 +59,12 @@ const LeftMenuCabinet = ({ activeTab, handleTabClick }) => {
         <ListItemText primary="Редагувати профіль"/>
       </ListItem>
       <ListItem
-        button
+        button={'true'}
         component={Link}
         to="/cabinet#history"
         selected={activeTab === 'history'}
         onClick={() => handleTabClick('history')}
-        className={classes.listItems}
+        className={activeTab === 'history' ? classes.listItemsActive : classes.listItems}
       >
         <ListItemIcon>
           <HistoryIcon/>
@@ -65,12 +72,12 @@ const LeftMenuCabinet = ({ activeTab, handleTabClick }) => {
         <ListItemText primary="Історія"/>
       </ListItem>
       <ListItem
-        button
+        button={'true'}
         component={Link}
         to="/cabinet#bookmarks"
         selected={activeTab === 'bookmarks'}
         onClick={() => handleTabClick('bookmarks')}
-        className={classes.listItems}
+        className={activeTab === 'bookmarks' ? classes.listItemsActive : classes.listItems}
       >
         <ListItemIcon>
           <BookmarksIcon/>
