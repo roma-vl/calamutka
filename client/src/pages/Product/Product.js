@@ -16,13 +16,13 @@ import {fetchOneProductFailure, fetchOneProductRequest, fetchOneProductSuccess} 
 import {addToCart, saveCartToLocalStorage} from "../../redux/actions/cartActions";
 
 const Product = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 100,
-    slidesToShow: 2,
-    slidesToScroll: 5,
-  };
+  // const settings = {
+  //   dots: true,
+  //   infinite: true,
+  //   speed: 100,
+  //   slidesToShow: 2,
+  //   slidesToScroll: 5,
+  // };
   const {slug} = useParams();
   const dispatch = useDispatch();
   const product = useSelector(state => state.oneProduct.product);

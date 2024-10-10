@@ -5,6 +5,8 @@ import  ProductController from '../controllers/ProductController.js';
 const productRoutes = (knex) => {
   const app = express.Router();
 
+  app.get('/category/:id', ProductController.getProductsByCategory);  // За однією категорією
+  app.post('/categories', ProductController.getProductsByCategoryArray);     // За масивом категорій
   // Маршрути для кожного методу CRUD
   app.get('/', ProductController.getAllProducts);
   app.post('/', ProductController.createProduct);

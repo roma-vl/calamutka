@@ -17,6 +17,7 @@ import productRoutes from "./src/modules/products/routes/productRoutes.js";
 import Welcome from "./src/modules/mailer/Welcome.js";
 // import morgan from 'morgan';
 import onConnection from "./src/modules/messages/onConnection.js";
+import categoryRoutes from "./src/modules/products/routes/categoryRoutes.js";
 
 export default async () => {
     const app = express();
@@ -62,6 +63,7 @@ export default async () => {
     await initSwagger(app);
     app.use('/users', userRoutes(knex));
     app.use('/products', productRoutes(knex));
+    app.use('/categories', categoryRoutes(knex));
 
     const server = createServer(app);
     const io = new Server(server, {

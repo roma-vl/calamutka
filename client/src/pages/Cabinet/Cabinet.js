@@ -26,7 +26,7 @@ const Cabinet = () => {
 
   const getHashFromUrl = () => {
     const hash = window.location.hash;
-    return hash ? hash.slice(1) : ''; // видаляємо символ '#'
+    return hash ? hash.slice(1) : '';
   };
   const handleTabClick = (tab) => {
     setActiveTab(tab);

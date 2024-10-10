@@ -69,6 +69,28 @@ class ProductController extends BaseController{
       next(error);
     }
   }
+
+  static async getProductsByCategory(req, res, next) {
+    console.log(req.params, 'req.params')
+    const { id } = req.params;  // id категорії береться з URL
+    try {
+      const products = await ProductRepository.getProductsByCategory(id);
+      res.json(products);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Отримати всі продукти за масивом категорій
+  static async getProductsByCategoryArray(req, res, next) {
+    const { categoryIds } = req.body;  // масив id категорій передається в тілі запиту
+    try {
+      const products = await ProductRepository.getProductsByCategoryArray(categoryIds);
+      res.json(products);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default ProductController;

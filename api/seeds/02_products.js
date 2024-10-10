@@ -13,6 +13,7 @@ export const seed = async function (knex) {
       description: faker.lorem.paragraph(2),
       price: faker.commerce.price(),
       main_image: faker.image.url(),
+      category_id: faker.number.int({ min: 1, max: 10 }),
     });
   }
   // Inserts seed entries for products

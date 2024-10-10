@@ -1,10 +1,8 @@
 import React, { Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import Container from "@mui/material/Container";
-
 const PaymentAndDelivery = () => {
-  const navigate = useNavigate();
-
+  // const navigate = useNavigate();
   return (
     <Fragment>
       <Container>
