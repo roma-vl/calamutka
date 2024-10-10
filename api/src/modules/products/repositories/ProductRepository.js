@@ -10,7 +10,9 @@ export default class ProductRepository {
     try {
 
       const product = await Product.query().findById(id);
-      product.images = await ProductImage.query().where('product_id', id);
+      if (product) {
+        product.images = await ProductImage.query().where('product_id', id);
+      }
 
       return product;
     } catch (error) {
@@ -24,8 +26,21 @@ export default class ProductRepository {
   }
 
   static async updateProductById(id, productData) {
-    return await Product.query().findById(id).patch(productData);
+    try {
+    const product = await Product.query().findById(id);
+    if (product) {
+      return await  Product.query().findById(id);
+      // return await Product.query().findById(id).patch(productData);
+    }
+    return {
+      error: 'По ід продукт не знайдено'
+    }
+    } catch (error) {
+      console.error('Error updating product:', error);
+      throw new Error('Product not found');
+    }
   }
+
 
   static async deleteProductById(id) {
     return await Product.query().deleteById(id);

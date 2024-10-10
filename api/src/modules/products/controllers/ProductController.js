@@ -1,6 +1,8 @@
 import ProductRepository from "../repositories/ProductRepository.js";
+import BaseController from "../../app/src/BaseController.js";
+import ProductValidation from "../models/productValidation.js";
 
-class ProductController {
+class ProductController extends BaseController{
   static async getAllProducts(req, res, next) {
     try {
       const products = await ProductRepository.getAllProducts();
@@ -26,8 +28,12 @@ class ProductController {
   static async createProduct(req, res, next) {
     const productData = req.body;
     try {
-      const createdProduct = await ProductRepository.createProduct(productData);
-      res.status(201).json(createdProduct);
+      const {data, errors} = ProductValidation.prototype.validateCreating(productData);
+      if (errors.length > 0) {
+        return res.status(400).json({data, errors});
+      }
+      // const createdProduct = await ProductRepository.createProduct(productData);
+      res.status(201).json({data,errors: []});
     } catch (error) {
       next(error);
     }
@@ -35,10 +41,20 @@ class ProductController {
 
   static async updateProductById(req, res, next) {
     const { id } = req.params;
+    console.log(req.params, 'req.params')
     const productData = req.body;
+
+
     try {
+      const {data, errors} = await ProductValidation.prototype.validateUpdating(
+        Object.assign({id}, productData));
+
+      if (errors.length > 0) {
+         return  res.status(400).json({data, errors});
+      }
+
       const updatedProduct = await ProductRepository.updateProductById(id, productData);
-      res.json(updatedProduct);
+      res.status(201).json({updatedProduct,errors: []});
     } catch (error) {
       next(error);
     }

@@ -90,6 +90,8 @@ const UserInfo = ({ user , handleTabClick}) => {
     toast.success("Success Notification !", {
       position: "top-right"
     });
+
+    link.click();
     setOpenModal(false);
   };
 
