@@ -1,0 +1,14 @@
+const ProductErrors = {}
+
+ProductErrors.NO_PRODUCT_FOUND_WITH_THIS_ID = 'NO_PRODUCT_FOUND_WITH_THIS_ID';
+ProductErrors.PRODUCT_SAVED                 = 'PRODUCT_SAVED';
+ProductErrors.PRODUCT_NOT_SAVED             = 'PRODUCT_NOT_SAVED';
+ProductErrors.PRODUCT_UPDATED               = 'PRODUCT_UPDATED';
+ProductErrors.PRODUCT_NOT_UPDATED           = 'PRODUCT_NOT_UPDATED';
+ProductErrors.PRODUCT_DELETED               = 'PRODUCT_DELETED';
+ProductErrors.PRODUCT_NOT_DELETED           = 'PRODUCT_NOT_DELETED';
+ProductErrors.NO_PRODUCTS_FOUND_IN_THIS_CATEGORY = 'NO_PRODUCTS_FOUND_IN_THIS_CATEGORY';
+ProductErrors.NO_PRODUCTS_FOUND_FOR_CATEGORIES = 'NO_PRODUCTS_FOUND_FOR_CATEGORIES';
+
+export default ProductErrors;
+
