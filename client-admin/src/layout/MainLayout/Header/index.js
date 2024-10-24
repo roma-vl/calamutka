@@ -61,6 +61,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
       <Box sx={{ flexGrow: 1 }} />
 
       {/* notification & profile */}
+      <a href="http://calamutka.com/"> Public</a>
       <NotificationSection />
       <ProfileSection />
     </>
