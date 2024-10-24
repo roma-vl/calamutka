@@ -7,9 +7,9 @@ WORKDIR /app
 
 COPY package*.json ./
 
-USER node
-
 RUN npm install
+
+USER node
 
 COPY --chown=node:node . .
 EXPOSE 4000
